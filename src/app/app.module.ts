@@ -1,15 +1,30 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
+import { FormsModule } from '@angular/forms';
 
-import { AppRoutingModule } from './app-routing.module';
+
 import { AppComponent } from './app.component';
+import { AppRoutingModule } from './app-routing.module';
+import { HeaderComponent } from './header/header.component';
+import { MeetingListComponent } from './meeting-list/meeting-list.component';
+import { MeetingComponent } from './meeting-list/meeting/meeting.component';
+import { MeetingCrudComponent } from './meeting-list/meeting/meeting-crud/meeting-crud.component';
+import { UserListComponent } from './user-list/user-list.component';
+import { UserComponent } from './user-list/user/user.component';
 
 @NgModule({
   declarations: [
-    AppComponent
+    AppComponent,
+    HeaderComponent,
+    MeetingListComponent,
+    MeetingComponent,
+    MeetingCrudComponent,
+    UserListComponent,
+    UserComponent
   ],
   imports: [
     BrowserModule,
+    FormsModule,
     AppRoutingModule
   ],
   providers: [],

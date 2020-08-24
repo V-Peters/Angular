@@ -11,6 +11,8 @@ import { MeetingComponent } from './meeting-list/meeting/meeting.component';
 import { MeetingCrudComponent } from './meeting-list/meeting/meeting-crud/meeting-crud.component';
 import { UserListComponent } from './user-list/user-list.component';
 import { UserComponent } from './user-list/user/user.component';
+import { LoginComponent } from './login/login.component';
+import { HomeComponent } from './home/home.component';
 
 @NgModule({
   declarations: [
@@ -20,7 +22,9 @@ import { UserComponent } from './user-list/user/user.component';
     MeetingComponent,
     MeetingCrudComponent,
     UserListComponent,
-    UserComponent
+    UserComponent,
+    LoginComponent,
+    HomeComponent
   ],
   imports: [
     BrowserModule,

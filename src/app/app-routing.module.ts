@@ -5,7 +5,7 @@ import { LoginComponent } from './login/login.component';
 import { HomeComponent } from './home/home.component';
 
 const routes: Routes = [
-  { path: '', redirectTo: '/meeting/list', pathMatch: 'full' },
+  { path: '', redirectTo: '/home', pathMatch: 'full' },
   { path: 'meeting/list', component: MeetingListComponent },
   { path: 'login', component: LoginComponent },
   { path: 'logout', redirectTo: '/home', pathMatch: 'full' },

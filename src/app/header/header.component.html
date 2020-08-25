@@ -10,9 +10,9 @@
           <li routerLinkActive="active"><a routerLink="/meeting/list">Veranstaltungsliste</a></li>
         </ul>
         <ul class="nav navbar-nav navbar-right">
-          <!-- klappt noch nicht richtig -->
+          <!-- *ngIf klappt noch nicht richtig, da loggedIn nur in der onInit MMethode gesetzt wird -->
           <li *ngIf="loggedIn"><a>Eingeloggt als Vorname Nachname</a></li>
-          <li><a routerLink="/logout" (click)="onLogout()">Logout</a></li>
+          <li *ngIf="loggedIn"><a style="cursor: pointer;" (click)="onLogout()">Logout</a></li>
         </ul>
       </div>
     </div>

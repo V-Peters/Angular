@@ -19,13 +19,24 @@ export class MeetingListComponent implements OnInit {
       'Name2',
       'Datum2',
       'Uhrzeit2',
+      true
+    ),
+    new Meeting(
+      'Name3',
+      'Datum3',
+      'Uhrzeit3',
       false
     )
   ];
 
+  showMeetings = false;
+
   constructor() { }
 
   ngOnInit(): void {
+    if (localStorage.getItem('login') === 'true') {
+      this.showMeetings = true;
+    }
   }
 
 }

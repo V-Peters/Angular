@@ -1,3 +1,7 @@
-<app-meeting></app-meeting>
-<app-meeting></app-meeting>
-<app-meeting></app-meeting>
+<div *ngIf="showMeetings">
+    <app-meeting *ngFor="let meeting of meetings"></app-meeting>
+</div>
+<div *ngIf="!showMeetings">
+    Sie müssen sich zuerst einloggen: 
+    <button class="btn btn-primary" routerLink="/login">Zum Login</button>
+</div>

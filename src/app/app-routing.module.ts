@@ -9,7 +9,8 @@ const routes: Routes = [
   { path: 'meeting/list', component: MeetingListComponent },
   { path: 'login', component: LoginComponent },
   { path: 'logout', redirectTo: '/home', pathMatch: 'full' },
-  { path: 'home', component: HomeComponent }
+  { path: 'home', component: HomeComponent },
+  { path: '**', redirectTo: '/home' }
 ];
 
 @NgModule({

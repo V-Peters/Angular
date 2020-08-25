@@ -34,13 +34,13 @@
                 <td style="text-align:center" >{{ meeting.time }}</td>
                 
                 <td style="text-align:center" >
-                    <a class="btn btn-info btn-sm" >Bearbeiten</a>
+                    <a class="btn btn-info btn-xs" >Bearbeiten</a>
                     | 
-                    <a class="btn btn-danger btn-sm" onclick="if (!(confirm('Sind Sie sicher, dass Sie diese Veranstaltung löschen möchten?'))) return false">Löschen</a>
+                    <a class="btn btn-danger btn-xs" onclick="if (!(confirm('Sind Sie sicher, dass Sie diese Veranstaltung löschen möchten?'))) return false">Löschen</a>
                 </td>
                 <td style="text-align:center" >
-                    <a *ngIf="meeting.display" class="btn btn-success btn-sm" >✔</a>
-                    <a *ngIf="!meeting.display" class="btn btn-danger btn-sm" >✖</a>
+                    <a *ngIf="meeting.display" class="btn btn-success btn-xs" >✔</a>
+                    <a *ngIf="!meeting.display" class="btn btn-danger btn-xs" >✖</a>
                 </td>
                 <td style="text-align:center" >
                     <a>anzeigen</a>
@@ -52,7 +52,7 @@
             </tr>
         </tbody>
     </table>
-    <button class="btn btn-info disabled">Änderungen übernehmen</button>
+    <button class="btn btn-primary disabled">Änderungen übernehmen</button>
 </div>
   
   

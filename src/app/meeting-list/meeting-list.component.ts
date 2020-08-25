@@ -8,11 +8,12 @@ import { Meeting } from './meeting/meeting.model'
   styleUrls: ['./meeting-list.component.css']
 })
 export class MeetingListComponent implements OnInit {
-  private meetings: Meeting[] = [
+  showMeetings = false;
+  meetings: Meeting[] = [
     new Meeting(
-      'Name1',
-      'Datum1',
-      'Uhrzeit1',
+      'Testname',
+      '10.10.2020',
+      '16:45 Uhr',
       true
     ),
     new Meeting(
@@ -29,14 +30,16 @@ export class MeetingListComponent implements OnInit {
     )
   ];
 
-  showMeetings = false;
-
   constructor() { }
 
   ngOnInit(): void {
     if (localStorage.getItem('login') === 'true') {
       this.showMeetings = true;
     }
+  }
+
+  onAddMeeting() {
+    console.log('Veranstaltung hinzufügen geklickt.')
   }
 
 }

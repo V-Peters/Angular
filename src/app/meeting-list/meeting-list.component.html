@@ -1,7 +1,58 @@
-<div *ngIf="showMeetings">
-    <app-meeting *ngFor="let meeting of meetings"></app-meeting>
-</div>
+<!-- <div *ngIf="showMeetings">
+    <app-meeting 
+        *ngFor="let meeting of meetings"
+        [meeting]="meeting">
+    </app-meeting>
+</div> -->
 <div *ngIf="!showMeetings">
     Sie müssen sich zuerst einloggen: 
-    <button class="btn btn-primary" routerLink="/login">Zum Login</button>
+    <button class="btn btn-primary btn-xs" routerLink="/login">Zum Login</button>
 </div>
+
+
+<div *ngIf="showMeetings">
+    <button class="btn btn-success" (click)="onAddMeeting()">Veranstaltung hinzufügen</button>
+    <hr>
+	<table class="table table-bordered table-striped" >
+        <thead class="thead-dark">
+            <tr>
+                <th>Nr.</th>
+                <th>Veranstaltungsname</th>
+                <th style="text-align:center" >Datum</th>
+                <th style="text-align:center" >Uhrzeit</th>
+                <th style="text-align:center" >Aktion</th>
+                <th style="text-align:center" >Für User sichtbar</th>
+                <th style="text-align:center" >Teilnehmerliste</th>
+                <!-- <th style="text-align:center" >An Veranstaltung teilnehmen</th> -->
+            </tr>
+        </thead>
+        <tbody>
+            <tr *ngFor="let meeting of meetings; let i = index">
+                <td style="text-align:right">{{ i + 1 }}</td>
+                <td style="width: 508px;">{{ meeting.name }}</td>
+                <td style="text-align:center" >{{ meeting.date }}</td>
+                <td style="text-align:center" >{{ meeting.time }}</td>
+                
+                <td style="text-align:center" >
+                    <a class="btn btn-info btn-sm" >Bearbeiten</a>
+                    | 
+                    <a class="btn btn-danger btn-sm" onclick="if (!(confirm('Sind Sie sicher, dass Sie diese Veranstaltung löschen möchten?'))) return false">Löschen</a>
+                </td>
+                <td style="text-align:center" >
+                    <a *ngIf="meeting.display" class="btn btn-success btn-sm" >✔</a>
+                    <a *ngIf="!meeting.display" class="btn btn-danger btn-sm" >✖</a>
+                </td>
+                <td style="text-align:center" >
+                    <a>anzeigen</a>
+                </td>
+                <!-- <td style="text-align:center" >
+                    <a *ngIf="" class="btn btn-success btn-sm" >✔</a>
+                    <a *ngIf="" class="btn btn-danger btn-sm" >✖</a>
+                </td> -->
+            </tr>
+        </tbody>
+    </table>
+    <button class="btn btn-info disabled">Änderungen übernehmen</button>
+</div>
+  
+  

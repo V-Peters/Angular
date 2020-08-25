@@ -10,8 +10,11 @@
           <li routerLinkActive="active"><a routerLink="/meeting/list">Veranstaltungsliste</a></li>
         </ul>
         <ul class="nav navbar-nav navbar-right">
-          <li><a routerLink="/logout" (click)="onLogout()">Logout</a></li></ul>
-        </div>
+          <!-- klappt noch nicht richtig -->
+          <li *ngIf="loggedIn"><a>Eingeloggt als Vorname Nachname</a></li>
+          <li><a routerLink="/logout" (click)="onLogout()">Logout</a></li>
+        </ul>
+      </div>
     </div>
   </nav>
   

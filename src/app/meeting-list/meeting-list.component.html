@@ -39,8 +39,8 @@
                     <a class="btn btn-danger btn-xs" onclick="if (!(confirm('Sind Sie sicher, dass Sie diese Veranstaltung löschen möchten?'))) return false">Löschen</a>
                 </td>
                 <td style="text-align:center" >
-                    <a *ngIf="meeting.display" class="btn btn-success btn-xs" >✔</a>
-                    <a *ngIf="!meeting.display" class="btn btn-danger btn-xs" >✖</a>
+                    <a *ngIf="meeting.display" class="btn btn-success btn-xs" (click)="onChangeDisplay(i)">✔</a>
+                    <a *ngIf="!meeting.display" class="btn btn-danger btn-xs" (click)="onChangeDisplay(i)">✖</a>
                 </td>
                 <td style="text-align:center" >
                     <a>anzeigen</a>
@@ -52,7 +52,10 @@
             </tr>
         </tbody>
     </table>
-    <button class="btn btn-primary disabled">Änderungen übernehmen</button>
+    <button type="submit" class="btn btn-info" (click)="onSaveDisplayChanges()" [disabled]="!isDisplayDifferent">
+        <span *ngIf="isDisplayDifferent">Änderungen übernehmen</span>
+        <span *ngIf="!isDisplayDifferent" style="color: rgb(117, 0, 0);">keine Änderungen vorhanden</span>
+    </button>
 </div>
   
   

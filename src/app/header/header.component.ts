@@ -21,8 +21,4 @@ export class HeaderComponent implements OnInit {
     this.router.navigate(['/logout']);
   }
 
-  g() {
-    console.log('G');
-  }
-
 }

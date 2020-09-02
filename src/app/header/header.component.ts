@@ -18,6 +18,7 @@ export class HeaderComponent implements OnInit {
   onLogout() {
     if (!(confirm('Wollen Sie sich wirklich ausloggen?'))) return false;
     localStorage.setItem('login', 'false');
+    this.loggedIn = false;
     this.router.navigate(['/logout']);
   }
 

@@ -14,16 +14,25 @@ export class MeetingService {
   constructor(private http: HttpClient) {}
 
   getMeetings() {
-      return this.http
-      .get<Meeting[]>(
-        'http://localhost:8080/meeting/list'
-      )
-      .pipe(
-          tap(tempMeetings => {
-              this.meetings = tempMeetings;
-              console.log(tempMeetings);
-              
-          })
-      )
+    return this.http
+    .get<Meeting[]>(
+      'http://localhost:8080/meeting/list'
+    )
+    .pipe(
+        tap(tempMeetings => {
+            this.meetings = tempMeetings;
+            console.log(tempMeetings);
+        })
+    )
+  }
+
+  deleteMeeting(id: number) {
+    this.http
+    .delete(
+      `http://localhost:8080/meeting?id=${id}`
+    )
+    .subscribe(respone => {
+      console.log('Meeting mit der id ' + id + ' wurde gelöscht.');
+    });
   }
 }

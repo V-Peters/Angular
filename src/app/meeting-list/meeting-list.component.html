@@ -34,9 +34,9 @@
                 <td style="text-align:center" >{{ meeting.time }}</td>
                 
                 <td style="text-align:center" >
-                    <a class="btn btn-info btn-xs" >Bearbeiten</a>
+                    <a class="btn btn-info btn-xs" (click)="onEditMeeting(meeting.id)">Bearbeiten</a>
                     | 
-                    <a class="btn btn-danger btn-xs" onclick="if (!(confirm('Sind Sie sicher, dass Sie diese Veranstaltung löschen möchten?'))) return false">Löschen</a>
+                    <a class="btn btn-danger btn-xs" (click)="onDeleteMeeting(meeting.id)">Löschen</a>
                 </td>
                 <td style="text-align:center" >
                     <a *ngIf="meeting.display" class="btn btn-success btn-xs" (click)="onChangeDisplay(i)">✔</a>

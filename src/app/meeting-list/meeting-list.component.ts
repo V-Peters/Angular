@@ -13,7 +13,7 @@ export class MeetingListComponent implements OnInit {
   meetings: Meeting[];
   initialDisplayValues: boolean[] = [];
   isDisplayDifferent = false;
-
+  
   constructor(private meetingService: MeetingService) { }
 
   ngOnInit(): void {
@@ -33,6 +33,18 @@ export class MeetingListComponent implements OnInit {
 
   onAddMeeting() {
     console.log('Veranstaltung hinzufügen geklickt.')
+  }
+
+  onEditMeeting(id: number) {
+    console.log('edit: ' + id);
+  }
+
+  onDeleteMeeting(id: number) {
+    console.log(id);
+    
+    if (confirm('Sind Sie sicher, dass Sie diese Veranstaltung löschen möchten?')){
+      this.meetingService.deleteMeeting(id);
+    }
   }
 
   onChangeDisplay(i: number) {

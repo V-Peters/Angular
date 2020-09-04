@@ -5,7 +5,7 @@ import { tap } from 'rxjs/operators';
 import { Meeting } from './meeting/meeting.model'
 
 @Injectable({
-    providedIn: 'root'
+  providedIn: 'root'
 })
 export class MeetingService {
 
@@ -19,19 +19,19 @@ export class MeetingService {
       'http://localhost:8080/meeting/list'
     )
     .pipe(
-        tap(tempMeetings => {
-            this.meetings = tempMeetings;
-            console.log(tempMeetings);
-        })
+      tap(tempMeetings => {
+        this.meetings = tempMeetings;
+        console.log(tempMeetings);
+      })
     )
   }
 
   deleteMeeting(id: number) {
     this.http
     .delete(
-      `http://localhost:8080/meeting?id=${id}`
+      'http://localhost:8080/meeting?id=' + id
     )
-    .subscribe(respone => {
+    .subscribe(() => {
       console.log('Meeting mit der id ' + id + ' wurde gelöscht.');
     });
   }

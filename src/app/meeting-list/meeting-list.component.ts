@@ -13,6 +13,7 @@ export class MeetingListComponent implements OnInit {
   meetings: Meeting[];
   initialDisplayValues: boolean[] = [];
   isDisplayDifferent = false;
+  isLoading = false;
   
   constructor(private meetingService: MeetingService) { }
 
@@ -21,7 +22,9 @@ export class MeetingListComponent implements OnInit {
       this.showMeetings = true;
     }
 
+    this.isLoading = true;
     this.meetingService.getMeetings().subscribe(meetings => {
+      this.isLoading = false;
       this.meetings = meetings;
       for (let i = 0; i < this.meetings.length; i++) {
         this.initialDisplayValues[i] = this.meetings[i].display;

@@ -9,6 +9,10 @@
     <button class="btn btn-primary btn-xs" routerLink="/login">Zum Login</button>
 </div>
 
+<!-- <div *ngIf="isLoading">
+    LÄD!!!
+</div> -->
+
 
 <div *ngIf="showMeetings">
     <button class="btn btn-success" (click)="onAddMeeting()">Veranstaltung hinzufügen</button>
@@ -26,7 +30,7 @@
                 <!-- <th style="text-align:center" >An Veranstaltung teilnehmen</th> -->
             </tr>
         </thead>
-        <tbody>
+        <tbody *ngIf="!isLoading">
             <tr *ngFor="let meeting of meetings; let i = index">
                 <td style="text-align:right">{{ i + 1 }}</td>
                 <td style="width: 508px;">{{ meeting.name }}</td>
@@ -51,6 +55,17 @@
                 </td> -->
             </tr>
         </tbody>
+    </table>
+    <table *ngIf="isLoading" class="table table-bordered table-striped">
+        <thead>
+            <tr>
+                <th style="text-align:center" >
+                    <div class="loader">
+
+                    </div>
+                </th>
+            </tr>
+        </thead>
     </table>
     <button type="submit" class="btn btn-info" (click)="onSaveDisplayChanges()" [disabled]="!isDisplayDifferent">
         <span *ngIf="isDisplayDifferent">Änderungen übernehmen</span>

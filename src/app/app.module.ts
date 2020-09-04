@@ -6,9 +6,8 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { AppComponent } from './app.component';
 import { AppRoutingModule } from './app-routing.module';
 import { HeaderComponent } from './header/header.component';
-import { MeetingListComponent } from './meeting-list/meeting-list.component';
-import { MeetingComponent } from './meeting-list/meeting/meeting.component';
-import { MeetingCrudComponent } from './meeting-list/meeting/meeting-crud/meeting-crud.component';
+import { MeetingListComponent } from './meeting/meeting-list/meeting-list.component';
+import { MeetingEditComponent } from './meeting/meeting-edit/meeting-edit.component';
 import { UserListComponent } from './user-list/user-list.component';
 import { UserComponent } from './user-list/user/user.component';
 import { LoginComponent } from './login/login.component';
@@ -21,8 +20,7 @@ import { HttpClientModule } from '@angular/common/http';
     AppComponent,
     HeaderComponent,
     MeetingListComponent,
-    MeetingComponent,
-    MeetingCrudComponent,
+    MeetingEditComponent,
     UserListComponent,
     UserComponent,
     LoginComponent,

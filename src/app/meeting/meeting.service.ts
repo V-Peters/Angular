@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core'
 import { HttpClient } from '@angular/common/http';
 import { tap } from 'rxjs/operators';
 
-import { Meeting } from './meeting/meeting.model'
+import { Meeting } from './meeting.model'
 
 @Injectable({
   providedIn: 'root'

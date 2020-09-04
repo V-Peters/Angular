@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 
-import { Meeting } from './meeting/meeting.model'
-import { MeetingService } from './meeting.service'
+import { Meeting } from '../meeting.model'
+import { MeetingService } from "../meeting.service";
 
 @Component({
   selector: 'app-meeting-list',

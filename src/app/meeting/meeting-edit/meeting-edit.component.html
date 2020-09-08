@@ -1,5 +1,6 @@
 <div class="col-xs-6">
-    <h3>Veranstaltung hinzufügen</h3>
+    <h3 *ngIf="id !== 0">Veranstaltung bearbeiten</h3>
+    <h3 *ngIf="id === 0">Veranstaltung hinzufügen</h3>
     <hr>
     <form
         [formGroup]="meetingForm"
@@ -25,12 +26,13 @@
             </div>
             <div class="form-group">
                 <label for="datetime">Datum & Uhrzeit: </label>
-                <i *ngIf="meetingForm.get('datetime').invalid && meetingForm.get('datetime').touched" style="color: red;"> Dieses Feld ist ein Pflichtfeld</i>
+                <!-- <i *ngIf="meetingForm.get('datetime').invalid && meetingForm.get('datetime').touched" style="color: red;"> Dieses Feld ist ein Pflichtfeld</i> -->
                 <input 
                     type="datetime-local" 
                     name="datetime"
                     formControlName="datetime"
-                    class="form-control">
+                    class="form-control"
+                    min="{{ now }}">
             </div>
             <div class="form-group">
                 <label for="display">Anzeigen: </label>
@@ -41,5 +43,5 @@
             </div>
             <button type="submit"  class="btn btn-info col-xs-12">Veranstaltung speichern</button>
     </form>
-    <button class="btn btn-secondary btn-sm col-xs-6" >Zurück zur Veranstaltungsliste</button>
+    <button type="button" class="btn btn-secondary btn-sm col-xs-12" (click)="onBackToList()">Zurück zur Veranstaltungsliste</button>
 </div>

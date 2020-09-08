@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 
 import { Meeting } from '../meeting.model'
 import { MeetingService } from "../meeting.service";
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-meeting-list',
@@ -15,7 +16,7 @@ export class MeetingListComponent implements OnInit {
   isDisplayDifferent = false;
   isLoading = false;
   
-  constructor(private meetingService: MeetingService) { }
+  constructor(private router: Router, private meetingService: MeetingService) { }
 
   ngOnInit(): void {
     if (localStorage.getItem('login') === 'true') {
@@ -23,9 +24,10 @@ export class MeetingListComponent implements OnInit {
     }
 
     this.isLoading = true;
-    this.meetingService.getMeetings().subscribe(meetings => {
+    this.meetingService.getMeetings()
+    .subscribe(tempMeetings => {
       this.isLoading = false;
-      this.meetings = meetings;
+      this.meetings = tempMeetings;
       for (let i = 0; i < this.meetings.length; i++) {
         this.initialDisplayValues[i] = this.meetings[i].display;
       }
@@ -36,17 +38,23 @@ export class MeetingListComponent implements OnInit {
 
   onAddMeeting() {
     console.log('Veranstaltung hinzufügen geklickt.')
+    this.router.navigate(['/meeting/add']);
   }
 
   onEditMeeting(id: number) {
     console.log('edit: ' + id);
+    this.router.navigate(['/meeting/edit/' + id]);
   }
 
   onDeleteMeeting(id: number) {
     console.log(id);
     
     if (confirm('Sind Sie sicher, dass Sie diese Veranstaltung löschen möchten?')){
-      this.meetingService.deleteMeeting(id);
+      this.meetingService.deleteMeeting(id)
+      .subscribe(() => {
+        console.log('Meeting mit der id ' + id + ' wurde gelöscht.');
+        this.ngOnInit();
+      });
     }
   }
 

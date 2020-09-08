@@ -60,7 +60,7 @@ export class MeetingEditComponent implements OnInit {
   }
 
   onSubmit() {
-    console.log(this.meetingForm);
+    this.meetingService.saveMeeting(this.meetingForm.value).subscribe();
   }
 
   onBackToList() {

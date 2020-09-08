@@ -10,6 +10,7 @@ import { Meeting } from './meeting.model'
 export class MeetingService {
 
   private meetings: Meeting[] = [];
+  private meeting: Meeting;
 
   constructor(private http: HttpClient) {}
 
@@ -21,18 +22,39 @@ export class MeetingService {
     .pipe(
       tap(tempMeetings => {
         this.meetings = tempMeetings;
+        console.log("getMeetings:");
         console.log(tempMeetings);
       })
+    );
+  }
+
+  getMeeting(id: number) {
+    return this.http
+    .get<Meeting>(
+      'http://localhost:8080/meeting?id=' + id
     )
+    .pipe(
+      tap(tempMeeting => {
+        this.meeting = tempMeeting;
+        console.log("getMeeting:");
+        console.log(tempMeeting);
+      })
+    );
+  }
+
+  saveMeeting(meeting: Meeting) {
+    console.log(meeting);
+    return this.http
+    .post<Meeting>(
+      'http://localhost:8080/meeting',
+      meeting
+    );
   }
 
   deleteMeeting(id: number) {
-    this.http
+    return this.http
     .delete(
       'http://localhost:8080/meeting?id=' + id
-    )
-    .subscribe(() => {
-      console.log('Meeting mit der id ' + id + ' wurde gelöscht.');
-    });
+    );
   }
 }

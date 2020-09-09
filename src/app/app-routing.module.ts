@@ -2,8 +2,8 @@ import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 import { MeetingListComponent } from './meeting/meeting-list/meeting-list.component';
 import { MeetingEditComponent } from './meeting/meeting-edit/meeting-edit.component';
-import { LoginComponent } from './login/login.component';
-import { RegisterComponent } from './login/register/register.component';
+import { LoginComponent } from './authentification/login/login.component';
+import { RegisterComponent } from './authentification/register/register.component';
 import { HomeComponent } from './home/home.component';
 
 const routes: Routes = [

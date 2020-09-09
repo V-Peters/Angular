@@ -10,9 +10,9 @@ import { MeetingListComponent } from './meeting/meeting-list/meeting-list.compon
 import { MeetingEditComponent } from './meeting/meeting-edit/meeting-edit.component';
 import { UserListComponent } from './user-list/user-list.component';
 import { UserComponent } from './user-list/user/user.component';
-import { LoginComponent } from './login/login.component';
+import { LoginComponent } from './authentification/login/login.component';
 import { HomeComponent } from './home/home.component';
-import { RegisterComponent } from './login/register/register.component';
+import { RegisterComponent } from './authentification/register/register.component';
 import { HttpClientModule } from '@angular/common/http';
 
 @NgModule({

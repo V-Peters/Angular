@@ -67,7 +67,7 @@
             </tr>
         </thead>
     </table>
-    <button type="submit" class="btn btn-info" (click)="onSaveDisplayChanges()" [disabled]="!isDisplayDifferent">
+    <button type="submit" class="btn btn-info col-xs-3" (click)="onSaveDisplayChanges()" [disabled]="!isDisplayDifferent">
         <span *ngIf="isDisplayDifferent">Änderungen übernehmen</span>
         <span *ngIf="!isDisplayDifferent" style="color: rgb(117, 0, 0);">keine Änderungen vorhanden</span>
     </button>

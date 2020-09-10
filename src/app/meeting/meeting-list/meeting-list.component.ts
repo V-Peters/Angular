@@ -30,6 +30,8 @@ export class MeetingListComponent implements OnInit {
       this.meetings = tempMeetings;
       for (let i = 0; i < this.meetings.length; i++) {
         this.initialDisplayValues[i] = this.meetings[i].display;
+        this.meetings[i].date = this.meetings[i].datetime.substring(8, 10) + "." +  this.meetings[i].datetime.substring(5, 7) + "." +  this.meetings[i].datetime.substring(0, 4);
+        this.meetings[i].time = this.meetings[i].datetime.substring(11, 16) + " Uhr";
       }
     });
     // this.meetings = this.meetingService.getMeetings();

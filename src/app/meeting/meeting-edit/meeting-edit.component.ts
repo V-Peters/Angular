@@ -14,7 +14,6 @@ import { getLocaleDateTimeFormat, DatePipe } from '@angular/common';
 export class MeetingEditComponent implements OnInit {
   meetingForm: FormGroup;
   id: number = 0;
-  meeting: Meeting;
   now: string;
 
   constructor(private router: Router, private route: ActivatedRoute, private meetingService: MeetingService) { }
@@ -36,23 +35,20 @@ export class MeetingEditComponent implements OnInit {
 
     console.log(getLocaleDateTimeFormat);
 
-    this.initForm('', this.now, true);
+    this.initForm(0, '', this.now, true);
 
     if (this.id) {
       this.meetingService.getMeeting(this.id)
       .subscribe(tempMeeting => {
-        this.meeting = tempMeeting;
-        console.log("DATETIME:");
-        console.log(tempMeeting.datetime);
-        
-        this.initForm(tempMeeting.name, tempMeeting.datetime, tempMeeting.display);
+        this.initForm(tempMeeting.id, tempMeeting.name, tempMeeting.datetime, tempMeeting.display);
       });
     }
   }
 
-  private initForm(name: string, datetime: string, display: boolean) {
+  private initForm(id: number, name: string, datetime: string, display: boolean) {
     
     this.meetingForm = new FormGroup({
+      'id': new FormControl(id),
       'name': new FormControl(name, Validators.required),
       'datetime': new FormControl(datetime, Validators.required),
       'display': new FormControl(display)
@@ -60,7 +56,10 @@ export class MeetingEditComponent implements OnInit {
   }
 
   onSubmit() {
+    console.log(this.meetingForm.value);
+    
     this.meetingService.saveMeeting(this.meetingForm.value).subscribe();
+    this.router.navigate(['/meeting/list']);
   }
 
   onBackToList() {

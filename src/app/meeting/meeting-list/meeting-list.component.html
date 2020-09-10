@@ -34,8 +34,8 @@
             <tr *ngFor="let meeting of meetings; let i = index">
                 <td style="text-align:right">{{ i + 1 }}</td>
                 <td style="width: 508px;">{{ meeting.name }}</td>
-                <td style="text-align:center" >{{ meeting.date }}</td>
-                <td style="text-align:center" >{{ meeting.time }}</td>
+                <td style="text-align:center" >{{ meeting.datetime | date:'dd.MM.yyyy' }}</td>
+                <td style="text-align:center" >{{ meeting.datetime | date:'HH:mm' }} Uhr</td>
                 
                 <td style="text-align:center" >
                     <a class="btn btn-info btn-xs" (click)="onEditMeeting(meeting.id)">Bearbeiten</a>

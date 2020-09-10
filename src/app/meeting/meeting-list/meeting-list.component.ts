@@ -12,7 +12,7 @@ import { Router } from '@angular/router';
 export class MeetingListComponent implements OnInit {
   showMeetings = false;
   meetings: Meeting[];
-  initialDisplayValues: boolean[] = [];
+  initialDisplayValues = {};
   isDisplayDifferent = false;
   isLoading = false;
   
@@ -28,14 +28,10 @@ export class MeetingListComponent implements OnInit {
     .subscribe(tempMeetings => {
       this.isLoading = false;
       this.meetings = tempMeetings;
-      for (let i = 0; i < this.meetings.length; i++) {
-        this.initialDisplayValues[i] = this.meetings[i].display;
-        this.meetings[i].date = this.meetings[i].datetime.substring(8, 10) + "." +  this.meetings[i].datetime.substring(5, 7) + "." +  this.meetings[i].datetime.substring(0, 4);
-        this.meetings[i].time = this.meetings[i].datetime.substring(11, 16) + " Uhr";
-      }
+      this.meetings.forEach(meeting => {
+        this.initialDisplayValues[meeting.id] = meeting.display;
+      });
     });
-    // this.meetings = this.meetingService.getMeetings();
-
   }
 
   onAddMeeting() {
@@ -66,8 +62,8 @@ export class MeetingListComponent implements OnInit {
   }
 
   checkForUpdates() {
-    for (let i = 0; i < this.meetings.length; i++) {
-      if (this.meetings[i].display != this.initialDisplayValues[i]) {
+    for(let meeting of this.meetings) {
+      if (meeting.display != this.initialDisplayValues[meeting.id]) {
         this.isDisplayDifferent = true;
         break;
       }
@@ -77,6 +73,19 @@ export class MeetingListComponent implements OnInit {
 
   onSaveDisplayChanges() {
     console.log('Änderungen Übernehmen geklickt.')
+
+    let changedDisplay: boolean[] = new Array<boolean>(this.meetings.length);
+    for (let i = 0; i < this.meetings.length; i++) {
+      changedDisplay[i] = this.meetings[i].display;
+    }
+
+    console.log('array erstellt');
+    
+    this.meetingService.updateDisplay(changedDisplay)
+    .subscribe(() => {
+      console.log('Änderungen wurden gespeichert');
+      this.ngOnInit();
+    })
   }
 
 }

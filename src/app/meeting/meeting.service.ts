@@ -57,4 +57,13 @@ export class MeetingService {
       'http://localhost:8080/meeting?id=' + id
     );
   }
+
+  updateDisplay(display: boolean[]) {
+    console.log(display);
+    return this.http
+    .post<boolean[]>(
+      'http://localhost:8080/meeting/updateDisplay',
+      display
+    );
+  }
 }

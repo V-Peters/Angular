@@ -5,6 +5,7 @@ import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { ActivatedRoute, Params, Router } from '@angular/router';
 import { MeetingService } from '../meeting.service';
 import { getLocaleDateTimeFormat, DatePipe } from '@angular/common';
+import { tap } from 'rxjs/operators';
 
 @Component({
   selector: 'app-meeting-edit',
@@ -58,8 +59,10 @@ export class MeetingEditComponent implements OnInit {
   onSubmit() {
     console.log(this.meetingForm.value);
     
-    this.meetingService.saveMeeting(this.meetingForm.value).subscribe();
-    this.router.navigate(['/meeting/list']);
+    this.meetingService.saveMeeting(this.meetingForm.value)
+      .subscribe(() => {
+        this.router.navigate(['/meeting/list']);
+      });
   }
 
   onBackToList() {

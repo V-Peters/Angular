@@ -5,9 +5,7 @@
         <p>Dies ist eine Anwendung in der User sich zu Veranstaltungen eintragen können. Es gibt User, welche die Rolle Admin besitzen und somit die Veranstaltungen bearbeiten, neue hinzufügen und alte löschen können. Außerdem können sie die Teilnemer der einzelnen Veranstaltungen einsehen und entscheiden welche Verastaltungen den Usern überhaupt angezeigt werden.</p>
         <br>
         <p>Über die Nachfolgenden Links kann man auf die verschiedenen Funktionen dieser Anwendung zugreifen. Alternativ geht das auch über die Links in der Kopfzeile</p>
-        <a class="btn btn-primary" routerLink="/login">Zum Login</a>
-        <br>
-        <a class="btn btn-primary" routerLink="/meeting/list">Zur Veranstaltungsliste</a>
-        <label>(nur möglich, wenn man eingeloggt ist)</label>
+        <button *ngIf="!isLoggedIn" class="btn btn-primary col-xs-4" (click)="onLogin()">Zum Login</button>
+        <button *ngIf="isLoggedIn" class="btn btn-primary col-xs-4" (click)="onList()">Zur Veranstaltungsliste</button>
     </div>
 </div>

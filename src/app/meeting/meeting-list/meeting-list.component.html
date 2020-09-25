@@ -1,18 +1,7 @@
-<!-- <div *ngIf="showMeetings">
-    <app-meeting 
-        *ngFor="let meeting of meetings"
-        [meeting]="meeting">
-    </app-meeting>
-</div> -->
 <div *ngIf="!showMeetings">
     Sie müssen sich zuerst einloggen: 
     <button class="btn btn-primary btn-xs" routerLink="/login">Zum Login</button>
 </div>
-
-<!-- <div *ngIf="isLoading">
-    LÄD!!!
-</div> -->
-
 
 <div *ngIf="showMeetings">
     <button class="btn btn-success" (click)="onAddMeeting()">Veranstaltung hinzufügen</button>
@@ -24,10 +13,10 @@
                 <th>Veranstaltungsname</th>
                 <th style="text-align:center" >Datum</th>
                 <th style="text-align:center" >Uhrzeit</th>
-                <th style="text-align:center" >Aktion</th>
-                <th style="text-align:center" >Für User sichtbar</th>
-                <th style="text-align:center" >Teilnehmerliste</th>
-                <!-- <th style="text-align:center" >An Veranstaltung teilnehmen</th> -->
+                <th *ngIf="isAdmin" style="text-align:center" >Aktion</th>
+                <th *ngIf="isAdmin" style="text-align:center" >Für User sichtbar</th>
+                <th *ngIf="isAdmin" style="text-align:center" >Teilnehmerliste</th>
+                <th *ngIf="!isAdmin" style="text-align:center" >An Veranstaltung teilnehmen</th>
             </tr>
         </thead>
         <tbody *ngIf="!isLoading">
@@ -37,22 +26,22 @@
                 <td style="text-align:center" >{{ meeting.datetime | date:'dd.MM.yyyy' }}</td>
                 <td style="text-align:center" >{{ meeting.datetime | date:'HH:mm' }} Uhr</td>
                 
-                <td style="text-align:center" >
+                <td *ngIf="isAdmin" style="text-align:center" >
                     <a class="btn btn-info btn-xs" (click)="onEditMeeting(meeting.id)">Bearbeiten</a>
                     | 
                     <a class="btn btn-danger btn-xs" (click)="onDeleteMeeting(meeting.id)">Löschen</a>
                 </td>
-                <td style="text-align:center" >
+                <td *ngIf="isAdmin" style="text-align:center" >
                     <a *ngIf="meeting.display" class="btn btn-success btn-xs" (click)="onChangeDisplay(i)">✔</a>
                     <a *ngIf="!meeting.display" class="btn btn-danger btn-xs" (click)="onChangeDisplay(i)">✖</a>
                 </td>
-                <td style="text-align:center" >
-                    <a>anzeigen</a>
+                <td *ngIf="isAdmin" style="text-align:center;cursor: pointer;" >
+                    <a (click)="onShowParticipants(meeting.id)">anzeigen</a>
                 </td>
-                <!-- <td style="text-align:center" >
-                    <a *ngIf="" class="btn btn-success btn-sm" >✔</a>
-                    <a *ngIf="" class="btn btn-danger btn-sm" >✖</a>
-                </td> -->
+                <td *ngIf="!isAdmin" style="text-align:center" >
+                    <a *ngIf="true" class="btn btn-success btn-sm" >✔</a>
+                    <a *ngIf="true" class="btn btn-danger btn-sm" >✖</a>
+                </td>
             </tr>
         </tbody>
     </table>

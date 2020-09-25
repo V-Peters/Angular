@@ -1,8 +1,9 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 
 import { Meeting } from '../meeting.model'
 import { MeetingService } from "../meeting.service";
-import { Router } from '@angular/router';
+import { TokenStorageService } from 'src/app/authentification/token-storage.service';
 
 @Component({
   selector: 'app-meeting-list',
@@ -11,27 +12,36 @@ import { Router } from '@angular/router';
 })
 export class MeetingListComponent implements OnInit {
   showMeetings = false;
+  isAdmin = false;
   meetings: Meeting[];
   initialDisplayValues = {};
   isDisplayDifferent = false;
   isLoading = false;
   
-  constructor(private router: Router, private meetingService: MeetingService) { }
+  constructor(private router: Router, private meetingService: MeetingService, private tokenStorageService: TokenStorageService) { }
 
   ngOnInit(): void {
-    if (localStorage.getItem('login') === 'true') {
+    if (!this.tokenStorageService.getUser()) {
+      console.log("ausgeloggt");
+      this.showMeetings = false;
+    } else {
+      this.isAdmin = false;
+      if (this.tokenStorageService.getUser().roles[0] == 'ROLE_ADMIN') {
+        this.isAdmin = true;
+      }
+      console.log("eingeloggt");
       this.showMeetings = true;
-    }
-
-    this.isLoading = true;
-    this.meetingService.getMeetings()
-    .subscribe(tempMeetings => {
-      this.isLoading = false;
-      this.meetings = tempMeetings;
-      this.meetings.forEach(meeting => {
-        this.initialDisplayValues[meeting.id] = meeting.display;
+      this.isLoading = true;
+      this.meetingService.getMeetings()
+      .subscribe(tempMeetings => {
+        this.isLoading = false;
+        this.meetings = tempMeetings;
+        this.meetings.forEach(meeting => {
+          this.isDisplayDifferent = false;
+          this.initialDisplayValues[meeting.id] = meeting.display;
+        });
       });
-    });
+    }
   }
 
   onAddMeeting() {
@@ -72,20 +82,21 @@ export class MeetingListComponent implements OnInit {
   }
 
   onSaveDisplayChanges() {
-    console.log('Änderungen Übernehmen geklickt.')
+    let changedDisplay = {};
 
-    let changedDisplay: boolean[] = new Array<boolean>(this.meetings.length);
-    for (let i = 0; i < this.meetings.length; i++) {
-      changedDisplay[i] = this.meetings[i].display;
+    for (let meeting of this.meetings) {
+      if (meeting.display != this.initialDisplayValues[meeting.id]) {
+        changedDisplay[meeting.id] = meeting.display;
+      }
     }
-
-    console.log('array erstellt');
-    
     this.meetingService.updateDisplay(changedDisplay)
     .subscribe(() => {
-      console.log('Änderungen wurden gespeichert');
       this.ngOnInit();
     })
+  }
+
+  onShowParticipants(id: number) {
+    this.router.navigate(['/participants/list/' + id])
   }
 
 }

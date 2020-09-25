@@ -2,38 +2,40 @@ import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { ReactiveFormsModule } from '@angular/forms';
 
+import { AppRoutingModule } from './app-routing.module';
+import { HttpClientModule } from '@angular/common/http';
 
 import { AppComponent } from './app.component';
-import { AppRoutingModule } from './app-routing.module';
 import { HeaderComponent } from './header/header.component';
+import { HomeComponent } from './home/home.component';
 import { MeetingListComponent } from './meeting/meeting-list/meeting-list.component';
 import { MeetingEditComponent } from './meeting/meeting-edit/meeting-edit.component';
-import { UserListComponent } from './user-list/user-list.component';
-import { UserComponent } from './user-list/user/user.component';
 import { LoginComponent } from './authentification/login/login.component';
-import { HomeComponent } from './home/home.component';
 import { RegisterComponent } from './authentification/register/register.component';
-import { HttpClientModule } from '@angular/common/http';
+import { ProfileComponent } from './profile/profile.component';
+
+import { authInterceptorProviders } from './authentification/auth.interceptor';
+import { ParticipantsListComponent } from './user/participants-list/participants-list.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     HeaderComponent,
+    HomeComponent,
     MeetingListComponent,
     MeetingEditComponent,
-    UserListComponent,
-    UserComponent,
     LoginComponent,
-    HomeComponent,
-    RegisterComponent
+    RegisterComponent,
+    ProfileComponent,
+    ParticipantsListComponent
   ],
   imports: [
     BrowserModule,
-    ReactiveFormsModule,
-    HttpClientModule,
-    AppRoutingModule
+    ReactiveFormsModule, 
+    AppRoutingModule,
+    HttpClientModule
   ],
-  providers: [],
+  providers: [authInterceptorProviders],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

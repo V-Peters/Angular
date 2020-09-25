@@ -3,50 +3,34 @@ import { HttpClient } from '@angular/common/http';
 import { tap } from 'rxjs/operators';
 
 import { Meeting } from './meeting.model'
+import { TokenStorageService } from '../authentification/token-storage.service';
 
 @Injectable({
   providedIn: 'root'
 })
 export class MeetingService {
 
-  private meetings: Meeting[] = [];
-  private meeting: Meeting;
-
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient, private tokenStorageService: TokenStorageService) {}
 
   getMeetings() {
+    const url = this.tokenStorageService.getUser().roles[0] == 'ROLE_ADMIN' ? 'http://localhost:8080/meetings/listAdmin' : 'http://localhost:8080/meetings/listUser';
     return this.http
     .get<Meeting[]>(
-      'http://localhost:8080/meeting/list'
-    )
-    .pipe(
-      tap(tempMeetings => {
-        this.meetings = tempMeetings;
-        console.log("getMeetings:");
-        console.log(tempMeetings);
-      })
+      url
     );
   }
 
   getMeeting(id: number) {
     return this.http
     .get<Meeting>(
-      'http://localhost:8080/meeting?id=' + id
-    )
-    .pipe(
-      tap(tempMeeting => {
-        this.meeting = tempMeeting;
-        console.log("getMeeting:");
-        console.log(tempMeeting);
-      })
+      'http://localhost:8080/meetings?id=' + id
     );
   }
 
   saveMeeting(meeting: Meeting) {
-    console.log(meeting);
     return this.http
     .post<Meeting>(
-      'http://localhost:8080/meeting',
+      'http://localhost:8080/meetings',
       meeting
     );
   }
@@ -54,16 +38,22 @@ export class MeetingService {
   deleteMeeting(id: number) {
     return this.http
     .delete(
-      'http://localhost:8080/meeting?id=' + id
+      'http://localhost:8080/meetings?id=' + id
     );
   }
 
-  updateDisplay(display: boolean[]) {
-    console.log(display);
+  updateDisplay(display: {}) {
     return this.http
     .post<boolean[]>(
-      'http://localhost:8080/meeting/updateDisplay',
+      'http://localhost:8080/meetings/updateDisplay',
       display
+    );
+  }
+
+  listParticipants(id: number) {
+    return this.http
+    .get(
+      'http://localhost:8080/meetingUser?id=' + id
     );
   }
 }

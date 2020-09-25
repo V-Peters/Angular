@@ -3,7 +3,7 @@
   "version": 1,
   "newProjectRoot": "projects",
   "projects": {
-    "MeetingAndUserApp": {
+    "Angular10JwtAuth": {
       "projectType": "application",
       "schematics": {},
       "root": "",
@@ -13,7 +13,7 @@
         "build": {
           "builder": "@angular-devkit/build-angular:browser",
           "options": {
-            "outputPath": "dist/MeetingAndUserApp",
+            "outputPath": "dist/Angular10JwtAuth",
             "index": "src/index.html",
             "main": "src/main.ts",
             "polyfills": "src/polyfills.ts",
@@ -63,18 +63,18 @@
         "serve": {
           "builder": "@angular-devkit/build-angular:dev-server",
           "options": {
-            "browserTarget": "MeetingAndUserApp:build"
+            "browserTarget": "Angular10JwtAuth:build"
           },
           "configurations": {
             "production": {
-              "browserTarget": "MeetingAndUserApp:build:production"
+              "browserTarget": "Angular10JwtAuth:build:production"
             }
           }
         },
         "extract-i18n": {
           "builder": "@angular-devkit/build-angular:extract-i18n",
           "options": {
-            "browserTarget": "MeetingAndUserApp:build"
+            "browserTarget": "Angular10JwtAuth:build"
           }
         },
         "test": {
@@ -111,15 +111,15 @@
           "builder": "@angular-devkit/build-angular:protractor",
           "options": {
             "protractorConfig": "e2e/protractor.conf.js",
-            "devServerTarget": "MeetingAndUserApp:serve"
+            "devServerTarget": "Angular10JwtAuth:serve"
           },
           "configurations": {
             "production": {
-              "devServerTarget": "MeetingAndUserApp:serve:production"
+              "devServerTarget": "Angular10JwtAuth:serve:production"
             }
           }
         }
       }
     }},
-  "defaultProject": "MeetingAndUserApp"
+  "defaultProject": "Angular10JwtAuth"
 }

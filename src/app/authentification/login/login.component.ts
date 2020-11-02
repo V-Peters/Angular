@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Injectable } from '@angular/core';
 import { AuthService } from '../auth.service';
 import { TokenStorageService } from '../token-storage.service';
 import { Router } from '@angular/router';
@@ -8,6 +8,9 @@ import { FormGroup, FormControl, Validators } from '@angular/forms';
   selector: 'app-login',
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.css']
+})
+@Injectable({
+  providedIn: 'root'
 })
 export class LoginComponent implements OnInit {
 

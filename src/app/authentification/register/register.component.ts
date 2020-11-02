@@ -2,6 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { AuthService } from '../auth.service';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
+import { LoginComponent } from '../login/login.component';
+import { TokenStorageService } from '../token-storage.service';
 
 @Component({
   selector: 'app-register',
@@ -20,7 +22,7 @@ export class RegisterComponent implements OnInit {
   usernameAlreadyExists = false;
   emailAlreadyExists = false;
 
-  constructor(private authService: AuthService) { }
+  constructor(private authService: AuthService, private tokenStorageService: TokenStorageService, private router: Router) { }
 
   ngOnInit(): void {
     this.registerForm = new FormGroup({
@@ -32,6 +34,14 @@ export class RegisterComponent implements OnInit {
       'company': new FormControl(null, Validators.required)
     })
   }
+  
+    forbiddenUsernames(control: FormControl): {[s: string]: boolean} {
+      if (this.existingUsernames.indexOf(control.value) !== -1) {
+        return {'nameIsForbidden': true};
+      } else {
+        return null;
+      }
+    }
 
   onSubmit(): void {
     this.authService.register(this.registerForm)
@@ -40,20 +50,20 @@ export class RegisterComponent implements OnInit {
       console.log(registerData);
       this.isSuccessful = true;
       this.isSignUpFailed = false;
+      this.authService.login(this.registerForm)
+      .subscribe(loginUser => {
+        this.tokenStorageService.saveToken(loginUser.accessToken);
+        this.tokenStorageService.saveUser(loginUser);
+        this.router.navigate(['/profile']);
+      }, err => {
+        this.errorMessage = err.error.message;
+      });
     }, err => {
       this.errorMessage = err.error.message;
       this.isSignUpFailed = true;
       this.usernameAlreadyExists = true;
       this.emailAlreadyExists = true;
     });
-  }
-
-  forbiddenUsernames(control: FormControl): {[s: string]: boolean} {
-    if (this.existingUsernames.indexOf(control.value) !== -1) {
-      return {'nameIsForbidden': true};
-    } else {
-      return null;
-    }
   }
 
 }

@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { AuthService } from '../auth.service';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-register',
@@ -16,6 +17,8 @@ export class RegisterComponent implements OnInit {
   isSuccessful = false;
   isSignUpFailed = false;
   errorMessage = '';
+  usernameAlreadyExists = false;
+  emailAlreadyExists = false;
 
   constructor(private authService: AuthService) { }
 
@@ -32,14 +35,16 @@ export class RegisterComponent implements OnInit {
 
   onSubmit(): void {
     this.authService.register(this.registerForm)
-    .subscribe(data => {
+    .subscribe(registerData => {
       console.log('data:');
-      console.log(data);
+      console.log(registerData);
       this.isSuccessful = true;
       this.isSignUpFailed = false;
     }, err => {
       this.errorMessage = err.error.message;
       this.isSignUpFailed = true;
+      this.usernameAlreadyExists = true;
+      this.emailAlreadyExists = true;
     });
   }
 

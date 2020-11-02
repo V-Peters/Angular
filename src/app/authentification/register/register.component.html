@@ -1,73 +1,84 @@
-<div class="col-md-12">
-  <div class="card card-container">
-    <div class="col-xs-6">
-      <h3>Registrierung</h3>
-      <hr>
-      <form
-          [formGroup]="registerForm"
-          (ngSubmit)="onSubmit()">
-          <div class="form-group">
-              <span for="username">Benutzername:</span>
-              <i *ngIf="!registerForm.get('username').valid && registerForm.get('username').touched" style="color: red;"> Dieser Benutzername ist bereits vergeben.</i>
-              <input 
-                  type="text"
-                  id="username"
-                  formControlName="username"
-                  class="form-control">
-          </div>
-          <div class="form-group">
-              <span for="password">Passwort:</span>
-              <i *ngIf="!registerForm.get('password').valid && registerForm.get('password').touched" style="color: red;"> Dieses Feld ist ein Pflichtfeld.</i>
-              <input 
-                  type="password"
-                  id="password"
-                  formControlName="password"
-                  class="form-control">
-          </div>
-          <br>
-          <div class="form-group">
-              <span for="firstname">Vorname:</span>
-              <i *ngIf="!registerForm.get('firstname').valid && registerForm.get('firstname').touched" style="color: red;"> Dieses Feld ist ein Pflichtfeld.</i>
-              <input 
-                  type="text"
-                  id="firstname"
-                  formControlName="firstname"
-                  class="form-control">
-          </div>
-          <div class="form-group">
-              <span for="lastname">Nachname:</span>
-              <i *ngIf="!registerForm.get('lastname').valid && registerForm.get('lastname').touched" style="color: red;"> Dieses Feld ist ein Pflichtfeld.</i>
-              <input 
-                  type="text"
-                  id="lastname"
-                  formControlName="lastname"
-                  class="form-control">
-          </div>
-          <div class="form-group">
-              <span for="email">E-Mail:</span>
-              <!-- <i *ngIf="!registerForm.get('email').valid && registerForm.get('email').touched" style="color: red;"> Bitte geben Sie eine gültige Email Adresse ein.</i> -->
-              <i *ngIf="!registerForm.get('email').valid && registerForm.get('email').touched" style="color: red;"> Diese E-Mail Adresse ist bereits vergeben.</i>
-              <input 
-                  type="email"
-                  id="email"
-                  formControlName="email"
-                  class="form-control">
-          </div>
-          <div class="form-group">
-              <span for="company">Firma/Unternehmen:</span>
-              <i *ngIf="!registerForm.get('company').valid && registerForm.get('company').touched" style="color: red;"> Dieses Feld ist ein Pflichtfeld.</i>
-              <input 
-                  type="text"
-                  id="company"
-                  formControlName="company"
-                  class="form-control">
-          </div>
-          <br>
-          <button type="submit" class="btn btn-info btn-block" [disabled]="registerForm.invalid">
-              <span *ngIf="registerForm.valid">Registrieren</span>
-              <span *ngIf="registerForm.invalid" style="color: rgb(117, 0, 0);"> Das Formular ist noch nicht vollständing ausgefüllt.</span>
-          </button>
-      </form>
+<div class="card col-xs-5">
+  <h3>Registrierung</h3>
+  <hr>
+  <form
+  [formGroup]="registerForm"
+  (ngSubmit)="onSubmit()">
+    <div class="form-group">
+      <span for="username">Benutzername:</span>
+      <span *ngIf="registerForm.get('username').invalid && registerForm.get('username').touched" style="color: red;">
+        <i *ngIf="true">
+          Dieses Feld ist ein Pflichtfeld.
+        </i>
+        <i *ngIf="false">
+          Dieser Benutzername ist bereits vergeben.
+        </i>
+      </span>
+      <input 
+      type="text"
+      id="username"
+      formControlName="username"
+      class="form-control">
     </div>
-  </div>
+    <div class="form-group">
+      <span for="password">Passwort:</span>
+      <i *ngIf="registerForm.get('password').invalid && registerForm.get('password').touched" style="color: red;"> Dieses Feld ist ein Pflichtfeld.</i>
+      <input 
+      type="password"
+      id="password"
+      formControlName="password"
+      class="form-control">
+    </div>
+    <br>
+    <div class="form-group">
+      <span for="firstname">Vorname:</span>
+      <i *ngIf="registerForm.get('firstname').invalid && registerForm.get('firstname').touched" style="color: red;"> Dieses Feld ist ein Pflichtfeld.</i>
+      <input 
+      type="text"
+      id="firstname"
+      formControlName="firstname"
+      class="form-control">
+    </div>
+    <div class="form-group">
+      <span for="lastname">Nachname:</span>
+      <i *ngIf="registerForm.get('lastname').invalid && registerForm.get('lastname').touched" style="color: red;"> Dieses Feld ist ein Pflichtfeld.</i>
+      <input 
+      type="text"
+      id="lastname"
+      formControlName="lastname"
+      class="form-control">
+    </div>
+    <div class="form-group">
+      <span for="email">E-Mail:</span>
+      <span *ngIf="registerForm.get('email').invalid && registerForm.get('email').touched" style="color: red;">
+        <i *ngIf="true">
+          Dieses Feld ist ein Pflichtfeld.
+        </i>
+        <i *ngIf="false">
+          Diese E-Mail Adresse ist bereits vergeben.
+        </i>
+      </span>
+      <input 
+      type="email"
+      id="email"
+      formControlName="email"
+      class="form-control">
+    </div>
+    <div class="form-group">
+      <span for="company">Firma/Unternehmen:</span>
+      <i *ngIf="registerForm.get('company').invalid && registerForm.get('company').touched" style="color: red;"> Dieses Feld ist ein Pflichtfeld.</i>
+      <input 
+      type="text"
+      id="company"
+      formControlName="company"
+      class="form-control">
+    </div>
+    <i *ngIf="isSignUpFailed" style="color: red;">Fehlerhafte Registrierungsdaten</i>
+    <br>
+    <br>
+    <button type="submit" class="btn btn-info btn-block" [disabled]="registerForm.invalid">
+      <span *ngIf="registerForm.valid">Registrieren</span>
+      <span *ngIf="registerForm.invalid" style="color: rgb(117, 0, 0);"> Das Formular ist noch nicht vollständing ausgefüllt.</span>
+    </button>
+  </form>
 </div>

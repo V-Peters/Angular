@@ -11,7 +11,6 @@ import { FormGroup, FormControl, Validators } from '@angular/forms';
 })
 export class LoginComponent implements OnInit {
 
-  
   loginForm: FormGroup;
   form: any = {};
   isLoggedIn = false;
@@ -23,7 +22,7 @@ export class LoginComponent implements OnInit {
 
   ngOnInit(): void {
     if (this.tokenStorageService.getUser()) {
-      this.isLoggedIn = false;
+      this.isLoggedIn = true;
       this.roles = this.tokenStorageService.getUser().roles;
     }
     this.loginForm = new FormGroup({

@@ -2,7 +2,9 @@
 
 <hr>
 
-<a class="btn btn-info btn-sm col-3 mb-3">zurück zur Übersicht</a>
+<a class="btn btn-info btn-sm col-3 mb-3" (click)="onBack()">zurück zur Übersicht</a>
+
+<hr>
 
 <span *ngIf="isEmpty">Zu dieser Veranstaltung hat sich noch niemand angemeldet.</span>
 <table *ngIf="!isEmpty" class="table table-bordered table-striped" >

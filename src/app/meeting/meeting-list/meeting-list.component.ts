@@ -14,8 +14,10 @@ export class MeetingListComponent implements OnInit {
   showMeetings = false;
   isAdmin = false;
   meetings: Meeting[];
+  signupValues = {};
   initialDisplayValues = {};
-  isDisplayDifferent = false;
+  initialSignupValues = {};
+  isDifferent = false;
   isLoading = false;
   
   constructor(private router: Router, private meetingService: MeetingService, private tokenStorageService: TokenStorageService) { }
@@ -25,23 +27,48 @@ export class MeetingListComponent implements OnInit {
       console.log("ausgeloggt");
       this.showMeetings = false;
     } else {
-      this.isAdmin = false;
-      if (this.tokenStorageService.getUser().roles[0] == 'ROLE_ADMIN') {
-        this.isAdmin = true;
-      }
       console.log("eingeloggt");
       this.showMeetings = true;
       this.isLoading = true;
+      this.isAdmin = false;
+
       this.meetingService.getMeetings()
       .subscribe(tempMeetings => {
         this.isLoading = false;
         this.meetings = tempMeetings;
-        this.meetings.forEach(meeting => {
-          this.isDisplayDifferent = false;
-          this.initialDisplayValues[meeting.id] = meeting.display;
-        });
+        this.isDifferent = false;
+        
+        if (this.tokenStorageService.getUser().roles[0] == 'ROLE_ADMIN') {
+          this.isAdmin = true;
+        } else {
+          this.initUser();
+        }
+        this.initAdmin();
       });
     }
+  }
+
+  initAdmin() {
+    this.meetings.forEach(meeting => {
+      this.initialDisplayValues[meeting.id] = meeting.display;
+    });
+  }
+
+  initUser() {
+    this.meetingService.getMeetingsForUser(this.tokenStorageService.getUser().id)
+    .subscribe(tempMeetingUsers => {
+      this.meetings.forEach(tempMeeting => {
+        this.signupValues[tempMeeting.id] = false;
+        tempMeetingUsers.forEach(tempMeetinUser => {
+          if (tempMeeting.id == tempMeetinUser.idMeeting) {
+            this.signupValues[tempMeeting.id] = true;
+          }
+        });
+      });
+      this.meetings.forEach(meeting => {
+        this.initialSignupValues[meeting.id] = this.signupValues[meeting.id];
+      });
+    });
   }
 
   onAddMeeting() {
@@ -71,28 +98,40 @@ export class MeetingListComponent implements OnInit {
     this.checkForUpdates();
   }
 
+  onChangeSignup(i: number) {
+    this.signupValues[i] = !this.signupValues[i];
+    this.checkForUpdates();
+  }
+
   checkForUpdates() {
     for(let meeting of this.meetings) {
-      if (meeting.display != this.initialDisplayValues[meeting.id]) {
-        this.isDisplayDifferent = true;
+      this.isDifferent = false;
+      if (meeting.display != this.initialDisplayValues[meeting.id] || this.signupValues[meeting.id] != this.initialSignupValues[meeting.id]) {
+        this.isDifferent = true;
         break;
       }
-      this.isDisplayDifferent = false;
     }
   }
 
-  onSaveDisplayChanges() {
-    let changedDisplay = {};
+  onSaveChanges() {
+    if (this.tokenStorageService.getUser().roles[0] == 'ROLE_ADMIN') {
+      let changedDisplay = {};
 
-    for (let meeting of this.meetings) {
-      if (meeting.display != this.initialDisplayValues[meeting.id]) {
-        changedDisplay[meeting.id] = meeting.display;
+      for (let meeting of this.meetings) {
+        if (meeting.display != this.initialDisplayValues[meeting.id]) {
+          changedDisplay[meeting.id] = meeting.display;
+        }
       }
+      this.meetingService.updateDisplay(changedDisplay)
+      .subscribe(() => {
+        this.ngOnInit();
+      });
+    } else {
+      this.meetingService.updateSignup(this.signupValues, this.tokenStorageService.getUser().id)
+      .subscribe(() => {
+        this.ngOnInit();
+      });
     }
-    this.meetingService.updateDisplay(changedDisplay)
-    .subscribe(() => {
-      this.ngOnInit();
-    })
   }
 
   onShowParticipants(id: number) {

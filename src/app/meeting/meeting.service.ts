@@ -4,6 +4,7 @@ import { tap } from 'rxjs/operators';
 
 import { Meeting } from './meeting.model'
 import { TokenStorageService } from '../authentification/token-storage.service';
+import { MeetingUser } from './meetingUser.model';
 
 @Injectable({
   providedIn: 'root'
@@ -53,7 +54,22 @@ export class MeetingService {
   listParticipants(id: number) {
     return this.http
     .get(
-      'http://localhost:8080/meetingUser?id=' + id
+      'http://localhost:8080/meetingUser/listParticipants?id=' + id
+    );
+  }
+
+  getMeetingsForUser(id: number) {
+    return this.http
+    .get<MeetingUser[]>(
+      'http://localhost:8080/meetingUser/getMeetingsForUser?id=' + id
+    );
+  }
+
+  updateSignup(signup: {}, userId: number) {
+    return this.http
+    .post<boolean[]>(
+      'http://localhost:8080/meetingUser/updateSignup?userId=' + userId,
+      signup
     );
   }
 }

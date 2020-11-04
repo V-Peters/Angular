@@ -21,26 +21,26 @@
         </thead>
         <tbody *ngIf="!isLoading">
             <tr *ngFor="let meeting of meetings; let i = index">
-                <td style="text-align:right">{{ i + 1 }}</td>
-                <td style="width: 508px;">{{ meeting.name }}</td>
-                <td style="text-align:center" >{{ meeting.datetime | date:'dd.MM.yyyy' }}</td>
-                <td style="text-align:center" >{{ meeting.datetime | date:'HH:mm' }} Uhr</td>
+                <td style="text-align:right; width: 10px;">{{ i + 1 }}</td>
+                <td>{{ meeting.name }}</td>
+                <td style="text-align:center; width: 10px;" >{{ meeting.datetime | date:'dd.MM.yyyy' }}</td>
+                <td style="text-align:center; width: 79px;" >{{ meeting.datetime | date:'HH:mm' }} Uhr</td>
                 
-                <td *ngIf="isAdmin" style="text-align:center" >
+                <td *ngIf="isAdmin" style="text-align:center; width: 156px;" >
                     <a class="btn btn-info btn-xs" (click)="onEditMeeting(meeting.id)">Bearbeiten</a>
                     | 
                     <a class="btn btn-danger btn-xs" (click)="onDeleteMeeting(meeting.id)">Löschen</a>
                 </td>
-                <td *ngIf="isAdmin" style="text-align:center" >
+                <td *ngIf="isAdmin" style="text-align:center; width: 133px;" >
                     <a *ngIf="meeting.display" class="btn btn-success btn-xs" (click)="onChangeDisplay(i)">✔</a>
                     <a *ngIf="!meeting.display" class="btn btn-danger btn-xs" (click)="onChangeDisplay(i)">✖</a>
                 </td>
-                <td *ngIf="isAdmin" style="text-align:center;cursor: pointer;" >
+                <td *ngIf="isAdmin" style="text-align:center; cursor: pointer; width: 10px;" >
                     <a (click)="onShowParticipants(meeting.id)">anzeigen</a>
                 </td>
-                <td *ngIf="!isAdmin" style="text-align:center" >
-                    <a *ngIf="true" class="btn btn-success btn-sm" >✔</a>
-                    <a *ngIf="true" class="btn btn-danger btn-sm" >✖</a>
+                <td *ngIf="!isAdmin" style="text-align:center; width: 210px;" >
+                    <a *ngIf="signupValues[meeting.id]" class="btn btn-success btn-xs" (click)="onChangeSignup(meeting.id)">✔</a>
+                    <a *ngIf="!signupValues[meeting.id]" class="btn btn-danger btn-xs" (click)="onChangeSignup(meeting.id)">✖</a>
                 </td>
             </tr>
         </tbody>
@@ -56,9 +56,9 @@
             </tr>
         </thead>
     </table>
-    <button type="submit" class="btn btn-info col-xs-3" (click)="onSaveDisplayChanges()" [disabled]="!isDisplayDifferent">
-        <span *ngIf="isDisplayDifferent">Änderungen übernehmen</span>
-        <span *ngIf="!isDisplayDifferent" style="color: rgb(117, 0, 0);">keine Änderungen vorhanden</span>
+    <button type="submit" class="btn btn-info col-xs-3" (click)="onSaveChanges()" [disabled]="!isDifferent">
+        <span *ngIf="isDifferent">Änderungen übernehmen</span>
+        <span *ngIf="!isDifferent" style="color: rgb(117, 0, 0);">keine Änderungen vorhanden</span>
     </button>
 </div>
   

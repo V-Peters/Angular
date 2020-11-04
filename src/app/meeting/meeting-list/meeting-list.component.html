@@ -4,9 +4,12 @@
 </div>
 
 <div *ngIf="showMeetings">
-    <button class="btn btn-success" (click)="onAddMeeting()">Veranstaltung hinzufügen</button>
+    <h3>Veranstaltungsliste</h3>
     <hr>
-	<table class="table table-bordered table-striped" >
+    <button *ngIf="isAdmin" class="btn btn-success" (click)="onAddMeeting()">Veranstaltung hinzufügen</button>
+    <br *ngIf="isAdmin">
+    <br *ngIf="isAdmin">
+    <table class="table table-bordered table-striped" >
         <thead class="thead-dark">
             <tr>
                 <th>Nr.</th>

@@ -17,6 +17,9 @@ import { ProfileComponent } from './profile/profile.component';
 import { authInterceptorProviders } from './authentification/auth.interceptor';
 import { ParticipantsListComponent } from './user/participants-list/participants-list.component';
 
+import { PageNotFoundComponent } from './error/page-not-found/page-not-found.component';
+import { AccessDeniedComponent } from './error/access-denied/access-denied.component';
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -27,7 +30,9 @@ import { ParticipantsListComponent } from './user/participants-list/participants
     LoginComponent,
     RegisterComponent,
     ProfileComponent,
-    ParticipantsListComponent
+    ParticipantsListComponent,
+    PageNotFoundComponent,
+    AccessDeniedComponent
   ],
   imports: [
     BrowserModule,

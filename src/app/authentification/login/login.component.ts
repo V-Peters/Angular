@@ -43,7 +43,7 @@ export class LoginComponent implements OnInit {
       this.isLoginFailed = false;
       this.isLoggedIn = true;
       this.roles = this.tokenStorageService.getUser().roles;
-      this.router.navigate(['/profile']);
+      this.router.navigate(['/meeting/list']);
     }, err => {
       this.errorMessage = err.error.message;
       this.isLoginFailed = true;

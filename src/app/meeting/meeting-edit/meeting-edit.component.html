@@ -5,15 +5,6 @@
     <form
         [formGroup]="meetingForm"
         (ngSubmit)="onSubmit()">
-        <!-- <div class="form-group">
-            <label for="username">Benutzername:</label>
-            <i *ngIf="loginForm.get('username').invalid && loginForm.get('username').touched" style="color: red;"> Dieses Feld ist ein Pflichtfeld.</i>
-            <input 
-                type="text"
-                id="username"
-                formControlName="username"
-                class="form-control">
-        </div> -->
             <div class="form-group">
                 <label for="name">Veranstaltungsname: </label>
                 <i *ngIf="meetingForm.get('name').invalid && meetingForm.get('name').touched" style="color: red;"> Dieses Feld ist ein Pflichtfeld</i>
@@ -27,7 +18,6 @@
             </div>
             <div class="form-group">
                 <label for="datetime">Datum & Uhrzeit: </label>
-                <!-- <i *ngIf="meetingForm.get('datetime').invalid && meetingForm.get('datetime').touched" style="color: red;"> Dieses Feld ist ein Pflichtfeld</i> -->
                 <input 
                     type="datetime-local" 
                     name="datetime"

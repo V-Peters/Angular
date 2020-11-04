@@ -7,7 +7,7 @@ import { MeetingEditComponent } from './meeting/meeting-edit/meeting-edit.compon
 import { ParticipantsListComponent } from './user/participants-list/participants-list.component';
 import { RegisterComponent } from './authentification/register/register.component';
 import { LoginComponent } from './authentification/login/login.component';
-import { ProfileComponent } from './profile/profile.component';
+import { ProfileComponent } from './user/profile/profile.component';
 import { PageNotFoundComponent } from './error/page-not-found/page-not-found.component';
 import { ErrorService } from './error/error-service';
 import { AccessDeniedComponent } from './error/access-denied/access-denied.component';

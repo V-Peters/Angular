@@ -15,6 +15,11 @@ export class AuthService {
 
   constructor(private http: HttpClient) { }
 
+  checkIfUsernameExists(username: string): Observable<any> {
+    return this.http.post(AUTH_API + 'checkIfUsernameExists',
+    username);
+  }
+
   login(user): Observable<any> {
     return this.http.post(AUTH_API + 'login', {
       username: user.value.username,

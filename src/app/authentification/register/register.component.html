@@ -8,21 +8,20 @@
       <span for="username">Benutzername:</span>
       <span *ngIf="registerForm.get('username').invalid && registerForm.get('username').touched" style="color: red;">
         <i *ngIf="true">
-          Dieses Feld ist ein Pflichtfeld.
-        </i>
-        <i *ngIf="false">
-          Dieser Benutzername ist bereits vergeben.
+          Bitte geben Sie einen gültigen Benutzernamen ein.
         </i>
       </span>
+      <span *ngIf="usernameAlreadyExists" style="color: red;"><i>Dieser Benutzername ist bereits vergeben.</i></span>
       <input 
       type="text"
       id="username"
       formControlName="username"
-      class="form-control">
+      class="form-control"
+      (ngModelChange)="changedUsername()">
     </div>
     <div class="form-group">
       <span for="password">Passwort:</span>
-      <i *ngIf="registerForm.get('password').invalid && registerForm.get('password').touched" style="color: red;"> Dieses Feld ist ein Pflichtfeld.</i>
+      <i *ngIf="registerForm.get('password').invalid && registerForm.get('password').touched" style="color: red;"> Bitte geben Sie ein gültiges Passwort ein.</i>
       <input 
       type="password"
       id="password"
@@ -51,15 +50,15 @@
     <div class="form-group">
       <span for="email">E-Mail:</span>
       <span *ngIf="registerForm.get('email').invalid && registerForm.get('email').touched" style="color: red;">
-        <i *ngIf="true">
-          Dieses Feld ist ein Pflichtfeld.
+        <i #noEmail>
+          Bitte geben Sie eine gültige E-Mail Adresse ein.
         </i>
         <i *ngIf="false">
           Diese E-Mail Adresse ist bereits vergeben.
         </i>
       </span>
       <input 
-      type="email"
+      type="email; else noEmail;"
       id="email"
       formControlName="email"
       class="form-control">

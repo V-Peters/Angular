@@ -26,22 +26,22 @@ export class RegisterComponent implements OnInit {
 
   ngOnInit(): void {
     this.registerForm = new FormGroup({
-      'username': new FormControl(null, [Validators.required, this.forbiddenUsernames.bind(this)]),
-      'password': new FormControl(null, Validators.required),
-      'firstname': new FormControl(null, Validators.required),
-      'lastname': new FormControl(null, Validators.required),
-      'email': new FormControl(null, [Validators.required, Validators.email]),
-      'company': new FormControl(null, Validators.required)
+      'username': new FormControl(null, [Validators.required, Validators.minLength(4), Validators.maxLength(20), this.forbiddenUsernames.bind(this)]),
+      'password': new FormControl(null, [Validators.required, Validators.minLength(5), Validators.maxLength(50)]),
+      'firstname': new FormControl(null, [Validators.required, Validators.maxLength(50)]),
+      'lastname': new FormControl(null, [Validators.required, Validators.maxLength(50)]),
+      'email': new FormControl(null, [Validators.required, Validators.maxLength(50), Validators.email]),
+      'company': new FormControl(null, [Validators.required, Validators.maxLength(100)])
     })
   }
   
-    forbiddenUsernames(control: FormControl): {[s: string]: boolean} {
-      if (this.existingUsernames.indexOf(control.value) !== -1) {
-        return {'nameIsForbidden': true};
-      } else {
-        return null;
-      }
+  forbiddenUsernames(control: FormControl): {[s: string]: boolean} {
+    if (this.existingUsernames.indexOf(control.value) !== -1) {
+      return {'nameIsForbidden': true};
+    } else {
+      return null;
     }
+  }
 
   onSubmit(): void {
     this.authService.register(this.registerForm)
@@ -59,10 +59,32 @@ export class RegisterComponent implements OnInit {
         this.errorMessage = err.error.message;
       });
     }, err => {
+      console.log(err);
+      
       this.errorMessage = err.error.message;
       this.isSignUpFailed = true;
       this.usernameAlreadyExists = true;
       this.emailAlreadyExists = true;
+    });
+  }
+
+  changedUsername() {
+    console.log("UsernameUpdate");
+    this.authService.checkIfUsernameExists(this.registerForm.value.username)
+    .subscribe(data => {
+      console.log('data');
+      console.log(data);
+      if (data.message == 'true') {
+        console.log('DATA = TRUE');
+        
+        this.usernameAlreadyExists = true;
+      } else {
+        this.usernameAlreadyExists = false;
+      }
+    }, err => {
+      console.log('err');
+      console.log(err);
+      
     });
   }
 

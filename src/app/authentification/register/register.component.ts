@@ -43,6 +43,43 @@ export class RegisterComponent implements OnInit {
     }
   }
 
+  changedUsername() {
+    console.log(this.registerForm.value.username);
+    
+    if (this.registerForm.value.username) {
+      this.authService.checkIfUsernameExists(this.registerForm.value.username)
+      .subscribe(data => {
+        if (data.message == 'true') {
+          this.usernameAlreadyExists = true;
+          return true;
+        } else {
+          this.usernameAlreadyExists = false;
+          return false;
+        }
+      });
+    } else {
+      this.usernameAlreadyExists = false;
+      return null;
+    }
+    
+    
+  }
+
+  changedEmail() {
+    if (this.registerForm.value.email) {
+      this.authService.checkIfEmailExists(this.registerForm.value.email)
+      .subscribe(data => {
+        if (data.message == 'true') {
+          this.emailAlreadyExists = true;
+        } else {
+          this.emailAlreadyExists = false;
+        }
+      });
+    } else {
+      this.emailAlreadyExists = false;
+    }
+  }
+  
   onSubmit(): void {
     this.authService.register(this.registerForm)
     .subscribe(registerData => {
@@ -65,26 +102,6 @@ export class RegisterComponent implements OnInit {
       this.isSignUpFailed = true;
       this.usernameAlreadyExists = true;
       this.emailAlreadyExists = true;
-    });
-  }
-
-  changedUsername() {
-    console.log("UsernameUpdate");
-    this.authService.checkIfUsernameExists(this.registerForm.value.username)
-    .subscribe(data => {
-      console.log('data');
-      console.log(data);
-      if (data.message == 'true') {
-        console.log('DATA = TRUE');
-        
-        this.usernameAlreadyExists = true;
-      } else {
-        this.usernameAlreadyExists = false;
-      }
-    }, err => {
-      console.log('err');
-      console.log(err);
-      
     });
   }
 

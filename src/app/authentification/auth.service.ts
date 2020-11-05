@@ -20,6 +20,11 @@ export class AuthService {
     username);
   }
 
+  checkIfEmailExists(username: string): Observable<any> {
+    return this.http.post(AUTH_API + 'checkIfEmailExists',
+    username);
+  }
+
   login(user): Observable<any> {
     return this.http.post(AUTH_API + 'login', {
       username: user.value.username,

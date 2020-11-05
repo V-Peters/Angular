@@ -11,7 +11,7 @@
           Bitte geben Sie einen gültigen Benutzernamen ein.
         </i>
       </span>
-      <span *ngIf="usernameAlreadyExists" style="color: red;"><i>Dieser Benutzername ist bereits vergeben.</i></span>
+      <span *ngIf="usernameAlreadyExists" style="color: red;"><i> Dieser Benutzername ist bereits vergeben.</i></span>
       <input 
       type="text"
       id="username"
@@ -53,15 +53,14 @@
         <i #noEmail>
           Bitte geben Sie eine gültige E-Mail Adresse ein.
         </i>
-        <i *ngIf="false">
-          Diese E-Mail Adresse ist bereits vergeben.
-        </i>
       </span>
+      <span *ngIf="emailAlreadyExists" style="color: red;"><i> Diese E-Mail Adresse ist bereits vergeben.</i></span>
       <input 
       type="email; else noEmail;"
       id="email"
       formControlName="email"
-      class="form-control">
+      class="form-control"
+      (ngModelChange)="changedEmail()">
     </div>
     <div class="form-group">
       <span for="company">Firma/Unternehmen:</span>

@@ -1,10 +1,9 @@
 import { Injectable } from '@angular/core'
 import { HttpClient } from '@angular/common/http';
-import { tap } from 'rxjs/operators';
 
 import { Meeting } from './meeting.model'
-import { TokenStorageService } from '../authentification/token-storage.service';
 import { MeetingUser } from './meetingUser.model';
+import { TokenStorageService } from '../authentification/token-storage.service';
 
 @Injectable({
   providedIn: 'root'

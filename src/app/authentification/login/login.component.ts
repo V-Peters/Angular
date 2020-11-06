@@ -1,32 +1,29 @@
-import { Component, OnInit, Injectable } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
+import { FormGroup, FormControl, Validators } from '@angular/forms';
+import { Router } from '@angular/router';
+
 import { AuthService } from '../auth.service';
 import { TokenStorageService } from '../token-storage.service';
-import { Router } from '@angular/router';
-import { FormGroup, FormControl, Validators } from '@angular/forms';
 
 @Component({
   selector: 'app-login',
   templateUrl: './login.component.html',
-  styleUrls: ['./login.component.css']
-})
-@Injectable({
-  providedIn: 'root'
+  styleUrls: ['../register-and-login.component.css']
 })
 export class LoginComponent implements OnInit {
 
   loginForm: FormGroup;
-  form: any = {};
   isLoggedIn = false;
   isLoginFailed = false;
   errorMessage = '';
-  roles: string[] = [];
+  role: string;
 
-  constructor(private authService: AuthService, private tokenStorageService: TokenStorageService, private router: Router) { }
+  constructor(private router: Router, private authService: AuthService, private tokenStorageService: TokenStorageService) { }
 
   ngOnInit(): void {
     if (this.tokenStorageService.getUser()) {
       this.isLoggedIn = true;
-      this.roles = this.tokenStorageService.getUser().roles;
+      this.role = this.tokenStorageService.getUser().roles[0];
     }
     this.loginForm = new FormGroup({
       'username': new FormControl(null, Validators.required),
@@ -37,16 +34,19 @@ export class LoginComponent implements OnInit {
   onSubmit(): void {
     this.authService.login(this.loginForm)
     .subscribe(loginUser => {
-      this.tokenStorageService.saveToken(loginUser.accessToken);
       this.tokenStorageService.saveUser(loginUser);
+      this.tokenStorageService.saveToken(loginUser.accessToken);
+      this.isLoggedIn = true;
 
       this.isLoginFailed = false;
-      this.isLoggedIn = true;
-      this.roles = this.tokenStorageService.getUser().roles;
+      this.role = this.tokenStorageService.getUser().roles[0];
       this.router.navigate(['/meeting/list']);
     }, err => {
-      this.errorMessage = err.error.message;
       this.isLoginFailed = true;
     });
+  }
+
+  onRegister() {
+    this.router.navigate(['/register']);
   }
 }

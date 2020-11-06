@@ -1,28 +1,32 @@
-<div class="col-xs-12">
+<div class="col-xs-6">
   <h3>Profil</h3>
   <hr>
-  <p>
-    <strong>Benutzername:</strong>
-    {{ user.username }}
-  </p>
-  <p>
-    <strong>Vorname:</strong>
-    {{ user.firstname }}
-  </p>
-  <p>
-    <strong>Nachname:</strong>
-    {{ user.lastname }}
-  </p>
-  <p>
-    <strong>Email:</strong>
-    {{ user.email }}
-  </p>
-  <p>
-    <strong>Firma/Unternehmen:</strong>
-    {{ user.company }}
-  </p>
-  <p>
-    <strong>Rollen:</strong>
-    {{ user.roles }}
-  </p>
+  <table>
+    <tbody>
+      <tr>
+        <th style="width: 160px; height: 30px;">Benutzername:</th>
+        <td>{{ user.username }}</td>
+      </tr>
+      <tr>
+        <th style="height: 30px;">Vorname:</th>
+        <td>{{ user.firstname }}</td>
+      </tr>
+      <tr>
+        <th style="height: 30px;">Nachname:</th>
+        <td>{{ user.lastname }}</td>
+      </tr>
+      <tr>
+        <th style="height: 30px;">Email:</th>
+        <td>{{ user.email }}</td>
+      </tr>
+      <tr>
+        <th style="height: 30px;">Firma/Unternehmen:</th>
+        <td>{{ user.company }}</td>
+      </tr>
+      <tr>
+        <th style="height: 30px;">Rolle:</th>
+        <td>{{ rolle }}</td>
+      </tr>
+    </tbody>
+  </table>
 </div>

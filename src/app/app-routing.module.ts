@@ -5,12 +5,12 @@ import { HomeComponent } from './home/home.component';
 import { MeetingListComponent } from './meeting/meeting-list/meeting-list.component';
 import { MeetingEditComponent } from './meeting/meeting-edit/meeting-edit.component';
 import { ParticipantsListComponent } from './user/participants-list/participants-list.component';
+import { ProfileComponent } from './user/profile/profile.component';
 import { RegisterComponent } from './authentification/register/register.component';
 import { LoginComponent } from './authentification/login/login.component';
-import { ProfileComponent } from './user/profile/profile.component';
+import { AccessDeniedComponent } from './error/access-denied/access-denied.component';
 import { PageNotFoundComponent } from './error/page-not-found/page-not-found.component';
 import { ErrorService } from './error/error-service';
-import { AccessDeniedComponent } from './error/access-denied/access-denied.component';
 
 const routes: Routes = [
   { path: '', redirectTo: 'home', pathMatch: 'full' },

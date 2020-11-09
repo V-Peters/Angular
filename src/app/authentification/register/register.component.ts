@@ -13,18 +13,24 @@ import { TokenStorageService } from '../token-storage.service';
 export class RegisterComponent implements OnInit {
 
   registerForm: FormGroup;
-  // get usernames from backend later and bind them to this array
-  existingUsernames = ['Chris', 'Anna'];
   isSignUpFailed = false;
+  usernameToShort = false;
+  usernameToLong = false;
   usernameAlreadyExists = false;
+  passwordToShort = false;
+  passwordToLong = false;
+  firstnameToLong = false;
+  lastnameToLong = false;
+  emailToLong = false;
   emailAlreadyExists = false;
+  companyToLong = false;
   isLoggedIn = false;
 
   constructor(private router: Router, private authService: AuthService, private tokenStorageService: TokenStorageService) { }
 
   ngOnInit(): void {
     this.registerForm = new FormGroup({
-      'username': new FormControl(null, [Validators.required, Validators.minLength(4), Validators.maxLength(20), this.forbiddenUsernames.bind(this)]),
+      'username': new FormControl(null, [Validators.required, Validators.minLength(4), Validators.maxLength(20)]),
       'password': new FormControl(null, [Validators.required, Validators.minLength(5), Validators.maxLength(60)]),
       'firstname': new FormControl(null, [Validators.required, Validators.maxLength(50)]),
       'lastname': new FormControl(null, [Validators.required, Validators.maxLength(50)]),
@@ -35,46 +41,120 @@ export class RegisterComponent implements OnInit {
       this.isLoggedIn = true;
     }
   }
-  
-  // remove later, if found a better solution
-  forbiddenUsernames(control: FormControl): {[s: string]: boolean} {
-    if (this.existingUsernames.indexOf(control.value) !== -1) {
-      return {'nameIsForbidden': true};
-    } else {
-      return null;
-    }
+
+  setUsernameValidatorsToFalse() {
+    this.usernameToShort = false;
+    this.usernameToLong = false;
+    this.usernameAlreadyExists = false;
+  }
+
+  setPasswordValidatorsToFalse() {
+    this.passwordToShort = false;
+    this.passwordToLong = false;
+  }
+
+  setFirstnameValidatorsToFalse() {
+    this.firstnameToLong = false;
+  }
+
+  setLastnameValidatorsToFalse() {
+    this.lastnameToLong = false;
+  }
+
+  setEmailValidatorsToFalse() {
+    this.emailToLong = false;
+    this.emailAlreadyExists = false;
+  }
+
+  setCompanyValidatorsToFalse() {
+    this.companyToLong = false;
   }
 
   changedUsername() {
     if (this.registerForm.value.username) {
-      this.authService.checkIfUsernameExists(this.registerForm.value.username)
-      .subscribe(data => {
-        if (data.message == 'true') {
-          this.usernameAlreadyExists = true;
-          return true;
-        } else {
-          this.usernameAlreadyExists = false;
-          return false;
-        }
-      });
+      if (this.registerForm.value.username.length < 4) {
+        this.setUsernameValidatorsToFalse();
+        this.usernameToShort = true;
+      } else if (this.registerForm.value.username.length > 20) {
+        this.setUsernameValidatorsToFalse();
+        this.usernameToLong = true;
+      } else {
+        this.authService.checkIfUsernameExists(this.registerForm.value.username)
+        .subscribe(data => {
+          this.setUsernameValidatorsToFalse();
+          if (data.message == 'true') {
+            this.usernameAlreadyExists = true;
+          }
+        });
+      }
     } else {
-      this.usernameAlreadyExists = false;
-      return null;
+      this.setUsernameValidatorsToFalse();
+    }
+  }
+
+  changedPassword() {
+    if (this.registerForm.value.password) {
+      if (this.registerForm.value.password.length < 5) {
+        this.setPasswordValidatorsToFalse();
+        this.passwordToShort = true;
+      } else if (this.registerForm.value.password.length > 60) {
+        this.setPasswordValidatorsToFalse();
+        this.passwordToLong = true;
+      }
+    } else {
+      this.setPasswordValidatorsToFalse();
+    }
+  }
+
+  changedFirstname() {
+    if (this.registerForm.value.firstname) {
+      if (this.registerForm.value.firstname.length > 50) {
+        this.setFirstnameValidatorsToFalse();
+        this.firstnameToLong = true;
+      }
+    } else {
+      this.setFirstnameValidatorsToFalse();
+    }
+  }
+
+  changedLastname() {
+    if (this.registerForm.value.lastname) {
+      if (this.registerForm.value.lastname.length > 50) {
+        this.setLastnameValidatorsToFalse();
+        this.lastnameToLong = true;
+      }
+    } else {
+      this.setLastnameValidatorsToFalse();
     }
   }
 
   changedEmail() {
     if (this.registerForm.value.email) {
-      this.authService.checkIfEmailExists(this.registerForm.value.email)
-      .subscribe(data => {
-        if (data.message == 'true') {
-          this.emailAlreadyExists = true;
-        } else {
-          this.emailAlreadyExists = false;
-        }
-      });
+      if (this.registerForm.value.email.length > 100) {
+        this.setEmailValidatorsToFalse();
+        this.emailToLong = true;
+      } else {
+        this.authService.checkIfEmailExists(this.registerForm.value.email)
+        .subscribe(data => {
+          this.setEmailValidatorsToFalse();
+          if (data.message == 'true') {
+            this.emailAlreadyExists = true;
+          }
+        });
+      }
     } else {
-      this.emailAlreadyExists = false;
+      this.setEmailValidatorsToFalse();
+    }
+  }
+
+  changedCompany() {
+    if (this.registerForm.value.company) {
+      if (this.registerForm.value.company > 100) {
+        this.setCompanyValidatorsToFalse();
+        this.companyToLong = true;
+      }
+    } else {
+      this.setCompanyValidatorsToFalse();
     }
   }
   

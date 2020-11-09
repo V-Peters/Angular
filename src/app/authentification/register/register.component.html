@@ -10,12 +10,12 @@
     (ngSubmit)="onSubmit()">
       <div class="form-group">
         <span for="username">Benutzername:</span>
-        <span *ngIf="registerForm.get('username').invalid && registerForm.get('username').touched" style="color: red;">
-          <i *ngIf="true">
-            Bitte geben Sie einen gültigen Benutzernamen ein.
-          </i>
+        <span *ngIf="registerForm.get('username').invalid && registerForm.get('username').touched || usernameAlreadyExists" style="color: red;">
+          <i *ngIf="!(usernameToShort || usernameToLong || usernameAlreadyExists)">Bitte geben Sie einen gültigen Benutzernamen ein.</i>
+          <i *ngIf="usernameToShort"> Ihr Benutzername muss mindestens 4 Zeichen lang sein.</i>
+          <i *ngIf="usernameToLong"> Ihr Benutzername darf maximal 20 Zeichen lang sein.</i>
+          <i *ngIf="usernameAlreadyExists"> Dieser Benutzername ist bereits vergeben.</i>
         </span>
-        <span *ngIf="usernameAlreadyExists" style="color: red;"><i> Dieser Benutzername ist bereits vergeben.</i></span>
         <input 
         type="text"
         id="username"
@@ -25,42 +25,54 @@
       </div>
       <div class="form-group">
         <span for="password">Passwort:</span>
-        <i *ngIf="registerForm.get('password').invalid && registerForm.get('password').touched" style="color: red;"> Bitte geben Sie ein gültiges Passwort ein.</i>
+        <span *ngIf="registerForm.get('password').invalid && registerForm.get('password').touched" style="color: red;">
+          <i *ngIf="!(passwordToShort || passwordToLong)"> Bitte geben Sie ein gültiges Passwort ein.</i>
+          <i *ngIf="passwordToShort"> Ihr Passwort muss mindestens 5 Zeichen lang sein.</i>
+          <i *ngIf="passwordToLong"> Ihr Password darf maximal 60 Zeichen lang sein.</i>
+        </span>
         <input 
         type="password"
         id="password"
         formControlName="password"
-        class="form-control">
+        class="form-control"
+        (ngModelChange)="changedPassword()">
       </div>
       <hr>
       <div class="form-group">
         <span for="firstname">Vorname:</span>
-        <i *ngIf="registerForm.get('firstname').invalid && registerForm.get('firstname').touched" style="color: red;"> Dieses Feld ist ein Pflichtfeld.</i>
+        <span *ngIf="registerForm.get('firstname').invalid && registerForm.get('firstname').touched" style="color: red;">
+          <i *ngIf="!firstnameToLong"> Bitte geben Sie ihren Vornamen ein.</i>
+          <i *ngIf="firstnameToLong"> Ihr Vorname darf maximal 50 Zeichen lang sein.</i>
+        </span>
         <input 
         type="text"
         id="firstname"
         formControlName="firstname"
-        class="form-control">
+        class="form-control"
+        (ngModelChange)="changedFirstname()">
       </div>
       <div class="form-group">
         <span for="lastname">Nachname:</span>
-        <i *ngIf="registerForm.get('lastname').invalid && registerForm.get('lastname').touched" style="color: red;"> Dieses Feld ist ein Pflichtfeld.</i>
+        <span *ngIf="registerForm.get('lastname').invalid && registerForm.get('lastname').touched" style="color: red;">
+          <i *ngIf="!lastnameToLong"> Bitte geben Sie ihren Nachnamen ein.</i>
+          <i *ngIf="lastnameToLong"> Ihr Nachname darf maximal 50 Zeichen lang sein.</i>
+        </span>
         <input 
         type="text"
         id="lastname"
         formControlName="lastname"
-        class="form-control">
+        class="form-control"
+        (ngModelChange)="changedLastname()">
       </div>
       <div class="form-group">
         <span for="email">E-Mail:</span>
-        <span *ngIf="registerForm.get('email').invalid && registerForm.get('email').touched" style="color: red;">
-          <i #noEmail>
-            Bitte geben Sie eine gültige E-Mail Adresse ein.
-          </i>
+        <span *ngIf="registerForm.get('email').invalid && registerForm.get('email').touched || emailAlreadyExists" style="color: red;">
+          <i *ngIf="!(emailToLong || emailAlreadyExists)"> Bitte geben Sie eine gültige E-Mail Adresse ein.</i>
+          <i *ngIf="emailToLong"> Ihre E-Mail Adresse darf maximal 100 Zeichen lang sein.</i>
+          <i *ngIf="emailAlreadyExists"> Diese E-Mail Adresse ist bereits vergeben.</i>
         </span>
-        <span *ngIf="emailAlreadyExists" style="color: red;"><i> Diese E-Mail Adresse ist bereits vergeben.</i></span>
         <input 
-        type="email; else noEmail;"
+        type="email"
         id="email"
         formControlName="email"
         class="form-control"
@@ -68,19 +80,23 @@
       </div>
       <div class="form-group">
         <span for="company">Firma/Unternehmen:</span>
-        <i *ngIf="registerForm.get('company').invalid && registerForm.get('company').touched" style="color: red;"> Dieses Feld ist ein Pflichtfeld.</i>
+        <span *ngIf="registerForm.get('company').invalid && registerForm.get('company').touched" style="color: red;">
+          <i *ngIf="!companyToLong"> Bitte geben Sie den Namen Ihrer Firma ein.</i>
+          <i *ngIf="companyToLong"> Der Name ihrer Firma darf maximal 100 Zeichen lang sein.</i>
+        </span>
         <input 
         type="text"
         id="company"
         formControlName="company"
-        class="form-control">
+        class="form-control"
+        (ngModelChange)="changedCompany()">
       </div>
       <i *ngIf="isSignUpFailed" style="color: red;">Fehlerhafte Registrierungsdaten</i>
       <br>
       <br>
-      <button type="submit" class="btn btn-info btn-block" [disabled]="registerForm.invalid">
-        <span *ngIf="registerForm.valid">Registrieren</span>
-        <span *ngIf="registerForm.invalid" style="color: rgb(117, 0, 0);"> Das Registrierungsformular ist noch nicht vollständing ausgefüllt.</span>
+      <button type="submit" class="btn btn-info btn-block" [disabled]="registerForm.invalid || usernameAlreadyExists || emailAlreadyExists">
+        <span *ngIf="registerForm.valid && !usernameAlreadyExists && !emailAlreadyExists">Registrieren</span>
+        <span *ngIf="registerForm.invalid || usernameAlreadyExists || emailAlreadyExists" style="color: rgb(117, 0, 0);"> Das Registrierungsformular ist noch nicht vollständing ausgefüllt.</span>
       </button>
       <hr>
       <button type="button" class="btn btn-primary btn-block" (click)="onLogin()">Doch schon Mitglied? Zurück zum Login</button>

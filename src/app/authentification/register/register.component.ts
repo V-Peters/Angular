@@ -25,10 +25,10 @@ export class RegisterComponent implements OnInit {
   ngOnInit(): void {
     this.registerForm = new FormGroup({
       'username': new FormControl(null, [Validators.required, Validators.minLength(4), Validators.maxLength(20), this.forbiddenUsernames.bind(this)]),
-      'password': new FormControl(null, [Validators.required, Validators.minLength(5), Validators.maxLength(50)]),
+      'password': new FormControl(null, [Validators.required, Validators.minLength(5), Validators.maxLength(60)]),
       'firstname': new FormControl(null, [Validators.required, Validators.maxLength(50)]),
       'lastname': new FormControl(null, [Validators.required, Validators.maxLength(50)]),
-      'email': new FormControl(null, [Validators.required, Validators.maxLength(50), Validators.email]),
+      'email': new FormControl(null, [Validators.required, Validators.maxLength(100), Validators.email]),
       'company': new FormControl(null, [Validators.required, Validators.maxLength(100)])
     });
     if (this.tokenStorageService.getUser()) {

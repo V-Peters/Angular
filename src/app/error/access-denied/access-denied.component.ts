@@ -12,8 +12,7 @@ export class AccessDeniedComponent implements OnInit {
   ngOnInit(): void {
   }
 
-  onBack() {
+  onBack(): void {
     this.router.navigate(['/home']);
   }
-
 }

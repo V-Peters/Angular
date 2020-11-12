@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { TokenStorageService } from '../../authentification/token-storage.service';
+import { User } from 'src/app/authentification/user.model';
 
 @Component({
   selector: 'app-profile',
@@ -7,14 +8,14 @@ import { TokenStorageService } from '../../authentification/token-storage.servic
 })
 export class ProfileComponent implements OnInit {
 
-  user: any;
-  rolle: string;
+  user: User;
+  role: string;
 
   constructor(private tokenstorageService: TokenStorageService) { }
 
   ngOnInit(): void {
     this.user = this.tokenstorageService.getUser();
-    this.rolle = this.user.roles[0] == 'ROLE_ADMIN' ? 'Administrator' : 'Standardbenutzer';
+    this.role = this.user.roles[0] === 'ROLE_ADMIN' ? 'Administrator' : 'Standardbenutzer';
   }
 
 }

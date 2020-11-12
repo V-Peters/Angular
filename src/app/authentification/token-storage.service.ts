@@ -1,4 +1,5 @@
 import { Injectable, EventEmitter, OnInit } from '@angular/core';
+import { User } from './user.model';
 
 const TOKEN_KEY = 'auth-token';
 const USER_KEY = 'auth-user';
@@ -12,7 +13,7 @@ export class TokenStorageService implements OnInit {
 
   constructor() { }
 
-  ngOnInit() {
+  ngOnInit(): void {
     this.currentUser.emit(this.getUser());
   }
 
@@ -35,7 +36,7 @@ export class TokenStorageService implements OnInit {
     this.currentUser.emit(user);
   }
 
-  public getUser(): any {
+  public getUser(): User {
     return JSON.parse(sessionStorage.getItem(USER_KEY));
   }
 }

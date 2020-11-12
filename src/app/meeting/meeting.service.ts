@@ -1,73 +1,75 @@
-import { Injectable } from '@angular/core'
+import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
+import { Observable } from 'rxjs';
 
-import { Meeting } from './meeting.model'
+import { Meeting } from './meeting.model';
 import { MeetingUser } from './meetingUser.model';
-import { TokenStorageService } from '../authentification/token-storage.service';
+import { User } from '../authentification/user.model';
+
+const MEETING_URL = 'http://localhost:8080/meetings/';
 
 @Injectable({
   providedIn: 'root'
 })
 export class MeetingService {
 
-  constructor(private http: HttpClient, private tokenStorageService: TokenStorageService) {}
+  constructor(private http: HttpClient) {}
 
-  getMeetings() {
-    const url = this.tokenStorageService.getUser().roles[0] == 'ROLE_ADMIN' ? 'http://localhost:8080/meetings/listAdmin' : 'http://localhost:8080/meetings/listUser';
+  getMeetings(): Observable<Meeting[]> {
     return this.http
     .get<Meeting[]>(
-      url
+      MEETING_URL
     );
   }
 
-  getMeeting(id: number) {
+  getMeeting(id: number): Observable<Meeting> {
     return this.http
     .get<Meeting>(
-      'http://localhost:8080/meetings?id=' + id
+      MEETING_URL + id
     );
   }
 
-  saveMeeting(meeting: Meeting) {
+  saveMeeting(meeting: Meeting): Observable<Meeting> {
     return this.http
     .post<Meeting>(
-      'http://localhost:8080/meetings',
+      MEETING_URL,
       meeting
     );
   }
 
-  deleteMeeting(id: number) {
+  deleteMeeting(id: number): Observable<Meeting> {
     return this.http
-    .delete(
-      'http://localhost:8080/meetings?id=' + id
+    .delete<Meeting>(
+      MEETING_URL + id
     );
   }
 
-  updateDisplay(display: {}) {
+  updateDisplay(display: {}): Observable<boolean[]> {
     return this.http
     .post<boolean[]>(
-      'http://localhost:8080/meetings/updateDisplay',
+      MEETING_URL + 'updateDisplay',
       display
     );
   }
 
-  listParticipants(id: number) {
+  listParticipants(id: number): Observable<User[]> {
     return this.http
-    .get(
-      'http://localhost:8080/meetingUser/listParticipants?id=' + id
+    .get<User[]>(
+      MEETING_URL + 'listParticipants/' + id
     );
   }
 
-  getMeetingsForUser(id: number) {
+  getMeetingsSignedUpToForUser(id: number): Observable<MeetingUser[]> {
     return this.http
     .get<MeetingUser[]>(
-      'http://localhost:8080/meetingUser/getMeetingsForUser?id=' + id
+      MEETING_URL + 'getMeetingsSignedUpToForUser/' + id
     );
   }
 
-  updateSignup(signup: {}, userId: number) {
+  updateSignup(signup: {}, userId: number): Observable<boolean[]> {
     return this.http
     .post<boolean[]>(
-      'http://localhost:8080/meetingUser/updateSignup?userId=' + userId,
+      MEETING_URL + 'updateSignup/' + userId,
       signup
     );
   }

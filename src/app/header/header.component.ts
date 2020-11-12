@@ -2,7 +2,7 @@ import { Component, OnInit, OnChanges, SimpleChanges, OnDestroy } from '@angular
 import { Router } from '@angular/router';
 
 import { TokenStorageService } from '../authentification/token-storage.service';
-import { User } from '../authentification/user.model'
+import { User } from '../authentification/user.model';
 
 @Component({
   selector: 'app-header',
@@ -24,13 +24,13 @@ export class HeaderComponent implements OnInit, OnDestroy {
     });
   }
 
-  ngOnDestroy(){
+  ngOnDestroy(): void {
     this.tokenStorageService.currentUser.unsubscribe();
   }
 
-  onLogout() {
+  onLogout(): void {
     this.tokenStorageService.signOut();
     this.tokenStorageService.currentUser.emit(null);
-    this.router.navigate(["/login"]);
+    this.router.navigate(['/login']);
   }
 }

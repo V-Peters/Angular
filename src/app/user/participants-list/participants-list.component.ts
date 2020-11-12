@@ -44,7 +44,7 @@ export class ParticipantsListComponent implements OnInit {
 
   }
 
-  onBack() {
+  onBack(): void {
     this.router.navigate(['/meeting/list']);
   }
 

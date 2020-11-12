@@ -16,12 +16,11 @@ export class HomeComponent implements OnInit {
     this.isLoggedIn = !!this.tokenStorageService.getToken();
   }
 
-  onLogin() {
-    this.router.navigate(["/login"]);
+  onLogin(): void {
+    this.router.navigate(['/login']);
   }
 
-  onList() {
-    this.router.navigate(["/meeting/list"]);
+  onList(): void {
+    this.router.navigate(['/meeting/list']);
   }
-
 }

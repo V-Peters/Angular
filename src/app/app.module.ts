@@ -35,7 +35,7 @@ import { AccessDeniedComponent } from './error/access-denied/access-denied.compo
   ],
   imports: [
     BrowserModule,
-    ReactiveFormsModule, 
+    ReactiveFormsModule,
     HttpClientModule,
     AppRoutingModule
   ],

@@ -26,8 +26,8 @@ export class LoginComponent implements OnInit {
       this.role = this.tokenStorageService.getUser().roles[0];
     }
     this.loginForm = new FormGroup({
-      'username': new FormControl(null, Validators.required),
-      'password': new FormControl(null, Validators.required)
+      username: new FormControl(null, Validators.required),
+      password: new FormControl(null, Validators.required)
     });
   }
 
@@ -46,7 +46,7 @@ export class LoginComponent implements OnInit {
     });
   }
 
-  onRegister() {
+  onRegister(): void {
     this.router.navigate(['/register']);
   }
 }

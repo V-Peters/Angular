@@ -26,7 +26,7 @@ export class MeetingListComponent implements OnInit {
   ngOnInit(): void {
     if (this.tokenStorageService.getUser()) {
       this.isLoading = true;
-      if (this.tokenStorageService.getUser().roles[0] === 'ROLE_ADMIN') {
+      if (this.tokenStorageService.getUser().roles[0].name === 'ROLE_ADMIN') {
         this.isAdmin = true;
       } else {
         this.isAdmin = false;

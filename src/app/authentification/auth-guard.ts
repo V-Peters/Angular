@@ -13,7 +13,7 @@ export class AuthGuard implements CanActivate {
 
   canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): boolean | UrlTree | Observable<boolean | UrlTree> | Promise<boolean | UrlTree> {
     if (this.tokenStorageService.getUser()) {
-      if (this.tokenStorageService.getUser().roles[0] === 'ROLE_ADMIN' || state.url === '/meeting/list' || state.url === '/profile') {
+      if (this.tokenStorageService.getUser().roles[0].name === 'ROLE_ADMIN' || state.url === '/meeting/list' || state.url === '/profile') {
         return true;
       } else {
         return this.router.createUrlTree(['/access-denied']);

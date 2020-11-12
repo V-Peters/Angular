@@ -7,7 +7,7 @@ export class User {
     public lastname: string,
     public email: string,
     public company: string,
-    public roles: string[],
+    public roles: {id: number, name: string}[],
     public token: string,
     public accessToken: string
   ) { }

@@ -15,7 +15,7 @@ export class ProfileComponent implements OnInit {
 
   ngOnInit(): void {
     this.user = this.tokenstorageService.getUser();
-    this.role = this.user.roles[0] === 'ROLE_ADMIN' ? 'Administrator' : 'Standardbenutzer';
+    this.role = this.user.roles[0].name === 'ROLE_ADMIN' ? 'Administrator' : 'Standardbenutzer';
   }
 
 }

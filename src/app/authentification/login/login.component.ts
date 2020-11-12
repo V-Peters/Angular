@@ -4,6 +4,7 @@ import { Router } from '@angular/router';
 
 import { AuthService } from '../auth.service';
 import { TokenStorageService } from '../token-storage.service';
+import { ErrorService } from 'src/app/error/error-service';
 
 @Component({
   selector: 'app-login',
@@ -18,12 +19,12 @@ export class LoginComponent implements OnInit {
   errorMessage = '';
   role: string;
 
-  constructor(private router: Router, private authService: AuthService, private tokenStorageService: TokenStorageService) { }
+  constructor(private router: Router, private authService: AuthService, private tokenStorageService: TokenStorageService, private errorService: ErrorService) { }
 
   ngOnInit(): void {
     if (this.tokenStorageService.getUser()) {
       this.isLoggedIn = true;
-      this.role = this.tokenStorageService.getUser().roles[0];
+      this.role = this.tokenStorageService.getUser().roles[0].name;
     }
     this.loginForm = new FormGroup({
       username: new FormControl(null, Validators.required),
@@ -39,10 +40,11 @@ export class LoginComponent implements OnInit {
       this.isLoggedIn = true;
 
       this.isLoginFailed = false;
-      this.role = this.tokenStorageService.getUser().roles[0];
+      this.role = this.tokenStorageService.getUser().roles[0].name;
       this.router.navigate(['/meeting/list']);
     }, err => {
       this.isLoginFailed = true;
+      this.errorService.print(err);
     });
   }
 

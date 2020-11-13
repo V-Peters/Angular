@@ -16,13 +16,13 @@ export class AuthService {
 
   constructor(private http: HttpClient) { }
 
-  checkIfUsernameExists(username: string): Observable<any> {
-    return this.http.post(AUTH_API + 'checkIfUsernameExists',
+  checkIfUsernameExists(username: string): Observable<boolean> {
+    return this.http.post<boolean>(AUTH_API + 'checkIfUsernameExists',
     username);
   }
 
-  checkIfEmailExists(username: string): Observable<any> {
-    return this.http.post(AUTH_API + 'checkIfEmailExists',
+  checkIfEmailExists(username: string): Observable<boolean> {
+    return this.http.post<boolean>(AUTH_API + 'checkIfEmailExists',
     username);
   }
 

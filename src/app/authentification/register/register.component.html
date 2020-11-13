@@ -11,10 +11,7 @@
       <div class="form-group">
         <span for="username">Benutzername:</span>
         <span *ngIf="registerForm.get('username').invalid && registerForm.get('username').touched || usernameAlreadyExists" style="color: red;">
-          <i *ngIf="!(usernameToShort || usernameToLong || usernameAlreadyExists)">Bitte geben Sie einen gültigen Benutzernamen ein.</i>
-          <i *ngIf="usernameToShort"> Ihr Benutzername muss mindestens 4 Zeichen lang sein.</i>
-          <i *ngIf="usernameToLong"> Ihr Benutzername darf maximal 20 Zeichen lang sein.</i>
-          <i *ngIf="usernameAlreadyExists"> Dieser Benutzername ist bereits vergeben.</i>
+          <i> {{ usernameError }}</i>
         </span>
         <input 
         type="text"
@@ -26,9 +23,7 @@
       <div class="form-group">
         <span for="password">Passwort:</span>
         <span *ngIf="registerForm.get('password').invalid && registerForm.get('password').touched" style="color: red;">
-          <i *ngIf="!(passwordToShort || passwordToLong)"> Bitte geben Sie ein gültiges Passwort ein.</i>
-          <i *ngIf="passwordToShort"> Ihr Passwort muss mindestens 5 Zeichen lang sein.</i>
-          <i *ngIf="passwordToLong"> Ihr Password darf maximal 60 Zeichen lang sein.</i>
+          <i> {{ passwordError }}</i>
         </span>
         <input 
         type="password"
@@ -41,8 +36,7 @@
       <div class="form-group">
         <span for="firstname">Vorname:</span>
         <span *ngIf="registerForm.get('firstname').invalid && registerForm.get('firstname').touched" style="color: red;">
-          <i *ngIf="!firstnameToLong"> Bitte geben Sie ihren Vornamen ein.</i>
-          <i *ngIf="firstnameToLong"> Ihr Vorname darf maximal 50 Zeichen lang sein.</i>
+          <i> {{ firstnameError }}</i>
         </span>
         <input 
         type="text"
@@ -54,8 +48,7 @@
       <div class="form-group">
         <span for="lastname">Nachname:</span>
         <span *ngIf="registerForm.get('lastname').invalid && registerForm.get('lastname').touched" style="color: red;">
-          <i *ngIf="!lastnameToLong"> Bitte geben Sie ihren Nachnamen ein.</i>
-          <i *ngIf="lastnameToLong"> Ihr Nachname darf maximal 50 Zeichen lang sein.</i>
+          <i> {{ lastnameError }}</i>
         </span>
         <input 
         type="text"
@@ -67,9 +60,7 @@
       <div class="form-group">
         <span for="email">E-Mail:</span>
         <span *ngIf="registerForm.get('email').invalid && registerForm.get('email').touched || emailAlreadyExists" style="color: red;">
-          <i *ngIf="!(emailToLong || emailAlreadyExists)"> Bitte geben Sie eine gültige E-Mail Adresse ein.</i>
-          <i *ngIf="emailToLong"> Ihre E-Mail Adresse darf maximal 100 Zeichen lang sein.</i>
-          <i *ngIf="emailAlreadyExists"> Diese E-Mail Adresse ist bereits vergeben.</i>
+          <i> {{ emailError }}</i>
         </span>
         <input 
         type="email"
@@ -81,8 +72,7 @@
       <div class="form-group">
         <span for="company">Firma/Unternehmen:</span>
         <span *ngIf="registerForm.get('company').invalid && registerForm.get('company').touched" style="color: red;">
-          <i *ngIf="!companyToLong"> Bitte geben Sie den Namen Ihrer Firma ein.</i>
-          <i *ngIf="companyToLong"> Der Name ihrer Firma darf maximal 100 Zeichen lang sein.</i>
+          <i> {{ companyError }}</i>
         </span>
         <input 
         type="text"

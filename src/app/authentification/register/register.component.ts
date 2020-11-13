@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { FormGroup, FormControl, Validators } from '@angular/forms';
+import { FormGroup, FormControl, Validators, FormBuilder } from '@angular/forms';
 import { Router } from '@angular/router';
 
 import { AuthService } from '../auth.service';
@@ -15,19 +15,17 @@ export class RegisterComponent implements OnInit {
 
   registerForm: FormGroup;
   isSignUpFailed = false;
-  usernameToShort = false;
-  usernameToLong = false;
-  usernameAlreadyExists = false;
-  passwordToShort = false;
-  passwordToLong = false;
-  firstnameToLong = false;
-  lastnameToLong = false;
-  emailToLong = false;
-  emailAlreadyExists = false;
-  companyToLong = false;
   isLoggedIn = false;
+  usernameAlreadyExists: boolean;
+  emailAlreadyExists: boolean;
+  usernameError: string;
+  passwordError: string;
+  firstnameError: string;
+  lastnameError: string;
+  emailError: string;
+  companyError: string;
 
-  constructor(private router: Router, private authService: AuthService, private tokenStorageService: TokenStorageService, private errorService: ErrorService) { }
+  constructor(private router: Router, private authService: AuthService, private tokenStorageService: TokenStorageService, private errorService: ErrorService) {}
 
   ngOnInit(): void {
     this.registerForm = new FormGroup({
@@ -41,126 +39,83 @@ export class RegisterComponent implements OnInit {
     if (this.tokenStorageService.getUser()) {
       this.isLoggedIn = true;
     }
+    this.changedUsername();
+    this.changedPassword();
+    this.changedFirstname();
+    this.changedLastname();
+    this.changedEmail();
+    this.changedCompany();
   }
 
-  setUsernameValidatorsToFalse() {
-    this.usernameToShort = false;
-    this.usernameToLong = false;
+  changedUsername(): void {
     this.usernameAlreadyExists = false;
+    const errors = this.registerForm.controls.username.errors;
+    this.usernameError = this.changed(errors).replace('{}', 'en Benutzernamen');
+    if (this.registerForm.controls.username.valid) {
+      this.authService.checkIfUsernameExists(this.registerForm.value.username)
+      .subscribe(data => {
+        if (data === true) {
+          console.log('BEREIT VERGEBEN');
+          this.usernameError = 'Dieser Benutzername ist bereits vergeben.';
+          this.usernameAlreadyExists = true;
+        }
+      }, err => {
+        this.errorService.print(err);
+      });
+    }
   }
 
-  setPasswordValidatorsToFalse() {
-    this.passwordToShort = false;
-    this.passwordToLong = false;
+  changedPassword(): void {
+    const errors = this.registerForm.controls.password.errors;
+    this.passwordError = this.changed(errors).replace('{}', ' Passwort');
   }
 
-  setFirstnameValidatorsToFalse() {
-    this.firstnameToLong = false;
+  changedFirstname(): void {
+    const errors = this.registerForm.controls.firstname.errors;
+    this.firstnameError = this.changed(errors).replace('{}', 'en Vornamen');
   }
 
-  setLastnameValidatorsToFalse() {
-    this.lastnameToLong = false;
+  changedLastname(): void {
+    const errors = this.registerForm.controls.lastname.errors;
+    this.lastnameError = this.changed(errors).replace('{}', 'en Nachnamen');
   }
 
-  setEmailValidatorsToFalse() {
-    this.emailToLong = false;
+  changedEmail(): void {
     this.emailAlreadyExists = false;
-  }
-
-  setCompanyValidatorsToFalse() {
-    this.companyToLong = false;
-  }
-
-  changedUsername() {
-    if (this.registerForm.value.username) {
-      if (this.registerForm.value.username.length < 4) {
-        this.setUsernameValidatorsToFalse();
-        this.usernameToShort = true;
-      } else if (this.registerForm.value.username.length > 20) {
-        this.setUsernameValidatorsToFalse();
-        this.usernameToLong = true;
-      } else {
-        this.authService.checkIfUsernameExists(this.registerForm.value.username)
-        .subscribe(data => {
-          this.setUsernameValidatorsToFalse();
-          if (data.message == 'true') {
-            this.usernameAlreadyExists = true;
-          }
-        }, err => {
-          this.errorService.print(err);
-        });
-      }
-    } else {
-      this.setUsernameValidatorsToFalse();
+    const errors = this.registerForm.controls.email.errors;
+    this.emailError = this.changed(errors).replace('{}', 'e gültige E-Mail ');
+    if (this.registerForm.controls.email.valid) {
+      this.authService.checkIfEmailExists(this.registerForm.value.email)
+      .subscribe(data => {
+        if (data === true) {
+          console.log('BEREIT VERGEBEN');
+          this.emailError = 'Diese E-Mail ist bereits vergeben.';
+          this.emailAlreadyExists = true;
+        }
+      }, err => {
+        this.errorService.print(err);
+      });
     }
   }
 
-  changedPassword() {
-    if (this.registerForm.value.password) {
-      if (this.registerForm.value.password.length < 5) {
-        this.setPasswordValidatorsToFalse();
-        this.passwordToShort = true;
-      } else if (this.registerForm.value.password.length > 60) {
-        this.setPasswordValidatorsToFalse();
-        this.passwordToLong = true;
-      }
-    } else {
-      this.setPasswordValidatorsToFalse();
-    }
+  changedCompany(): void {
+    const errors = this.registerForm.controls.company.errors;
+    this.companyError = this.changed(errors).replace('{}', 'e Firma');
   }
 
-  changedFirstname() {
-    if (this.registerForm.value.firstname) {
-      if (this.registerForm.value.firstname.length > 50) {
-        this.setFirstnameValidatorsToFalse();
-        this.firstnameToLong = true;
+  changed(errors: any): string {
+    if (errors) {
+      if (errors.required || errors.email) {
+        return 'Bitte geben Sie ein{} ein.';
+      } else if (errors.minlength) {
+        return 'muss mindestens ' + errors.minlength.requiredLength + ' Zeichen lang sein.';
+      } else if (errors.maxlength) {
+        return 'darf maximal ' + errors.maxlength.requiredLength + ' Zeichen lang sein.';
       }
-    } else {
-      this.setFirstnameValidatorsToFalse();
     }
+    return '';
   }
 
-  changedLastname() {
-    if (this.registerForm.value.lastname) {
-      if (this.registerForm.value.lastname.length > 50) {
-        this.setLastnameValidatorsToFalse();
-        this.lastnameToLong = true;
-      }
-    } else {
-      this.setLastnameValidatorsToFalse();
-    }
-  }
-
-  changedEmail() {
-    if (this.registerForm.value.email) {
-      if (this.registerForm.value.email.length > 100) {
-        this.setEmailValidatorsToFalse();
-        this.emailToLong = true;
-      } else {
-        this.authService.checkIfEmailExists(this.registerForm.value.email)
-        .subscribe(data => {
-          this.setEmailValidatorsToFalse();
-          if (data.message == 'true') {
-            this.emailAlreadyExists = true;
-          }
-        });
-      }
-    } else {
-      this.setEmailValidatorsToFalse();
-    }
-  }
-
-  changedCompany() {
-    if (this.registerForm.value.company) {
-      if (this.registerForm.value.company > 100) {
-        this.setCompanyValidatorsToFalse();
-        this.companyToLong = true;
-      }
-    } else {
-      this.setCompanyValidatorsToFalse();
-    }
-  }
-  
   onSubmit(): void {
     this.authService.register(this.registerForm)
     .subscribe(registerData => {
@@ -175,13 +130,11 @@ export class RegisterComponent implements OnInit {
       });
     }, err => {
       this.isSignUpFailed = true;
-      this.usernameAlreadyExists = true;
-      this.emailAlreadyExists = true;
       this.errorService.print(err);
     });
   }
 
-  onLogin() {
+  onLogin(): void {
     this.router.navigate(['/login']);
   }
 

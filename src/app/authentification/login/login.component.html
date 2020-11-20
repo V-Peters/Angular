@@ -10,8 +10,8 @@
     (ngSubmit)="onSubmit()">
       <div class="form-group">
         <span for="username">Benutzername:</span>
-        <i *ngIf="loginForm.get('username').invalid && loginForm.get('username').touched" style="color: red;"> Dieses Feld ist ein Pflichtfeld.</i>
-        <input 
+        <i *ngIf="loginForm.get('username').invalid && loginForm.get('username').touched" style="color: red;"> Bitte geben Sie Ihren Beutzernamen ein.</i>
+        <input
         type="text"
         id="username"
         formControlName="username"
@@ -19,8 +19,8 @@
       </div>
       <div class="form-group">
         <span for="password">Passwort:</span>
-        <i *ngIf="loginForm.get('password').invalid && loginForm.get('password').touched" style="color: red;"> Dieses Feld ist ein Pflichtfeld.</i>
-        <input 
+        <i *ngIf="loginForm.get('password').invalid && loginForm.get('password').touched" style="color: red;"> Bitte geben Sie Ihr Passwort ein.</i>
+        <input
         type="password"
         id="password"
         formControlName="password"

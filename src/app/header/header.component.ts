@@ -3,6 +3,7 @@ import { Router } from '@angular/router';
 
 import { TokenStorageService } from '../authentification/token-storage.service';
 import { User } from '../authentification/user.model';
+import { AppComponent } from '../app.component';
 
 @Component({
   selector: 'app-header',
@@ -12,7 +13,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
   currentUser: User;
   isLoggedIn: boolean;
 
-  constructor(private router: Router, private tokenStorageService: TokenStorageService) { }
+  constructor(private router: Router, private tokenStorageService: TokenStorageService, private appComponent: AppComponent) { }
 
   ngOnInit(): void {
     this.currentUser = this.tokenStorageService.getUser();
@@ -32,5 +33,6 @@ export class HeaderComponent implements OnInit, OnDestroy {
     this.tokenStorageService.signOut();
     this.tokenStorageService.currentUser.emit(null);
     this.router.navigate(['/login']);
+    this.appComponent.showSnackbar('Sie wurden erfolgreich ausgeloggt');
   }
 }

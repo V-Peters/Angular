@@ -43,7 +43,10 @@ import { MatSnackBarModule } from '@angular/material/snack-bar';
     BrowserAnimationsModule,
     MatSnackBarModule
   ],
-  providers: [authInterceptorProviders],
+  providers: [
+    authInterceptorProviders,
+    AppComponent
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

@@ -3,22 +3,25 @@ import { CanActivate, ActivatedRouteSnapshot, RouterStateSnapshot, UrlTree, Rout
 import { Observable } from 'rxjs';
 
 import { TokenStorageService } from './token-storage.service';
+import {AppComponent} from '../app.component';
 
 @Injectable({
   providedIn: 'root'
 })
 export class AuthGuard implements CanActivate {
 
-  constructor(private router: Router, private tokenStorageService: TokenStorageService) {}
+  constructor(private router: Router, private tokenStorageService: TokenStorageService, private appComponent: AppComponent) {}
 
   canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): boolean | UrlTree | Observable<boolean | UrlTree> | Promise<boolean | UrlTree> {
     if (this.tokenStorageService.getUser()) {
-      if (this.tokenStorageService.getUser().roles[0].name === 'ROLE_ADMIN' || state.url === '/meeting/list' || state.url === '/profile') {
+      if (this.tokenStorageService.isAdmin() || state.url === '/meeting/list' || state.url === '/profile') {
         return true;
       } else {
+        this.appComponent.showSnackbar('Unberechtigter Zugriff.');
         return this.router.createUrlTree(['/access-denied']);
       }
     } else {
+      this.appComponent.showSnackbar('Bitte loggen Sie sich zuerst ein.');
       return this.router.createUrlTree(['/login']);
     }
   }

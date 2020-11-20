@@ -15,7 +15,7 @@ export class ParticipantsListComponent implements OnInit {
   id: number;
   meeting: Meeting;
   isEmpty: boolean;
-  meetingExsists: boolean;
+  meetingExists: boolean;
 
   constructor(private route: ActivatedRoute, private router: Router, private meetingService: MeetingService) { }
 
@@ -28,9 +28,9 @@ export class ParticipantsListComponent implements OnInit {
     .subscribe(tempMeeting => {
       console.log(tempMeeting);
       if (!tempMeeting) {
-        this.meetingExsists = false;
+        this.meetingExists = false;
       } else {
-        this.meetingExsists = true;
+        this.meetingExists = true;
         this.isLoading = false;
         this.meeting = tempMeeting;
         if (!this.meeting.users[0]) {

@@ -18,6 +18,8 @@ import { ProfileComponent } from './user/profile/profile.component';
 import { ParticipantsListComponent } from './user/participants-list/participants-list.component';
 import { PageNotFoundComponent } from './error/page-not-found/page-not-found.component';
 import { AccessDeniedComponent } from './error/access-denied/access-denied.component';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { MatSnackBarModule } from '@angular/material/snack-bar';
 
 @NgModule({
   declarations: [
@@ -37,7 +39,9 @@ import { AccessDeniedComponent } from './error/access-denied/access-denied.compo
     BrowserModule,
     ReactiveFormsModule,
     HttpClientModule,
-    AppRoutingModule
+    AppRoutingModule,
+    BrowserAnimationsModule,
+    MatSnackBarModule
   ],
   providers: [authInterceptorProviders],
   bootstrap: [AppComponent]

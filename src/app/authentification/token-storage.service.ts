@@ -13,6 +13,7 @@ export class TokenStorageService implements OnInit {
 
   constructor() { }
 
+  // tslint:disable-next-line:contextual-lifecycle
   ngOnInit(): void {
     this.currentUser.emit(this.getUser());
   }
@@ -38,5 +39,13 @@ export class TokenStorageService implements OnInit {
 
   public getUser(): User {
     return JSON.parse(sessionStorage.getItem(USER_KEY));
+  }
+
+  public isAdmin(): boolean {
+    return this.getUser().role === 'ROLE_ADMIN';
+  }
+
+  public isLoggedIn(): boolean {
+    return !!this.getUser();
   }
 }

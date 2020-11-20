@@ -1,4 +1,4 @@
-<div class="col-xs-12">  
+<div class="col-xs-12">
   <h3>Veranstaltung</h3>
   <hr>
   <div *ngIf="!meetingExsists">
@@ -42,7 +42,7 @@
         </tr>
       </thead>
       <tbody *ngIf="!isLoading">
-        <tr *ngFor="let user of users; let i = index">
+        <tr *ngFor="let user of meeting.users; let i = index">
           <td style="text-align:right;">{{ i + 1 }}</td>
           <td>{{ user.firstname }}</td>
           <td>{{ user.lastname }}</td>

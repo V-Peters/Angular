@@ -1,3 +1,5 @@
+import {Meeting} from '../meeting/meeting.model';
+
 export class User {
 
   constructor(
@@ -7,9 +9,10 @@ export class User {
     public lastname: string,
     public email: string,
     public company: string,
-    public roles: {id: number, name: string}[],
+    public role: string,
     public token: string,
-    public accessToken: string
+    public accessToken: string,
+    public meetings: Meeting[]
   ) { }
 
   get getToken(): string {

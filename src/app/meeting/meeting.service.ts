@@ -1,10 +1,10 @@
-import { Injectable } from '@angular/core';
+import { Injectable, EventEmitter } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 
 import { Meeting } from './meeting.model';
 import { MeetingUser } from './meetingUser.model';
-import { User } from '../authentification/user.model';
+import {User} from '../authentification/user.model';
 
 const MEETING_URL = 'http://localhost:8080/meetings/';
 
@@ -12,6 +12,10 @@ const MEETING_URL = 'http://localhost:8080/meetings/';
   providedIn: 'root'
 })
 export class MeetingService {
+  isLoading: boolean;
+  meetings: Meeting[];
+  meetingsExists: boolean;
+  isLoggedIn: boolean;
 
   constructor(private http: HttpClient) {}
 
@@ -37,10 +41,10 @@ export class MeetingService {
     );
   }
 
-  deleteMeeting(id: number): Observable<Meeting> {
+  deleteMeeting(meetingId: number): Observable<Meeting> {
     return this.http
     .delete<Meeting>(
-      MEETING_URL + id
+      MEETING_URL + meetingId
     );
   }
 
@@ -52,17 +56,10 @@ export class MeetingService {
     );
   }
 
-  listParticipants(id: number): Observable<User[]> {
+  getUser(userId: number): Observable<User> {
     return this.http
-    .get<User[]>(
-      MEETING_URL + 'listParticipants/' + id
-    );
-  }
-
-  getMeetingsSignedUpToForUser(id: number): Observable<MeetingUser[]> {
-    return this.http
-    .get<MeetingUser[]>(
-      MEETING_URL + 'getMeetingsSignedUpToForUser/' + id
+    .get<User>(
+      MEETING_URL + 'getUser/' + userId
     );
   }
 

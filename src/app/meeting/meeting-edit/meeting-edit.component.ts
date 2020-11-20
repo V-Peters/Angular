@@ -4,6 +4,7 @@ import { ActivatedRoute, Params, Router } from '@angular/router';
 import { DatePipe } from '@angular/common';
 
 import { MeetingService } from '../meeting.service';
+import { Meeting } from '../meeting.model';
 
 @Component({
   selector: 'app-meeting-edit',
@@ -11,6 +12,7 @@ import { MeetingService } from '../meeting.service';
 })
 export class MeetingEditComponent implements OnInit {
   meetingForm: FormGroup;
+  meeting: Meeting;
   id: number;
   now: string;
 
@@ -31,9 +33,11 @@ export class MeetingEditComponent implements OnInit {
   private init(): void {
     this.initForm(0, '', this.now, true);
     if (this.id) {
+      // this.meeting = this.meetingService.getMeeting(this.id);
       this.meetingService.getMeeting(this.id)
       .subscribe(tempMeeting => {
-        this.initForm(tempMeeting.id, tempMeeting.name, tempMeeting.datetime, tempMeeting.display);
+        this.meeting = tempMeeting;
+        this.initForm(this.meeting.id, this.meeting.name, this.meeting.datetime, this.meeting.display);
       });
     }
   }

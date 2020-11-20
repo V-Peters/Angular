@@ -1,10 +1,12 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Router } from '@angular/router';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 import { Meeting } from '../meeting.model';
 import { MeetingService } from '../meeting.service';
 import { TokenStorageService } from '../../authentification/token-storage.service';
 import { ErrorService } from '../../error/error-service';
+import { AppComponent } from 'src/app/app.component';
 
 @Component({
   selector: 'app-meeting-list',
@@ -14,30 +16,27 @@ import { ErrorService } from '../../error/error-service';
 export class MeetingListComponent implements OnInit {
   isLoading = true;
   isAdmin: boolean;
+  meetingsExists: boolean;
   meetings: Meeting[];
   signupValues = {};
   initialDisplayValues = {};
   initialSignupValues = {};
   isDifferent = false;
-  meetingsExsits: boolean;
 
-  constructor(private router: Router, private meetingService: MeetingService, private tokenStorageService: TokenStorageService, private errorService: ErrorService) { }
+  constructor(private router: Router, private meetingService: MeetingService, private tokenStorageService: TokenStorageService, private errorService: ErrorService, private appComponent: AppComponent) { }
 
   ngOnInit(): void {
-    if (this.tokenStorageService.getUser()) {
+    if (this.tokenStorageService.isLoggedIn()) {
       this.isLoading = true;
-      if (this.tokenStorageService.getUser().roles[0].name === 'ROLE_ADMIN') {
-        this.isAdmin = true;
-      } else {
-        this.isAdmin = false;
-      }
+      this.isAdmin = this.tokenStorageService.isAdmin();
 
       this.meetingService.getMeetings()
       .subscribe((tempMeetings: Meeting[]) => {
+        console.log(tempMeetings);
         if (tempMeetings.length === 0) {
-          this.meetingsExsits = false;
+          this.meetingsExists = false;
         } else {
-          this.meetingsExsits = true;
+          this.meetingsExists = true;
           this.isLoading = false;
           this.meetings = tempMeetings;
           this.isDifferent = false;
@@ -60,19 +59,28 @@ export class MeetingListComponent implements OnInit {
   }
 
   initUser(): void {
-    this.meetingService.getMeetingsSignedUpToForUser(this.tokenStorageService.getUser().id)
-    .subscribe(tempMeetingUsers => {
+    this.meetingService.getUser(this.tokenStorageService.getUser().id)
+    .subscribe(tempUser => {
+      console.log(tempUser);
       this.meetings.forEach(tempMeeting => {
         this.signupValues[tempMeeting.id] = false;
-        tempMeetingUsers.forEach(tempMeetinUser => {
-          if (tempMeeting.id === tempMeetinUser.idMeeting) {
+        tempUser.meetings.forEach(tempMeetingForUser => {
+          if (tempMeeting.id === tempMeetingForUser.id) {
             this.signupValues[tempMeeting.id] = true;
           }
         });
       });
-      this.meetings.forEach(meeting => {
-        this.initialSignupValues[meeting.id] = this.signupValues[meeting.id];
-      });
+      // this.meetings.forEach(tempMeeting => {
+      //   this.signupValues[tempMeeting.id] = false;
+      //   tempUser.forEach(tempMeetingUser => {
+      //     if (tempMeeting.id === tempMeetingUser.idMeeting) {
+      //       this.signupValues[tempMeeting.id] = true;
+      //     }
+      //   });
+      // });
+      // this.meetings.forEach(meeting => {
+      //   this.initialSignupValues[meeting.id] = this.signupValues[meeting.id];
+      // });
     }, err => {
       this.errorService.print(err);
     });
@@ -90,6 +98,7 @@ export class MeetingListComponent implements OnInit {
     if (confirm('Sind Sie sicher, dass Sie diese Veranstaltung löschen möchten?')){
       this.meetingService.deleteMeeting(id)
       .subscribe(() => {
+        this.appComponent.showSnackbar(`Die Veranstaltung mit der ID ${id} wurde gelöscht`);
         this.ngOnInit();
       }, err => {
         this.errorService.print(err);
@@ -118,6 +127,7 @@ export class MeetingListComponent implements OnInit {
   }
 
   onSaveChanges(): void {
+    console.log(this.tokenStorageService.getUser());
     if (this.isAdmin) {
       const changedDisplay = {};
       for (const meeting of this.meetings) {
@@ -126,7 +136,12 @@ export class MeetingListComponent implements OnInit {
         }
       }
       this.meetingService.updateDisplay(changedDisplay)
-      .subscribe(() => {
+      .subscribe(isSuccessful => {
+        if (isSuccessful){
+          this.showSnackbar();
+        } else {
+          this.appComponent.showSnackbarError();
+        }
         this.ngOnInit();
       }, err => {
         this.errorService.print(err);
@@ -134,11 +149,16 @@ export class MeetingListComponent implements OnInit {
     } else {
       this.meetingService.updateSignup(this.signupValues, this.tokenStorageService.getUser().id)
       .subscribe(() => {
+        this.showSnackbar();
         this.ngOnInit();
       }, err => {
         this.errorService.print(err);
       });
     }
+  }
+
+  showSnackbar(): void {
+    this.appComponent.showSnackbar('Änderungen wurden gespeichert');
   }
 
   onShowParticipants(id: number): void {

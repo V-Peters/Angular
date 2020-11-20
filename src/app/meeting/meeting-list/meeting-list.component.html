@@ -1,14 +1,14 @@
-<div class="col-xs-12">  
+<div class="col-xs-12">
   <h3>Veranstaltungsliste</h3>
   <hr>
   <button *ngIf="isAdmin" class="btn btn-success col-xs-3" (click)="onAddMeeting()">Veranstaltung hinzufügen</button>
   <br *ngIf="isAdmin">
   <br *ngIf="isAdmin">
   <br *ngIf="isAdmin">
-  <div *ngIf="!meetingsExsits">
-    Es existieren noch keine Veranstaltungen, bitte fügen Sie zuerst welche hinzu, oder wenden Sie sich an einen Administrator, damit dieser Veranstaltungen hinzufügt
+  <div *ngIf="!meetingsExists">
+    Es existieren noch keine Veranstaltungen, bitte fügen Sie zuerst welche hinzu, oder wenden Sie sich an einen Administrator, damit dieser Veranstaltungen hinzufügt.
   </div>
-  <div *ngIf="meetingsExsits">
+  <div *ngIf="meetingsExists">
     <table class="table table-bordered table-striped" >
       <thead class="thead-dark">
         <tr>
@@ -30,7 +30,7 @@
           <td style="text-align:center;" >{{ meeting.datetime | date:'HH:mm' }} Uhr</td>
           <td *ngIf="isAdmin" style="text-align:center;" >
             <a class="btn btn-info btn-xs" (click)="onEditMeeting(meeting.id)">Bearbeiten</a>
-            | 
+            |
             <a class="btn btn-danger btn-xs" (click)="onDeleteMeeting(meeting.id)">Löschen</a>
           </td>
           <td *ngIf="isAdmin" style="text-align:center;" >

@@ -2,42 +2,48 @@
   <h3 *ngIf="id !== 0">Veranstaltung bearbeiten</h3>
   <h3 *ngIf="id === 0">Veranstaltung hinzufügen</h3>
   <hr>
-  <form
-  [formGroup]="meetingForm"
-  (ngSubmit)="onSubmit()">
-    <div class="form-group">
-      <label for="name">Veranstaltungsname: </label>
-      <i *ngIf="meetingForm.get('name').invalid && meetingForm.get('name').touched" style="color: red;"> Bitte geben Sie einen Namen für die Veranstaltung ein.</i>
-      <input 
-      type="text" 
-      name="name"
-      formControlName="name"
-      class="form-control"
-      placeholder="Veranstaltungsname"
-      autofocus>
-    </div>
-    <div class="form-group">
-      <label for="datetime">Datum & Uhrzeit: </label>
-      <input 
-      type="datetime-local" 
-      name="datetime"
-      formControlName="datetime"
-      class="form-control"
-      min="{{ now }}">
-    </div>
-    <div class="form-group">
-      <label for="display">Anzeigen: </label>
-      <input 
-      type="checkbox" 
-      name="display"
-      formControlName="display">
-    </div>
-    <button type="submit" class="btn btn-info btn-block" [disabled]="meetingForm.invalid">
-      <span *ngIf="meetingForm.valid">Veranstaltung speichern</span>
-      <span *ngIf="meetingForm.invalid" style="color: rgb(117, 0, 0);">Bitte geben Sie einen Namen für die Veranstaltung ein</span>
-    </button>
-  </form>
-  <hr>
-  <button type="button" class="btn btn-secondary col-xs-12" (click)="onBackToList()">Zurück zur Veranstaltungsliste</button>
+  <div *ngIf="!meetingExists">
+    Die Veranstaltung mit der Id: {{ id }} existiert leider nicht.
+    <br>
+    Bitte überprüfen Sie nochmal, ob Sie wirklich diese Veranstaltung bearbeiten möchten.
+  </div>
+  <div *ngIf="meetingExists">
+    <form
+    [formGroup]="meetingForm"
+    (ngSubmit)="onSubmit()">
+      <div class="form-group">
+        <label for="name">Veranstaltungsname: </label>
+        <i *ngIf="meetingForm.get('name').invalid && meetingForm.get('name').touched" style="color: red;"> Bitte geben Sie einen Namen für die Veranstaltung ein.</i>
+        <input
+        type="text"
+        id="name"
+        formControlName="name"
+        class="form-control"
+        placeholder="Veranstaltungsname"
+        autofocus>
+      </div>
+      <div class="form-group">
+        <label for="datetime">Datum & Uhrzeit: </label>
+        <input
+        type="datetime-local"
+        id="datetime"
+        formControlName="datetime"
+        class="form-control"
+        min="{{ now }}">
+      </div>
+      <div class="form-group">
+        <label for="display">Anzeigen: </label>
+        <input
+        type="checkbox"
+        id="display"
+        formControlName="display">
+      </div>
+      <button type="submit" class="btn btn-info btn-block" [disabled]="meetingForm.invalid">
+        <span *ngIf="meetingForm.valid">Veranstaltung speichern</span>
+        <span *ngIf="meetingForm.invalid" style="color: rgb(117, 0, 0);">Bitte geben Sie einen Namen für die Veranstaltung ein</span>
+      </button>
+    </form>
+    <hr>
+    <button type="button" class="btn btn-secondary col-xs-12" (click)="onBackToList()">Zurück zur Veranstaltungsliste</button>
+  </div>
 </div>
-  

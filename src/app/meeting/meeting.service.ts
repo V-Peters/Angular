@@ -48,18 +48,11 @@ export class MeetingService {
     );
   }
 
-  updateDisplay(display: {}): Observable<boolean[]> {
+  updateDisplay(display: {}): Observable<boolean> {
     return this.http
-    .post<boolean[]>(
+    .post<boolean>(
       MEETING_URL + 'updateDisplay',
       display
-    );
-  }
-
-  getUser(userId: number): Observable<User> {
-    return this.http
-    .get<User>(
-      MEETING_URL + 'getUser/' + userId
     );
   }
 
@@ -68,6 +61,13 @@ export class MeetingService {
     .post<boolean[]>(
       MEETING_URL + 'updateSignup/' + userId,
       signup
+    );
+  }
+
+  getUser(userId: number): Observable<User> {
+    return this.http
+    .get<User>(
+      MEETING_URL + 'getUser/' + userId
     );
   }
 }

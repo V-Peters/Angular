@@ -26,7 +26,6 @@ export class ParticipantsListComponent implements OnInit {
 
     this.meetingService.getMeeting(this.id)
     .subscribe(tempMeeting => {
-      console.log(tempMeeting);
       if (!tempMeeting) {
         this.meetingExists = false;
       } else {

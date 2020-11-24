@@ -5,6 +5,8 @@ import { DatePipe } from '@angular/common';
 
 import { MeetingService } from '../meeting.service';
 import { Meeting } from '../meeting.model';
+import {ErrorService} from '../../error/error-service';
+import {AppComponent} from '../../app.component';
 
 @Component({
   selector: 'app-meeting-edit',
@@ -15,11 +17,13 @@ export class MeetingEditComponent implements OnInit {
   meeting: Meeting;
   id: number;
   now: string;
+  meetingExists: boolean;
 
-  constructor(private router: Router, private route: ActivatedRoute, private meetingService: MeetingService) { }
+  constructor(private router: Router, private route: ActivatedRoute, private meetingService: MeetingService, private errorService: ErrorService, private appComponent: AppComponent) { }
 
   ngOnInit(): void {
     this.now = new DatePipe('en-US').transform(Date.now(), 'yyyy-MM-ddTHH:mm');
+    this.meetingExists = true;
     this.route.params.subscribe(
       (params: Params) => {
         if (params.id != null) {
@@ -33,11 +37,17 @@ export class MeetingEditComponent implements OnInit {
   private init(): void {
     this.initForm(0, '', this.now, true);
     if (this.id) {
-      // this.meeting = this.meetingService.getMeeting(this.id);
       this.meetingService.getMeeting(this.id)
       .subscribe(tempMeeting => {
-        this.meeting = tempMeeting;
-        this.initForm(this.meeting.id, this.meeting.name, this.meeting.datetime, this.meeting.display);
+        if (tempMeeting) {
+          this.meetingExists = true;
+          this.meeting = tempMeeting;
+          this.initForm(this.meeting.id, this.meeting.name, this.meeting.datetime, this.meeting.display);
+        } else {
+          this.meetingExists = false;
+        }
+      }, err => {
+        this.errorService.print(err);
       });
     }
   }
@@ -53,8 +63,19 @@ export class MeetingEditComponent implements OnInit {
 
   onSubmit(): void {
     this.meetingService.saveMeeting(this.meetingForm.value)
-      .subscribe(() => {
+      .subscribe((savedMeeting: Meeting) => {
+        if (savedMeeting.name === this.meetingForm.value.name && savedMeeting.datetime.substring(0, 16) === this.meetingForm.value.datetime.substring(0, 16) && savedMeeting.display === this.meetingForm.value.display) {
+          if (this.meetingForm.value.id === 0) {
+            this.appComponent.showSnackbar('Die Veranstaltung wurde erfolgreich gespeichert');
+          } else {
+            this.appComponent.showSnackbar('Die Veranstaltung wurde erfolgreich bearbeitet');
+          }
+        } else {
+          this.appComponent.showSnackbarError();
+        }
         this.router.navigate(['/meeting/list']);
+      }, err => {
+        this.errorService.print(err);
       });
   }
 

@@ -32,7 +32,6 @@ export class MeetingListComponent implements OnInit {
 
       this.meetingService.getMeetings()
       .subscribe((tempMeetings: Meeting[]) => {
-        console.log(tempMeetings);
         if (tempMeetings.length === 0) {
           this.meetingsExists = false;
         } else {
@@ -61,7 +60,6 @@ export class MeetingListComponent implements OnInit {
   initUser(): void {
     this.meetingService.getUser(this.tokenStorageService.getUser().id)
     .subscribe(tempUser => {
-      console.log(tempUser);
       this.meetings.forEach(tempMeeting => {
         this.signupValues[tempMeeting.id] = false;
         tempUser.meetings.forEach(tempMeetingForUser => {
@@ -70,17 +68,6 @@ export class MeetingListComponent implements OnInit {
           }
         });
       });
-      // this.meetings.forEach(tempMeeting => {
-      //   this.signupValues[tempMeeting.id] = false;
-      //   tempUser.forEach(tempMeetingUser => {
-      //     if (tempMeeting.id === tempMeetingUser.idMeeting) {
-      //       this.signupValues[tempMeeting.id] = true;
-      //     }
-      //   });
-      // });
-      // this.meetings.forEach(meeting => {
-      //   this.initialSignupValues[meeting.id] = this.signupValues[meeting.id];
-      // });
     }, err => {
       this.errorService.print(err);
     });
@@ -97,8 +84,12 @@ export class MeetingListComponent implements OnInit {
   onDeleteMeeting(id: number): void {
     if (confirm('Sind Sie sicher, dass Sie diese Veranstaltung löschen möchten?')){
       this.meetingService.deleteMeeting(id)
-      .subscribe(() => {
-        this.appComponent.showSnackbar(`Die Veranstaltung mit der ID ${id} wurde gelöscht`);
+      .subscribe(nullMeeting => {
+        if (!nullMeeting) {
+          this.appComponent.showSnackbar(`Die Veranstaltung mit der ID ${id} wurde gelöscht`);
+        } else {
+          this.appComponent.showSnackbarError();
+        }
         this.ngOnInit();
       }, err => {
         this.errorService.print(err);
@@ -127,37 +118,48 @@ export class MeetingListComponent implements OnInit {
   }
 
   onSaveChanges(): void {
-    console.log(this.tokenStorageService.getUser());
     if (this.isAdmin) {
-      const changedDisplay = {};
-      for (const meeting of this.meetings) {
-        if (meeting.display !== this.initialDisplayValues[meeting.id]) {
-          changedDisplay[meeting.id] = meeting.display;
-        }
-      }
-      this.meetingService.updateDisplay(changedDisplay)
-      .subscribe(isSuccessful => {
-        if (isSuccessful){
-          this.showSnackbar();
-        } else {
-          this.appComponent.showSnackbarError();
-        }
-        this.ngOnInit();
-      }, err => {
-        this.errorService.print(err);
-      });
+      this.saveDisplay();
     } else {
-      this.meetingService.updateSignup(this.signupValues, this.tokenStorageService.getUser().id)
-      .subscribe(() => {
-        this.showSnackbar();
-        this.ngOnInit();
-      }, err => {
-        this.errorService.print(err);
-      });
+      this.saveSignup();
     }
   }
 
-  showSnackbar(): void {
+  saveDisplay(): void {
+    const changedDisplay = {};
+    for (const meeting of this.meetings) {
+      if (meeting.display !== this.initialDisplayValues[meeting.id]) {
+        changedDisplay[meeting.id] = meeting.display;
+      }
+    }
+    this.meetingService.updateDisplay(changedDisplay)
+    .subscribe(isSuccessful => {
+      if (isSuccessful){
+        this.showSnackbarSaved();
+      } else {
+        this.appComponent.showSnackbarError();
+      }
+      this.ngOnInit();
+    }, err => {
+      this.errorService.print(err);
+    });
+  }
+
+  saveSignup(): void {
+    this.meetingService.updateSignup(this.signupValues, this.tokenStorageService.getUser().id)
+    .subscribe(isSuccessful => {
+      if (isSuccessful) {
+        this.showSnackbarSaved();
+      } else {
+        this.appComponent.showSnackbarError();
+      }
+      this.ngOnInit();
+    }, err => {
+      this.errorService.print(err);
+    });
+  }
+
+  showSnackbarSaved(): void {
     this.appComponent.showSnackbar('Änderungen wurden gespeichert');
   }
 

@@ -1,6 +1,5 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import { Router } from '@angular/router';
-import { MatSnackBar } from '@angular/material/snack-bar';
 
 import { Meeting } from '../meeting.model';
 import { MeetingService } from '../meeting.service';
@@ -68,6 +67,7 @@ export class MeetingListComponent implements OnInit {
           }
         });
       });
+      Object.assign(this.initialSignupValues, this.signupValues);
     }, err => {
       this.errorService.print(err);
     });
@@ -108,11 +108,11 @@ export class MeetingListComponent implements OnInit {
   }
 
   checkForUpdates(): void {
+    this.isDifferent = false;
     for (const meeting of this.meetings) {
-      this.isDifferent = false;
       if (meeting.display !== this.initialDisplayValues[meeting.id] || this.signupValues[meeting.id] !== this.initialSignupValues[meeting.id]) {
         this.isDifferent = true;
-        break;
+        return;
       }
     }
   }

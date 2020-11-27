@@ -12,10 +12,12 @@ import { AppComponent } from '../app.component';
 export class HeaderComponent implements OnInit, OnDestroy {
   currentUser: User;
   isLoggedIn: boolean;
+  logo: string;
 
   constructor(private router: Router, private tokenStorageService: TokenStorageService, private appComponent: AppComponent) { }
 
   ngOnInit(): void {
+    this.logo = '../../favicon.ico';
     this.currentUser = this.tokenStorageService.getUser();
     this.isLoggedIn = !!this.currentUser;
 

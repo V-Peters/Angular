@@ -6,7 +6,7 @@ import { Meeting } from './meeting.model';
 import { MeetingUser } from './meetingUser.model';
 import {User} from '../authentification/user.model';
 
-const MEETING_URL = 'http://localhost:8080/meetings/';
+const MEETING_URL = 'https://meeting-user-server.herokuapp.com/meetings/';
 
 @Injectable({
   providedIn: 'root'

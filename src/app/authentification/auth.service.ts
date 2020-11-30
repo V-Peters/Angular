@@ -3,7 +3,7 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { User } from './user.model';
 
-const AUTH_API = 'http://localhost:8080/user/';
+const AUTH_API = 'https://meeting-user-server.herokuapp.com/user/';
 
 const httpOptions = {
   headers: new HttpHeaders({ 'Content-Type': 'application/json' })

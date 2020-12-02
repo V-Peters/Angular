@@ -9,8 +9,7 @@ import { AppComponent } from 'src/app/app.component';
 
 @Component({
   selector: 'app-meeting-list',
-  templateUrl: './meeting-list.component.html',
-  styleUrls: ['../../loader.css']
+  templateUrl: './meeting-list.component.html'
 })
 export class MeetingListComponent implements OnInit {
   isLoading = true;

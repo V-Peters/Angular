@@ -1,4 +1,5 @@
-<div class="col-xs-12">
+<app-loader *ngIf="isLoading"></app-loader>
+<div *ngIf="!isLoading" class="col-xs-12">
   <h3>Veranstaltungsliste</h3>
   <hr>
   <button *ngIf="isAdmin" class="btn btn-success col-xs-3" (click)="onAddMeeting()">Veranstaltung hinzufügen</button>
@@ -22,7 +23,7 @@
           <th *ngIf="!isAdmin" style="text-align:center; width: 210px;" >An Veranstaltung teilnehmen</th>
         </tr>
       </thead>
-      <tbody *ngIf="!isLoading">
+      <tbody>
         <tr *ngFor="let meeting of meetings; let i = index">
           <td style="text-align:right;">{{ i + 1 }}</td>
           <td>{{ meeting.name }}</td>
@@ -43,15 +44,6 @@
           <td *ngIf="!isAdmin" style="text-align:center;" >
             <a *ngIf="signupValues[meeting.id]" class="btn btn-success btn-xs" (click)="onChangeSignup(meeting.id)">✔</a>
             <a *ngIf="!signupValues[meeting.id]" class="btn btn-danger btn-xs" (click)="onChangeSignup(meeting.id)">✖</a>
-          </td>
-        </tr>
-      </tbody>
-    </table>
-    <table *ngIf="isLoading">
-      <tbody>
-        <tr>
-          <td>
-            <div class="loader" style="text-align: center;"></div>
           </td>
         </tr>
       </tbody>

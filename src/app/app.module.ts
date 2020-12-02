@@ -20,6 +20,7 @@ import { PageNotFoundComponent } from './error/page-not-found/page-not-found.com
 import { AccessDeniedComponent } from './error/access-denied/access-denied.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
+import { LoaderComponent } from './loader/loader.component';
 
 @NgModule({
   declarations: [
@@ -33,7 +34,8 @@ import { MatSnackBarModule } from '@angular/material/snack-bar';
     ProfileComponent,
     ParticipantsListComponent,
     PageNotFoundComponent,
-    AccessDeniedComponent
+    AccessDeniedComponent,
+    LoaderComponent
   ],
   imports: [
     BrowserModule,

@@ -7,8 +7,7 @@ import { User } from 'src/app/authentification/user.model';
 
 @Component({
   selector: 'app-participants-list',
-  templateUrl: './participants-list.component.html',
-  styleUrls: ['../../loader.css']
+  templateUrl: './participants-list.component.html'
 })
 export class ParticipantsListComponent implements OnInit {
   isLoading = true;

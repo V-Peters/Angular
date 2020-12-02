@@ -7,6 +7,7 @@ import { MeetingService } from '../meeting.service';
 import { Meeting } from '../meeting.model';
 import {ErrorService} from '../../error/error-service';
 import {AppComponent} from '../../app.component';
+import {findLast} from '@angular/compiler/src/directive_resolver';
 
 @Component({
   selector: 'app-meeting-edit',
@@ -18,10 +19,12 @@ export class MeetingEditComponent implements OnInit {
   id: number;
   now: string;
   meetingExists: boolean;
+  isLoading: boolean;
 
   constructor(private router: Router, private route: ActivatedRoute, private meetingService: MeetingService, private errorService: ErrorService, private appComponent: AppComponent) { }
 
   ngOnInit(): void {
+    this.isLoading = true;
     this.now = new DatePipe('en-US').transform(Date.now(), 'yyyy-MM-ddTHH:mm');
     this.meetingExists = true;
     this.route.params.subscribe(
@@ -43,12 +46,15 @@ export class MeetingEditComponent implements OnInit {
           this.meetingExists = true;
           this.meeting = tempMeeting;
           this.initForm(this.meeting.id, this.meeting.name, this.meeting.datetime, this.meeting.display);
+          this.isLoading = false;
         } else {
           this.meetingExists = false;
         }
       }, err => {
         this.errorService.print(err);
       });
+    } else {
+      this.isLoading = false;
     }
   }
 

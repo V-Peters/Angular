@@ -17,10 +17,12 @@ export class LoginComponent implements OnInit {
   loginForm: FormGroup;
   isLoggedIn = false;
   isLoginFailed = false;
+  isLoading: boolean;
 
   constructor(private router: Router, private authService: AuthService, private tokenStorageService: TokenStorageService, private errorService: ErrorService, private appComponent: AppComponent) { }
 
   ngOnInit(): void {
+    this.isLoading = false;
     if (this.tokenStorageService.getUser()) {
       this.isLoggedIn = true;
     }
@@ -31,6 +33,7 @@ export class LoginComponent implements OnInit {
   }
 
   onSubmit(): void {
+    this.isLoading = true;
     this.authService.login(this.loginForm)
     .subscribe(loginUser => {
       this.tokenStorageService.saveUser(loginUser);
@@ -42,6 +45,7 @@ export class LoginComponent implements OnInit {
       this.appComponent.showSnackbar('Herzlich willkommen '.concat(this.tokenStorageService.isAdmin() ? 'Administrator' : (this.tokenStorageService.getUser().firstname + ' ' + this.tokenStorageService.getUser().lastname)));
     }, err => {
       this.isLoginFailed = true;
+      this.isLoading = false;
       this.errorService.print(err);
     });
   }

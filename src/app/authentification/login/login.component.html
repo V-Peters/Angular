@@ -1,4 +1,5 @@
-<div class="card col-xs-5">
+<app-loader *ngIf="isLoading"></app-loader>
+<div *ngIf="!isLoading" class="card col-xs-5">
   <div *ngIf="isLoggedIn">
     <span>Sie sind bereits eingeloggt</span>
   </div>

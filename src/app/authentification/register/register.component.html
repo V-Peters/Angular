@@ -1,4 +1,5 @@
-<div class="card col-xs-5">
+<app-loader *ngIf="isLoading"></app-loader>
+<div *ngIf="!isLoading" class="card col-xs-5">
   <div *ngIf="isLoggedIn">
     Sie können sich nicht registrieren, wahrend Sie eingeloggt sind.
   </div>
@@ -13,7 +14,7 @@
         <span *ngIf="registerForm.get('username').invalid && registerForm.get('username').touched || usernameAlreadyExists" style="color: red;">
           <i> {{ usernameError }}</i>
         </span>
-        <input 
+        <input
         type="text"
         id="username"
         formControlName="username"
@@ -25,7 +26,7 @@
         <span *ngIf="registerForm.get('password').invalid && registerForm.get('password').touched" style="color: red;">
           <i> {{ passwordError }}</i>
         </span>
-        <input 
+        <input
         type="password"
         id="password"
         formControlName="password"
@@ -38,7 +39,7 @@
         <span *ngIf="registerForm.get('passwordCheck').touched && passwordCheckError" style="color: red;">
           <i> {{ passwordCheckError }}</i>
         </span>
-        <input 
+        <input
         type="password"
         id="passwordCheck"
         formControlName="passwordCheck"
@@ -51,7 +52,7 @@
         <span *ngIf="registerForm.get('firstname').invalid && registerForm.get('firstname').touched" style="color: red;">
           <i> {{ firstnameError }}</i>
         </span>
-        <input 
+        <input
         type="text"
         id="firstname"
         formControlName="firstname"
@@ -63,7 +64,7 @@
         <span *ngIf="registerForm.get('lastname').invalid && registerForm.get('lastname').touched" style="color: red;">
           <i> {{ lastnameError }}</i>
         </span>
-        <input 
+        <input
         type="text"
         id="lastname"
         formControlName="lastname"
@@ -75,7 +76,7 @@
         <span *ngIf="registerForm.get('email').invalid && registerForm.get('email').touched || emailAlreadyExists" style="color: red;">
           <i> {{ emailError }}</i>
         </span>
-        <input 
+        <input
         type="email"
         id="email"
         formControlName="email"
@@ -87,7 +88,7 @@
         <span *ngIf="registerForm.get('company').invalid && registerForm.get('company').touched" style="color: red;">
           <i> {{ companyError }}</i>
         </span>
-        <input 
+        <input
         type="text"
         id="company"
         formControlName="company"

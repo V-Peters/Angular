@@ -6,6 +6,7 @@ import { AuthService } from '../auth.service';
 import { TokenStorageService } from '../token-storage.service';
 import { ErrorService } from 'src/app/error/error-service';
 import { AppComponent } from 'src/app/app.component';
+import {findLast} from '@angular/compiler/src/directive_resolver';
 
 @Component({
   selector: 'app-register',
@@ -26,10 +27,12 @@ export class RegisterComponent implements OnInit {
   lastnameError: string;
   emailError: string;
   companyError: string;
+  isLoading: boolean;
 
   constructor(private router: Router, private authService: AuthService, private tokenStorageService: TokenStorageService, private errorService: ErrorService, private appComponent: AppComponent) {}
 
   ngOnInit(): void {
+    this.isLoading = false;
     this.registerForm = new FormGroup({
       username: new FormControl(null, [Validators.required, Validators.minLength(4), Validators.maxLength(20)]),
       password: new FormControl(null, [Validators.required, Validators.minLength(5), Validators.maxLength(60)]),
@@ -128,6 +131,7 @@ export class RegisterComponent implements OnInit {
   }
 
   onSubmit(): void {
+    this.isLoading = true;
     this.authService.register(this.registerForm)
     .subscribe(registerData => {
       this.isSignUpFailed = false;
@@ -139,9 +143,11 @@ export class RegisterComponent implements OnInit {
         this.appComponent.showSnackbar('Sie wurden erfolgreich registriert');
       }, err => {
         this.errorService.print(err);
+        this.isLoading = false;
       });
     }, err => {
       this.isSignUpFailed = true;
+      this.isLoading = false;
       this.errorService.print(err);
     });
   }

@@ -1,7 +1,7 @@
 # Meeting User Application frontend
 
-Run `ng serve` to start the application. Navigate to `http://localhost:4200`.
-> [http://localhost:4200](http://localhost:4200)
+Just visit this website:
+> [https://meeting-user-app.herokuapp.com/home](https://meeting-user-app.herokuapp.com/home)
 
-Don't forget to start the REST-backend.
+Also see the REST-backend.
 > [Backend](https://github.com/V-Peters/REST2)

@@ -35,7 +35,6 @@
       </div>
       <div class="form-group">
         <span for="passwordCheck">Passwort bestätigen:</span>
-        <!-- <span *ngIf="registerForm.get('passwordCheck').invalid && registerForm.get('passwordCheck').touched" style="color: red;"> -->
         <span *ngIf="registerForm.get('passwordCheck').touched && passwordCheckError" style="color: red;">
           <i> {{ passwordCheckError }}</i>
         </span>
@@ -100,7 +99,7 @@
       <br>
       <button type="submit" class="btn btn-info btn-block" [disabled]="registerForm.invalid || usernameAlreadyExists || emailAlreadyExists || passwordCheckError">
         <span *ngIf="registerForm.valid && !usernameAlreadyExists && !emailAlreadyExists && !passwordCheckError">Registrieren</span>
-        <span *ngIf="registerForm.invalid || usernameAlreadyExists || emailAlreadyExists || passwordCheckError" style="color: rgb(117, 0, 0);"> Das Registrierungsformular ist noch nicht vollständing ausgefüllt.</span>
+        <span *ngIf="registerForm.invalid || usernameAlreadyExists || emailAlreadyExists || passwordCheckError" style="color: rgb(117, 0, 0);"> Das Registrierungsformular ist noch nicht vollständig ausgefüllt.</span>
       </button>
       <hr>
       <button type="button" class="btn btn-primary btn-block" (click)="onLogin()">Doch schon Mitglied? Zurück zum Login</button>

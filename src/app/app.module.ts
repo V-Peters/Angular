@@ -21,6 +21,7 @@ import { AccessDeniedComponent } from './error/access-denied/access-denied.compo
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { LoaderComponent } from './loader/loader.component';
+import { ProfileEditComponent } from './user/profile/profile-edit/profile-edit.component';
 
 @NgModule({
   declarations: [
@@ -35,7 +36,8 @@ import { LoaderComponent } from './loader/loader.component';
     ParticipantsListComponent,
     PageNotFoundComponent,
     AccessDeniedComponent,
-    LoaderComponent
+    LoaderComponent,
+    ProfileEditComponent
   ],
   imports: [
     BrowserModule,

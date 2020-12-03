@@ -1,0 +1,120 @@
+<app-loader *ngIf="isLoading"></app-loader>
+<div *ngIf="!isLoading" class="col-xs-6">
+  <h3>Profil bearbeiten</h3>
+  <hr>
+  <div>
+    <form
+      [formGroup]="profileForm"
+      (ngSubmit)="onSubmit()">
+      <div class="form-group">
+        <label for="username">Benutzername: </label>
+<!--        <i *ngIf="profileForm.get('name').invalid && profileForm.get('name').touched" style="color: red;"> Bitte geben Sie einen Namen für die Veranstaltung ein.</i>-->
+        <input
+          type="text"
+          id="username"
+          formControlName="username"
+          class="form-control"
+          placeholder="Benutzername">
+      </div>
+      <label>Passwort: </label>
+      <br>
+      <button type="button" class="btn btn-primary" (click)="onEditPassword()">Passwort ändern</button>
+<!--      <div class="form-group">-->
+<!--      <label for="password">Passwort: </label>-->
+<!--        <i *ngIf="profileForm.get('name').invalid && profileForm.get('name').touched" style="color: red;"> Bitte geben Sie einen Namen für die Veranstaltung ein.</i>-->
+<!--        <input-->
+<!--          type="text"-->
+<!--          id="password"-->
+<!--          formControlName="name"-->
+<!--          class="form-control"-->
+<!--          placeholder="Veranstaltungsname"-->
+<!--          autofocus>-->
+<!--      </div>-->
+      <hr>
+      <div class="form-group">
+        <label for="firstname">Vorname: </label>
+<!--        <i *ngIf="profileForm.get('name').invalid && profileForm.get('name').touched" style="color: red;"> Bitte geben Sie einen Namen für die Veranstaltung ein.</i>-->
+        <input
+          type="text"
+          id="firstname"
+          formControlName="firstname"
+          class="form-control"
+          placeholder="Vorname">
+      </div>
+      <div class="form-group">
+        <label for="lastname">Nachname: </label>
+<!--        <i *ngIf="profileForm.get('name').invalid && profileForm.get('name').touched" style="color: red;"> Bitte geben Sie einen Namen für die Veranstaltung ein.</i>-->
+        <input
+          type="text"
+          id="lastname"
+          formControlName="lastname"
+          class="form-control"
+          placeholder="Nachname">
+      </div>
+      <div class="form-group">
+        <label for="email">E-Mail: </label>
+<!--        <i *ngIf="profileForm.get('name').invalid && profileForm.get('name').touched" style="color: red;"> Bitte geben Sie einen Namen für die Veranstaltung ein.</i>-->
+        <input
+          type="text"
+          id="email"
+          formControlName="email"
+          class="form-control"
+          placeholder="E-Mail">
+      </div>
+      <div class="form-group">
+        <label for="company">Firma/Unternehmen: </label>
+<!--        <i *ngIf="profileForm.get('name').invalid && profileForm.get('name').touched" style="color: red;"> Bitte geben Sie einen Namen für die Veranstaltung ein.</i>-->
+        <input
+          type="text"
+          id="company"
+          formControlName="company"
+          class="form-control"
+          placeholder="Firma/Unternehmen">
+      </div>
+      <button type="submit" class="btn btn-info btn-block" [disabled]="profileForm.invalid">
+        <span *ngIf="profileForm.valid">Profil speichern</span>
+        <span *ngIf="profileForm.invalid" style="color: rgb(117, 0, 0);">Bitte geben Sie einen Namen für die Veranstaltung ein</span>
+      </button>
+    </form>
+    <hr>
+    <button type="button" class="btn btn-secondary col-xs-12" (click)="onBackToProfile()">Zurück zum Profil</button>
+  </div>
+</div>
+<div *ngIf="editPasswordActive" class="col-xs-6">
+  <h3>Passwort bearbeiten</h3>
+  <hr>
+  <form
+    [formGroup]="passwordForm">
+    <div class="form-group">
+      <label for="currentPassword">Aktuelles Passwort: </label>
+      <!--        <i *ngIf="profileForm.get('name').invalid && profileForm.get('name').touched" style="color: red;"> Bitte geben Sie einen Namen für die Veranstaltung ein.</i>-->
+      <input
+        type="password"
+        id="currentPassword"
+        formControlName="currentPassword"
+        class="form-control"
+        placeholder="Aktuelles Passwort">
+    </div>
+    <br>
+    <div class="form-group">
+      <label for="newPassword">Neues Passwort: </label>
+      <!--        <i *ngIf="profileForm.get('name').invalid && profileForm.get('name').touched" style="color: red;"> Bitte geben Sie einen Namen für die Veranstaltung ein.</i>-->
+      <input
+        type="password"
+        id="newPassword"
+        formControlName="newPassword"
+        class="form-control"
+        placeholder="Neues Passwort">
+    </div>
+    <div class="form-group">
+      <label for="newPasswordCheck">Neues Password bestätigen: </label>
+      <!--        <i *ngIf="profileForm.get('name').invalid && profileForm.get('name').touched" style="color: red;"> Bitte geben Sie einen Namen für die Veranstaltung ein.</i>-->
+      <input
+        type="password"
+        id="newPasswordCheck"
+        formControlName="newPasswordCheck"
+        class="form-control"
+        placeholder="Neues Passwort bestätigen">
+    </div>
+  </form>
+</div>

@@ -11,6 +11,7 @@ import { RegisterComponent } from './authentification/register/register.componen
 import { LoginComponent } from './authentification/login/login.component';
 import { AccessDeniedComponent } from './error/access-denied/access-denied.component';
 import { PageNotFoundComponent } from './error/page-not-found/page-not-found.component';
+import {ProfileEditComponent} from './user/profile/profile-edit/profile-edit.component';
 
 const routes: Routes = [
   { path: '', redirectTo: 'home', pathMatch: 'full' },
@@ -20,6 +21,7 @@ const routes: Routes = [
   { path: 'meeting/edit/:id', component: MeetingEditComponent, canActivate: [AuthGuard] },
   { path: 'participants/list/:id', component: ParticipantsListComponent, canActivate: [AuthGuard] },
   { path: 'profile', component: ProfileComponent, canActivate: [AuthGuard] },
+  { path: 'profile/edit', component: ProfileEditComponent, canActivate: [AuthGuard] },
   { path: 'register', component: RegisterComponent },
   { path: 'login', component: LoginComponent },
   { path: 'access-denied', component: AccessDeniedComponent },

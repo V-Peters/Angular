@@ -14,7 +14,7 @@ export class AuthGuard implements CanActivate {
 
   canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): boolean | UrlTree | Observable<boolean | UrlTree> | Promise<boolean | UrlTree> {
     if (this.tokenStorageService.getUser()) {
-      if (this.tokenStorageService.isAdmin() || state.url === '/meeting/list' || state.url === '/profile') {
+      if (this.tokenStorageService.isAdmin() || state.url === '/meeting/list' || state.url === '/profile' || state.url === '/profile/edit') {
         return true;
       } else {
         this.appComponent.showSnackbar('Unberechtigter Zugriff.');

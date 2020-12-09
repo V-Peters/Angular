@@ -1,4 +1,4 @@
-import {Component, OnDestroy, OnInit} from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {FormControl, FormGroup} from '@angular/forms';
 import {User} from '../../../authentification/user.model';
 import {Router} from '@angular/router';
@@ -13,7 +13,7 @@ import {ValidationErrorMessagesModule} from '../../../validation/validation-erro
   selector: 'app-profile-edit',
   templateUrl: './profile-edit.component.html'
 })
-export class ProfileEditComponent implements OnInit, OnDestroy {
+export class ProfileEditComponent implements OnInit {
   profileForm: FormGroup;
   passwordForm: FormGroup;
   user: User;
@@ -57,10 +57,6 @@ export class ProfileEditComponent implements OnInit, OnDestroy {
     this.changedPassword();
     this.changedNewPassword();
     this.changedNewPasswordCheck();
-  }
-
-  ngOnDestroy(): void {
-    ValidationErrorMessagesModule.emailError.unsubscribe();
   }
 
   changedFirstname(): void {

@@ -1,4 +1,4 @@
-import {Component, OnDestroy, OnInit} from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import { FormGroup, FormControl } from '@angular/forms';
 import { Router } from '@angular/router';
 
@@ -14,7 +14,7 @@ import {ValidationErrorMessagesModule} from '../../validation/validation-error-m
   templateUrl: './register.component.html',
   styleUrls: ['../register-and-login.component.css']
 })
-export class RegisterComponent implements OnInit, OnDestroy {
+export class RegisterComponent implements OnInit {
 
   registerForm: FormGroup;
   isSignUpFailed = false;
@@ -61,11 +61,6 @@ export class RegisterComponent implements OnInit, OnDestroy {
     this.changedLastname();
     this.changedEmail();
     this.changedCompany();
-  }
-
-  ngOnDestroy(): void {
-    ValidationErrorMessagesModule.usernameError.unsubscribe();
-    ValidationErrorMessagesModule.emailError.unsubscribe();
   }
 
   changedUsername(): void {

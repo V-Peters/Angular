@@ -1,45 +1,95 @@
-import { Component, OnInit } from '@angular/core';
-import {FormControl, FormGroup, Validators} from '@angular/forms';
+import {Component, OnDestroy, OnInit} from '@angular/core';
+import {FormControl, FormGroup} from '@angular/forms';
 import {User} from '../../../authentification/user.model';
 import {Router} from '@angular/router';
 import {TokenStorageService} from '../../../authentification/token-storage.service';
 import {AuthService} from '../../../authentification/auth.service';
 import {ErrorService} from '../../../error/error-service';
+import {AppComponent} from '../../../app.component';
+import {ValidatorsModule} from '../../../validation/validators.module';
+import {ValidationErrorMessagesModule} from '../../../validation/validation-error-messages.module';
 
 @Component({
   selector: 'app-profile-edit',
   templateUrl: './profile-edit.component.html'
 })
-export class ProfileEditComponent implements OnInit {
+export class ProfileEditComponent implements OnInit, OnDestroy {
   profileForm: FormGroup;
   passwordForm: FormGroup;
   user: User;
   isLoading: boolean;
   editPasswordActive: boolean;
   emailAlreadyExists: boolean;
+  firstnameError: string;
+  lastnameError: string;
   emailError: string;
+  companyError: string;
   passwordError: string;
   newPasswordError: string;
   newPasswordCheckError: string;
 
-  constructor(private router: Router, private tokenStorageService: TokenStorageService, private authService: AuthService, private errorService: ErrorService) { }
+  constructor(private router: Router, private tokenStorageService: TokenStorageService, private authService: AuthService, private errorService: ErrorService, private appComponent: AppComponent) { }
 
   ngOnInit(): void {
+    ValidationErrorMessagesModule.emailError.subscribe(errorMessage => {
+      this.emailError = errorMessage;
+      this.emailAlreadyExists = this.emailError === 'Diese E-Mail ist bereits vergeben.';
+    });
     this.isLoading = true;
     this.editPasswordActive = false;
     this.user = this.tokenStorageService.getUser();
     this.profileForm = new FormGroup({
-      firstname: new FormControl(this.user.firstname, Validators.required),
-      lastname: new FormControl(this.user.lastname, Validators.required),
-      email: new FormControl(this.user.email, [Validators.required, Validators.email]),
-      company: new FormControl(this.user.company, Validators.required)
+      firstname: new FormControl(this.user.firstname, ValidatorsModule.firstnameValidators),
+      lastname: new FormControl(this.user.lastname, ValidatorsModule.lastnameValidators),
+      email: new FormControl(this.user.email, ValidatorsModule.emailValidators),
+      company: new FormControl(this.user.company, ValidatorsModule.companyValidators)
     });
     this.passwordForm = new FormGroup({
-      currentPassword: new FormControl(null, [Validators.required, Validators.minLength(5), Validators.maxLength(60)]),
-      newPassword: new FormControl(null, [Validators.required, Validators.minLength(5), Validators.maxLength(60)]),
-      newPasswordCheck: new FormControl(null, [Validators.required, Validators.minLength(5), Validators.maxLength(60)])
+      currentPassword: new FormControl(null, ValidatorsModule.passwordValidators),
+      password: new FormControl(null, ValidatorsModule.passwordValidators),
+      passwordCheck: new FormControl(null, ValidatorsModule.passwordValidators)
     });
     this.isLoading = false;
+    this.changedFirstname();
+    this.changedLastname();
+    this.changedEmail();
+    this.changedCompany();
+    this.changedPassword();
+    this.changedNewPassword();
+    this.changedNewPasswordCheck();
+  }
+
+  ngOnDestroy(): void {
+    ValidationErrorMessagesModule.emailError.unsubscribe();
+  }
+
+  changedFirstname(): void {
+    this.firstnameError = ValidationErrorMessagesModule.changedFirstname(this.profileForm);
+  }
+
+  changedLastname(): void {
+    this.lastnameError = ValidationErrorMessagesModule.changedLastname(this.profileForm);
+  }
+
+  changedEmail(): void {
+    ValidationErrorMessagesModule.changedEmail(this.profileForm, this.authService, this.errorService, this.tokenStorageService.getUser().email);
+  }
+
+  changedCompany(): void {
+    ValidationErrorMessagesModule.changedCompany(this.profileForm);
+  }
+
+  changedPassword(): void {
+    this.passwordError = ValidationErrorMessagesModule.changedCurrentPassword(this.passwordForm);
+  }
+
+  changedNewPassword(): void {
+    this.newPasswordError = ValidationErrorMessagesModule.changedPassword(this.passwordForm);
+    this.changedNewPasswordCheck();
+  }
+
+  changedNewPasswordCheck(): void {
+    this.newPasswordCheckError = ValidationErrorMessagesModule.changedPasswordCheck(this.passwordForm);
   }
 
   onEditPassword(): void {
@@ -60,14 +110,12 @@ export class ProfileEditComponent implements OnInit {
   }
 
   checkPasswordAndSaveChanges(): void {
-    console.log('checkPasswordAndSaveChanges');
     this.authService.checkPassword(this.tokenStorageService.getUser().id, this.passwordForm.value.currentPassword)
     .subscribe(successful => {
-      console.log(successful);
       if (successful) {
         this.saveChanges();
       } else {
-        console.log('Falsches Passwort');
+        this.appComponent.showSnackbar('Das eingegebene Passwort ist falsch');
       }
     }, err => {
       this.errorService.print(err);
@@ -75,10 +123,8 @@ export class ProfileEditComponent implements OnInit {
   }
 
   saveChanges(): void {
-    console.log('saveChanges');
     this.authService.changeUser(this.profileForm, this.passwordForm)
     .subscribe(successful => {
-      console.log(successful);
       if (successful) {
         this.updateUserToken();
         this.tokenStorageService.saveUser(this.user);
@@ -90,7 +136,6 @@ export class ProfileEditComponent implements OnInit {
   }
 
   updateUserToken(): void {
-    const tempUser = this.tokenStorageService.getUser();
     this.user.firstname = this.profileForm.value.firstname;
     this.user.lastname = this.profileForm.value.lastname;
     this.user.email = this.profileForm.value.email;
@@ -108,39 +153,5 @@ export class ProfileEditComponent implements OnInit {
 
   navigateToProfile(): void {
     this.router.navigate(['/profile']);
-  }
-
-  changedEmail(): void {
-    this.emailAlreadyExists = false;
-    this.emailError = 'Bitte geben Sie eine gültige E-Mail ein.';
-    if (this.profileForm.controls.email.valid) {
-      this.authService.checkIfEmailExists(this.profileForm.value.email)
-        .subscribe(data => {
-          if (data === true) {
-            this.emailError = 'Diese E-Mail ist bereits vergeben.';
-            this.emailAlreadyExists = true;
-          }
-        }, err => {
-          this.errorService.print(err);
-        });
-    }
-  }
-
-  changedPassword(): void {
-    this.passwordError = 'Bitte geben Sie ein gültiges Passwort ein';
-    this.changedNewPasswordCheck();
-  }
-
-  changedNewPassword(): void {
-    this.newPasswordError = 'Bitte geben Sie ein gültiges Passwort ein';
-    this.changedNewPasswordCheck();
-  }
-
-  changedNewPasswordCheck(): void {
-    if (this.passwordForm.value.password !== this.passwordForm.value.passwordCheck) {
-      this.newPasswordCheckError = 'Die beiden Passwörter stimmen nicht überein';
-    } else {
-      this.newPasswordCheckError = '';
-    }
   }
 }

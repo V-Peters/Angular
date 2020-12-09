@@ -1,23 +1,25 @@
-import { Component, OnInit } from '@angular/core';
-import { FormGroup, FormControl, Validators, FormBuilder } from '@angular/forms';
+import {Component, OnDestroy, OnInit} from '@angular/core';
+import { FormGroup, FormControl } from '@angular/forms';
 import { Router } from '@angular/router';
 
 import { AuthService } from '../auth.service';
 import { TokenStorageService } from '../token-storage.service';
 import { ErrorService } from 'src/app/error/error-service';
 import { AppComponent } from 'src/app/app.component';
-import {findLast} from '@angular/compiler/src/directive_resolver';
+import { ValidatorsModule } from '../../validation/validators.module';
+import {ValidationErrorMessagesModule} from '../../validation/validation-error-messages.module';
 
 @Component({
   selector: 'app-register',
   templateUrl: './register.component.html',
   styleUrls: ['../register-and-login.component.css']
 })
-export class RegisterComponent implements OnInit {
+export class RegisterComponent implements OnInit, OnDestroy {
 
   registerForm: FormGroup;
   isSignUpFailed = false;
   isLoggedIn = false;
+  isLoading: boolean;
   usernameAlreadyExists: boolean;
   emailAlreadyExists: boolean;
   usernameError: string;
@@ -27,20 +29,27 @@ export class RegisterComponent implements OnInit {
   lastnameError: string;
   emailError: string;
   companyError: string;
-  isLoading: boolean;
 
   constructor(private router: Router, private authService: AuthService, private tokenStorageService: TokenStorageService, private errorService: ErrorService, private appComponent: AppComponent) {}
 
   ngOnInit(): void {
+    ValidationErrorMessagesModule.usernameError.subscribe(errorMessage => {
+      this.usernameError = errorMessage;
+      this.usernameAlreadyExists = this.usernameError === 'Dieser Benutzername ist bereits vergeben.';
+    });
+    ValidationErrorMessagesModule.emailError.subscribe(errorMessage => {
+      this.emailError = errorMessage;
+      this.emailAlreadyExists = this.emailError === 'Diese E-Mail ist bereits vergeben.';
+    });
     this.isLoading = false;
     this.registerForm = new FormGroup({
-      username: new FormControl(null, [Validators.required, Validators.minLength(4), Validators.maxLength(20)]),
-      password: new FormControl(null, [Validators.required, Validators.minLength(5), Validators.maxLength(60)]),
-      passwordCheck: new FormControl(null, [Validators.required, Validators.minLength(5), Validators.maxLength(60)]),
-      firstname: new FormControl(null, [Validators.required, Validators.maxLength(50)]),
-      lastname: new FormControl(null, [Validators.required, Validators.maxLength(50)]),
-      email: new FormControl(null, [Validators.required, Validators.maxLength(100), Validators.email]),
-      company: new FormControl(null, [Validators.required, Validators.maxLength(100)])
+      username: new FormControl(null, ValidatorsModule.usernameValidators),
+      password: new FormControl(null, ValidatorsModule.passwordValidators),
+      passwordCheck: new FormControl(null, ValidatorsModule.passwordValidators),
+      firstname: new FormControl(null, ValidatorsModule.firstnameValidators),
+      lastname: new FormControl(null, ValidatorsModule.lastnameValidators),
+      email: new FormControl(null, ValidatorsModule.emailValidators),
+      company: new FormControl(null, ValidatorsModule.companyValidators)
     });
     if (this.tokenStorageService.getUser()) {
       this.isLoggedIn = true;
@@ -54,80 +63,38 @@ export class RegisterComponent implements OnInit {
     this.changedCompany();
   }
 
+  ngOnDestroy(): void {
+    ValidationErrorMessagesModule.usernameError.unsubscribe();
+    ValidationErrorMessagesModule.emailError.unsubscribe();
+  }
+
   changedUsername(): void {
-    this.usernameAlreadyExists = false;
-    const errors = this.registerForm.controls.username.errors;
-    this.usernameError = this.changed(errors).replace('{}', 'en Benutzernamen');
-    if (this.registerForm.controls.username.valid) {
-      this.authService.checkIfUsernameExists(this.registerForm.value.username)
-      .subscribe(data => {
-        if (data === true) {
-          this.usernameError = 'Dieser Benutzername ist bereits vergeben.';
-          this.usernameAlreadyExists = true;
-        }
-      }, err => {
-        this.errorService.print(err);
-      });
-    }
+    ValidationErrorMessagesModule.changedUsername(this.registerForm, this.authService, this.errorService);
   }
 
   changedPassword(): void {
-    const errors = this.registerForm.controls.password.errors;
-    this.passwordError = this.changed(errors).replace('{}', ' Passwort');
+    this.passwordError = ValidationErrorMessagesModule.changedPassword(this.registerForm);
     this.changedPasswordCheck();
   }
 
   changedPasswordCheck(): void {
-    if (this.registerForm.value.password !== this.registerForm.value.passwordCheck) {
-      this.passwordCheckError = 'Die beiden Passwörter stimmen nicht überein';
-    } else {
-      this.passwordCheckError = '';
-    }
+    this.passwordCheckError = ValidationErrorMessagesModule.changedPasswordCheck(this.registerForm);
   }
 
   changedFirstname(): void {
-    const errors = this.registerForm.controls.firstname.errors;
-    this.firstnameError = this.changed(errors).replace('{}', 'en Vornamen');
+    this.firstnameError = ValidationErrorMessagesModule.changedFirstname(this.registerForm);
   }
 
   changedLastname(): void {
-    const errors = this.registerForm.controls.lastname.errors;
-    this.lastnameError = this.changed(errors).replace('{}', 'en Nachnamen');
+    this.lastnameError = ValidationErrorMessagesModule.changedLastname(this.registerForm);
   }
 
   changedEmail(): void {
-    this.emailAlreadyExists = false;
-    const errors = this.registerForm.controls.email.errors;
-    this.emailError = this.changed(errors).replace('{}', 'e gültige E-Mail ');
-    if (this.registerForm.controls.email.valid) {
-      this.authService.checkIfEmailExists(this.registerForm.value.email)
-      .subscribe(data => {
-        if (data === true) {
-          this.emailError = 'Diese E-Mail ist bereits vergeben.';
-          this.emailAlreadyExists = true;
-        }
-      }, err => {
-        this.errorService.print(err);
-      });
-    }
+    ValidationErrorMessagesModule.changedEmail(this.registerForm, this.authService, this.errorService, '');
   }
 
   changedCompany(): void {
-    const errors = this.registerForm.controls.company.errors;
-    this.companyError = this.changed(errors).replace('{}', 'e Firma');
-  }
-
-  changed(errors: any): string {
-    if (errors) {
-      if (errors.required || errors.email) {
-        return 'Bitte geben Sie ein{} ein.';
-      } else if (errors.minlength) {
-        return 'muss mindestens ' + errors.minlength.requiredLength + ' Zeichen lang sein.';
-      } else if (errors.maxlength) {
-        return 'darf maximal ' + errors.maxlength.requiredLength + ' Zeichen lang sein.';
-      }
-    }
-    return '';
+    this.companyError = ValidationErrorMessagesModule.changedCompany(this.registerForm);
   }
 
   onSubmit(): void {
@@ -155,5 +122,4 @@ export class RegisterComponent implements OnInit {
   onLogin(): void {
     this.router.navigate(['/login']);
   }
-
 }

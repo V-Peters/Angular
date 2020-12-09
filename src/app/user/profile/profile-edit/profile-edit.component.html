@@ -7,23 +7,25 @@
     (ngSubmit)="onSubmit()">
     <div class="form-group">
       <label for="firstname">Vorname: </label>
-      <i *ngIf="profileForm.get('firstname').invalid && profileForm.get('firstname').touched" style="color: red;"> Bitte geben Sie Ihren Vornamen ein.</i>
+      <i *ngIf="profileForm.get('firstname').invalid && profileForm.get('firstname').touched" style="color: red;"> {{ firstnameError }}</i>
       <input
         type="text"
         id="firstname"
         formControlName="firstname"
         class="form-control"
-        placeholder="Vorname">
+        placeholder="Vorname"
+        (ngModelChange)="changedFirstname()">
     </div>
     <div class="form-group">
       <label for="lastname">Nachname: </label>
-      <i *ngIf="profileForm.get('lastname').invalid && profileForm.get('lastname').touched" style="color: red;"> Bitte geben Sie Ihren Nachnamen ein.</i>
+      <i *ngIf="profileForm.get('lastname').invalid && profileForm.get('lastname').touched" style="color: red;"> {{ lastnameError }}</i>
       <input
         type="text"
         id="lastname"
         formControlName="lastname"
         class="form-control"
-        placeholder="Nachname">
+        placeholder="Nachname"
+        (ngModelChange)="changedLastname()">
     </div>
     <div class="form-group">
       <label for="email">E-Mail: </label>
@@ -38,22 +40,23 @@
     </div>
     <div class="form-group">
       <label for="company">Firma/Unternehmen: </label>
-      <i *ngIf="profileForm.get('company').invalid && profileForm.get('company').touched" style="color: red;"> Bitte geben Sie den Namen Ihrer Firma ein ein.</i>
+      <i *ngIf="profileForm.get('company').invalid && profileForm.get('company').touched" style="color: red;"> {{ companyError }}</i>
       <input
         type="text"
         id="company"
         formControlName="company"
         class="form-control"
-        placeholder="Firma/Unternehmen">
+        placeholder="Firma/Unternehmen"
+        (ngModelChange)="changedCompany()">
     </div>
     <button type="button" class="btn btn-primary btn-block" (click)="onEditPassword()">
       <span *ngIf="editPasswordActive">Passwort bearbeiten deaktivieren</span>
       <span *ngIf="!editPasswordActive">Passwort bearbeiten aktivieren</span>
     </button>
     <br>
-    <button type="submit" class="btn btn-info btn-block" [disabled]="profileForm.invalid || emailAlreadyExists">
-      <span *ngIf="profileForm.valid && !emailAlreadyExists">Profil speichern</span>
-      <span *ngIf="profileForm.invalid || emailAlreadyExists" style="color: rgb(117, 0, 0);">Bitte füllen Sie alle Eingabefelder aus</span>
+    <button type="submit" class="btn btn-info btn-block" [disabled]="(!editPasswordActive && (profileForm.invalid || emailAlreadyExists)) || (editPasswordActive && (profileForm.invalid || passwordForm.invalid || emailAlreadyExists || newPasswordCheckError))">
+      <span *ngIf="!((!editPasswordActive && (profileForm.invalid || emailAlreadyExists)) || (editPasswordActive && (profileForm.invalid || passwordForm.invalid || emailAlreadyExists || newPasswordCheckError)))">Profil speichern</span>
+      <span *ngIf="(!editPasswordActive && (profileForm.invalid || emailAlreadyExists)) || (editPasswordActive && (profileForm.invalid || passwordForm.invalid || emailAlreadyExists || newPasswordCheckError))" style="color: rgb(117, 0, 0);">Bitte füllen Sie alle Eingabefelder aus</span>
     </button>
   </form>
   <hr>
@@ -66,7 +69,7 @@
     [formGroup]="passwordForm">
     <div class="form-group">
       <label for="currentPassword">Aktuelles Passwort: </label>
-      <i *ngIf="passwordForm.get('currentPassword').invalid && passwordForm.get('currentPassword').touched" style="color: red;"> Bitte geben Sie Ihr aktuelles Passwort ein.</i>
+      <i *ngIf="passwordForm.get('currentPassword').invalid && passwordForm.get('currentPassword').touched" style="color: red;"> {{ passwordError }}</i>
       <input
         type="password"
         id="currentPassword"
@@ -77,23 +80,23 @@
     </div>
     <br>
     <div class="form-group">
-      <label for="newPassword">Neues Passwort: </label>
-      <i *ngIf="passwordForm.get('newPassword').invalid && passwordForm.get('newPassword').touched" style="color: red;"> Bitte geben Sie ein neues Passwort ein.</i>
+      <label for="password">Neues Passwort: </label>
+      <i *ngIf="passwordForm.get('password').invalid && passwordForm.get('password').touched" style="color: red;"> {{ newPasswordError }}</i>
       <input
         type="password"
-        id="newPassword"
-        formControlName="newPassword"
+        id="password"
+        formControlName="password"
         class="form-control"
         placeholder="Neues Passwort"
         (ngModelChange)="changedNewPassword()">
     </div>
     <div class="form-group">
-      <label for="newPasswordCheck">Neues Password bestätigen: </label>
-      <i *ngIf="passwordForm.get('newPasswordCheck').invalid && passwordForm.get('newPasswordCheck').touched" style="color: red;"> Bitte wiederholen Sie Ihr neues Passwort ein.</i>
+      <label for="passwordCheck">Neues Password bestätigen: </label>
+      <i *ngIf="passwordForm.get('passwordCheck').touched && newPasswordCheckError" style="color: red;"> {{ newPasswordCheckError }}</i>
       <input
         type="password"
-        id="newPasswordCheck"
-        formControlName="newPasswordCheck"
+        id="passwordCheck"
+        formControlName="passwordCheck"
         class="form-control"
         placeholder="Neues Passwort bestätigen"
         (ngModelChange)="changedNewPasswordCheck()">

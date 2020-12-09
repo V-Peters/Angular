@@ -52,7 +52,8 @@ export class AuthService {
   changeUser(user, password): Observable<boolean> {
     return this.http.post<boolean>(AUTH_API + 'changeUser', {
       id: this.tokenStorageService.getUser().id,
-      newPassword: password.value.newPassword,
+      currentPassword: password.value.currentPassword,
+      newPassword: password.value.password,
       firstname: user.value.firstname,
       lastname: user.value.lastname,
       email: user.value.email,
@@ -64,5 +65,9 @@ export class AuthService {
     return this.http.post<boolean>(AUTH_API + 'checkPassword/' + id,
       password
     );
+  }
+
+  deleteUser(): Observable<boolean> {
+    return this.http.delete<boolean>(AUTH_API);
   }
 }

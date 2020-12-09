@@ -94,28 +94,11 @@ export class ProfileEditComponent implements OnInit {
   }
 
   onSubmit(): boolean {
-    if ((confirm('Änderungen wirklich übernehmen?'))) {
-      if (this.editPasswordActive) {
-        this.checkPasswordAndSaveChanges();
-      } else {
-        this.saveChanges();
-      }
+    if (confirm('Änderungen wirklich übernehmen?')) {
+      this.saveChanges();
     } else {
       return false;
     }
-  }
-
-  checkPasswordAndSaveChanges(): void {
-    this.authService.checkPassword(this.tokenStorageService.getUser().id, this.passwordForm.value.currentPassword)
-    .subscribe(successful => {
-      if (successful) {
-        this.saveChanges();
-      } else {
-        this.appComponent.showSnackbar('Das eingegebene Passwort ist falsch');
-      }
-    }, err => {
-      this.errorService.print(err);
-    });
   }
 
   saveChanges(): void {
@@ -124,8 +107,11 @@ export class ProfileEditComponent implements OnInit {
       if (successful) {
         this.updateUserToken();
         this.tokenStorageService.saveUser(this.user);
+        this.appComponent.showSnackbar('Ihr Profil wurde erfolgreich überarbeitet');
+        this.navigateToProfile();
+      } else {
+        this.appComponent.showSnackbar('Das eingegebene Passwort ist falsch');
       }
-      this.navigateToProfile();
     }, err => {
       this.errorService.print(err);
     });

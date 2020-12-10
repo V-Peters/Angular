@@ -2,7 +2,9 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { User } from './user.model';
-import {TokenStorageService} from './token-storage.service';
+import { TokenStorageService } from './token-storage.service';
+import {Router} from '@angular/router';
+import {AppComponent} from '../app.component';
 
 const AUTH_API = 'https://meeting-user-server.herokuapp.com/user/';
 
@@ -15,7 +17,7 @@ const httpOptions = {
 })
 export class AuthService {
 
-  constructor(private http: HttpClient, private tokenStorageService: TokenStorageService) { }
+  constructor(private http: HttpClient, private router: Router, private tokenStorageService: TokenStorageService, private appComponent: AppComponent) { }
 
   checkIfUsernameExists(username: string): Observable<boolean> {
     return this.http.post<boolean>(AUTH_API + 'checkIfUsernameExists',
@@ -38,6 +40,13 @@ export class AuthService {
     }, httpOptions);
   }
 
+  logout(): void {
+    this.tokenStorageService.signOut();
+    this.tokenStorageService.currentUser.emit(null);
+    this.router.navigate(['/login']);
+    this.appComponent.showSnackbar('Sie wurden erfolgreich ausgeloggt');
+  }
+
   register(user): Observable<User> {
     return this.http.post<User>(AUTH_API + 'register', {
       username: user.value.username,
@@ -58,16 +67,12 @@ export class AuthService {
       lastname: user.value.lastname,
       email: user.value.email,
       company: user.value.company
+    }, {
+      headers: {password: password.value.currentPassword + ''}
     });
   }
 
-  checkPassword(id, password): Observable<boolean> {
-    return this.http.post<boolean>(AUTH_API + 'checkPassword/' + id,
-      password
-    );
-  }
-
-  deleteUser(): Observable<boolean> {
-    return this.http.delete<boolean>(AUTH_API);
+  deleteUser(password: string): Observable<boolean> {
+    return this.http.delete<boolean>(AUTH_API, {headers: {password}});
   }
 }

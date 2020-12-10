@@ -30,8 +30,10 @@
       </tr>
     </tbody>
   </table>
-  <hr>
-  <button class="btn btn-primary col-md-4" (click)="onEdit()">Profil bearbeiten</button>
-  <div class="col-md-4"></div>
-  <button class="btn btn-danger col-md-4" (click)="onDelete()">Profil löschen</button>
+  <span *ngIf="!isAdmin">
+    <hr>
+    <button class="btn btn-primary col-md-4" (click)="onEdit()">Profil bearbeiten</button>
+    <div class="col-md-4"></div>
+    <button class="btn btn-danger col-md-4" (click)="onDelete()">Profil löschen</button>
+  </span>
 </div>

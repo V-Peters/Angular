@@ -1,9 +1,9 @@
-import { Component, OnInit, OnChanges, SimpleChanges, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Router } from '@angular/router';
 
 import { TokenStorageService } from '../authentification/token-storage.service';
 import { User } from '../authentification/user.model';
-import { AppComponent } from '../app.component';
+import {AuthService} from '../authentification/auth.service';
 
 @Component({
   selector: 'app-header',
@@ -14,7 +14,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
   isLoggedIn: boolean;
   logo: string;
 
-  constructor(private router: Router, private tokenStorageService: TokenStorageService, private appComponent: AppComponent) { }
+  constructor(private router: Router, private tokenStorageService: TokenStorageService, private authService: AuthService) { }
 
   ngOnInit(): void {
     this.logo = '../../favicon.ico';
@@ -32,9 +32,6 @@ export class HeaderComponent implements OnInit, OnDestroy {
   }
 
   onLogout(): void {
-    this.tokenStorageService.signOut();
-    this.tokenStorageService.currentUser.emit(null);
-    this.router.navigate(['/login']);
-    this.appComponent.showSnackbar('Sie wurden erfolgreich ausgeloggt');
+    this.authService.logout();
   }
 }

@@ -56,10 +56,10 @@ export class MeetingService {
     );
   }
 
-  updateSignup(signup: {}, userId: number): Observable<boolean[]> {
+  updateSignup(signup: {}): Observable<boolean[]> {
     return this.http
     .post<boolean[]>(
-      MEETING_URL + 'updateSignup/' + userId,
+      MEETING_URL + 'updateSignup',
       signup
     );
   }

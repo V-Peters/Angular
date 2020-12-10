@@ -145,7 +145,7 @@ export class MeetingListComponent implements OnInit {
   }
 
   saveSignup(): void {
-    this.meetingService.updateSignup(this.signupValues, this.tokenStorageService.getUser().id)
+    this.meetingService.updateSignup(this.signupValues)
     .subscribe(isSuccessful => {
       if (isSuccessful) {
         this.showSnackbarSaved();

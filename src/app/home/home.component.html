@@ -3,7 +3,15 @@
   <hr>
   <p>Dies ist eine Anwendung in der User sich zu Veranstaltungen eintragen können. Es gibt User, welche die Rolle Admin besitzen und somit die Veranstaltungen bearbeiten, neue hinzufügen und alte löschen können. Außerdem können sie die Teilnemer der einzelnen Veranstaltungen einsehen und entscheiden welche Veranstaltungen den Usern überhaupt angezeigt werden.</p>
   <br>
-  <p>Über die Nachfolgenden Links kann man auf die verschiedenen Funktionen dieser Anwendung zugreifen. Alternativ geht das auch über die Links in der Kopfzeile</p>
+  <p>Über den Nachfolgenden Button kann man auf die verschiedenen Funktionen dieser Anwendung zugreifen. Alternativ geht das auch über die Links in der Kopfzeile</p>
   <button *ngIf="!isLoggedIn" class="btn btn-primary col-xs-4" (click)="onLogin()">Zum Login</button>
   <button *ngIf="isLoggedIn" class="btn btn-primary col-xs-4" (click)="onList()">Zur Veranstaltungsliste</button>
+</div>
+<div class="col-xs-6">
+  <h3>Patchnotes:</h3>
+  <hr>
+  <ul>
+    <li>Rechtschreibfehler auf der Startseite korrigiert</li>
+    <li>Es ist als User nun möglich sein Profil zu überarbeiten und zu löschen</li>
+  </ul>
 </div>

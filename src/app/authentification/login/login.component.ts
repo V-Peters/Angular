@@ -5,7 +5,8 @@ import { Router } from '@angular/router';
 import { AuthService } from '../auth.service';
 import { TokenStorageService } from '../token-storage.service';
 import { ErrorService } from 'src/app/error/error-service';
-import {AppComponent} from '../../app.component';
+import { AppComponent } from '../../app.component';
+import {User} from '../user.model';
 
 @Component({
   selector: 'app-login',
@@ -36,18 +37,22 @@ export class LoginComponent implements OnInit {
     this.isLoading = true;
     this.authService.login(this.loginForm)
     .subscribe(loginUser => {
-      this.tokenStorageService.saveUser(loginUser);
-      this.tokenStorageService.saveToken(loginUser.accessToken);
-      this.isLoggedIn = true;
-
-      this.isLoginFailed = false;
-      this.router.navigate(['/meeting/list']);
-      this.appComponent.showSnackbar('Herzlich willkommen '.concat(this.tokenStorageService.isAdmin() ? 'Administrator' : (this.tokenStorageService.getUser().firstname + ' ' + this.tokenStorageService.getUser().lastname)));
+      if (loginUser){
+        this.login(loginUser);
+      } else {
+        this.isLoginFailed = true;
+      }
     }, err => {
       this.isLoginFailed = true;
       this.isLoading = false;
       this.errorService.print(err);
     });
+  }
+
+  login(loginUser: User): void {
+    this.tokenStorageService.saveUser(loginUser);
+    this.router.navigate(['/meeting/list']);
+    this.appComponent.showSnackbar('Herzlich willkommen '.concat(this.tokenStorageService.isAdmin() ? 'Administrator' : (this.tokenStorageService.getUser().firstname + ' ' + this.tokenStorageService.getUser().lastname)));
   }
 
   onRegister(): void {

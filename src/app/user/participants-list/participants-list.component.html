@@ -8,17 +8,17 @@
   <div *ngIf="meetingExists">
     <table>
       <thead>
-        <tr>
-          <th style="text-align: center;">Name</th>
-          <th style="text-align: center; width: 150px;">Datum</th>
-          <th style="text-align: center; width: 150px;">Uhrzeit</th>
-        </tr>
+      <tr>
+        <th class="center">Name</th>
+        <th class="center datetime">Datum</th>
+        <th class="center datetime">Uhrzeit</th>
+      </tr>
       </thead>
       <tbody>
         <tr>
-          <td style="text-align: center;">{{ meeting.name }}</td>
-          <td style="text-align: center;">{{ meeting.datetime | date:'dd.MM.yyyy' }}</td>
-          <td style="text-align: center;">{{ meeting.datetime | date:'HH:mm' }} Uhr</td>
+          <td class="center">{{ meeting.name }}</td>
+          <td class="center">{{ meeting.datetime | date:'dd.MM.yyyy' }}</td>
+          <td class="center">{{ meeting.datetime | date:'HH:mm' }} Uhr</td>
         </tr>
       </tbody>
     </table>
@@ -26,14 +26,14 @@
     <table *ngIf="isEmpty" class="table table-bordered table-striped">
       <thead>
         <tr>
-          <th style="text-align: center;">Zu dieser Veranstaltung hat sich noch niemand angemeldet.</th>
+          <th class="center">Zu dieser Veranstaltung hat sich noch niemand angemeldet.</th>
         </tr>
       </thead>
     </table>
     <table *ngIf="!isEmpty" class="table table-bordered table-striped" >
       <thead class="thead-dark">
         <tr>
-          <th style="width: 10px;">Nr.</th>
+          <th class="id">Nr.</th>
           <th>Vorname</th>
           <th>Nachname</th>
           <th>E-Mail</th>
@@ -42,7 +42,7 @@
       </thead>
       <tbody>
         <tr *ngFor="let user of meeting.users; let i = index">
-          <td style="text-align:right;">{{ i + 1 }}</td>
+          <td class="right">{{ i + 1 }}</td>
           <td>{{ user.firstname }}</td>
           <td>{{ user.lastname }}</td>
           <td>{{ user.email }}</td>

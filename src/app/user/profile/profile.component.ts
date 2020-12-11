@@ -1,17 +1,17 @@
 import { Component, OnInit } from '@angular/core';
-import { TokenStorageService } from '../../authentification/token-storage.service';
-import { User } from 'src/app/authentification/user.model';
 import { Router } from '@angular/router';
-import {AuthService} from '../../authentification/auth.service';
-import {AppComponent} from '../../app.component';
-import {ErrorService} from '../../error/error-service';
+
+import { TokenStorageService } from '../../authentification/token-storage.service';
+import { User } from '../../authentification/user.model';
+import { AuthService } from '../../authentification/auth.service';
+import { AppComponent } from '../../app.component';
+import { ErrorService } from '../../error/error-service';
 
 @Component({
   selector: 'app-profile',
   templateUrl: './profile.component.html'
 })
 export class ProfileComponent implements OnInit {
-
   isLoading: boolean;
   isAdmin: boolean;
   user: User;
@@ -44,10 +44,5 @@ export class ProfileComponent implements OnInit {
     }, err => {
       this.errorService.print(err);
     });
-    console.log(password);
-
-    // if (prompt('Sind Sie sicher, dass Sie Ihr Profil löschen möchten?')) {
-    //   console.log('gelöscht');
-    // }
   }
 }

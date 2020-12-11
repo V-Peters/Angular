@@ -16,7 +16,6 @@ import {ValidationErrorMessagesModule} from '../../../validation/validation-erro
 export class ProfileEditComponent implements OnInit {
   profileForm: FormGroup;
   passwordForm: FormGroup;
-  user: User;
   isLoading: boolean;
   editPasswordActive: boolean;
   emailAlreadyExists: boolean;
@@ -27,6 +26,8 @@ export class ProfileEditComponent implements OnInit {
   passwordError: string;
   newPasswordError: string;
   newPasswordCheckError: string;
+
+  private user: User;
 
   constructor(private router: Router, private tokenStorageService: TokenStorageService, private authService: AuthService, private errorService: ErrorService, private appComponent: AppComponent) { }
 
@@ -72,7 +73,7 @@ export class ProfileEditComponent implements OnInit {
   }
 
   changedCompany(): void {
-    ValidationErrorMessagesModule.changedCompany(this.profileForm);
+    this.companyError = ValidationErrorMessagesModule.changedCompany(this.profileForm);
   }
 
   changedPassword(): void {

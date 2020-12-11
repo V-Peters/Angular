@@ -14,12 +14,4 @@ export class User {
     public accessToken: string,
     public meetings: Meeting[]
   ) { }
-
-  get getToken(): string {
-    return this.token;
-  }
-
-  set setToken(token: string) {
-    this.token = token;
-  }
 }

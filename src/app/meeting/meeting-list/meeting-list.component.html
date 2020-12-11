@@ -2,10 +2,12 @@
 <div *ngIf="!isLoading" class="col-xs-12">
   <h3>Veranstaltungsliste</h3>
   <hr>
-  <button *ngIf="isAdmin" class="btn btn-success col-xs-3" (click)="onAddMeeting()">Veranstaltung hinzufügen</button>
-  <br *ngIf="isAdmin">
-  <br *ngIf="isAdmin">
-  <br *ngIf="isAdmin">
+  <div *ngIf="isAdmin">
+    <button class="btn btn-success col-xs-3" (click)="onAddMeeting()">Veranstaltung hinzufügen</button>
+    <br>
+    <br>
+    <br>
+  </div>
   <div *ngIf="!meetingsExists">
     Es existieren noch keine Veranstaltungen, bitte fügen Sie zuerst welche hinzu, oder wenden Sie sich an einen Administrator, damit dieser Veranstaltungen hinzufügt.
   </div>
@@ -13,44 +15,44 @@
     <table class="table table-bordered table-striped" >
       <thead class="thead-dark">
         <tr>
-          <th style="width: 10px;">Nr.</th>
+          <th class="id">Nr.</th>
           <th>Veranstaltungsname</th>
-          <th style="text-align:center; width: 90px;" >Datum</th>
-          <th style="text-align:center; width: 79px;" >Uhrzeit</th>
-          <th *ngIf="isAdmin" style="text-align:center; width: 156px;" >Aktion</th>
-          <th *ngIf="isAdmin" style="text-align:center; width: 133px;" >Für User sichtbar</th>
-          <th *ngIf="isAdmin" style="text-align:center; width: 10px;" >Teilnehmerliste</th>
-          <th *ngIf="!isAdmin" style="text-align:center; width: 210px;" >An Veranstaltung teilnehmen</th>
+          <th class="center date">Datum</th>
+          <th class="center time">Uhrzeit</th>
+          <th *ngIf="isAdmin" class="center action">Aktion</th>
+          <th *ngIf="isAdmin" class="center visible">Sichtbar
+            <h6 class="glyphicon glyphicon-info-sign" matTooltip="Wenn aktiviert, dann ist die Veranstaltung für Standardbenutzer sichtbar" [matTooltipPosition]="'right'"></h6>
+          </th>
+          <th *ngIf="isAdmin" class="center participants">Teilnehmerliste</th>
+          <th *ngIf="!isAdmin" class="center takePart">Teilnehmen</th>
         </tr>
       </thead>
       <tbody>
         <tr *ngFor="let meeting of meetings; let i = index">
-          <td style="text-align:right;">{{ i + 1 }}</td>
+          <td class="right">{{ i + 1 }}</td>
           <td>{{ meeting.name }}</td>
-          <td style="text-align:center;" >{{ meeting.datetime | date:'dd.MM.yyyy' }}</td>
-          <td style="text-align:center;" >{{ meeting.datetime | date:'HH:mm' }} Uhr</td>
-          <td *ngIf="isAdmin" style="text-align:center;" >
-            <a class="btn btn-info btn-xs" (click)="onEditMeeting(meeting.id)">Bearbeiten</a>
+          <td class="center" >{{ meeting.datetime | date:'dd.MM.yyyy' }}</td>
+          <td class="center" >{{ meeting.datetime | date:'HH:mm' }} Uhr</td>
+          <td *ngIf="isAdmin" class="center">
+            <button class="btn btn-info btn-xs" (click)="onEditMeeting(meeting.id)">Bearbeiten</button>
             |
-            <a class="btn btn-danger btn-xs" (click)="onDeleteMeeting(meeting.id)">Löschen</a>
+            <button class="btn btn-danger btn-xs" (click)="onDeleteMeeting(meeting.id)">Löschen</button>
           </td>
-          <td *ngIf="isAdmin" style="text-align:center;" >
-            <a *ngIf="meeting.display" class="btn btn-success btn-xs" (click)="onChangeDisplay(i)">✔</a>
-            <a *ngIf="!meeting.display" class="btn btn-danger btn-xs" (click)="onChangeDisplay(i)">✖</a>
+          <td *ngIf="isAdmin" class="center">
+            <mat-checkbox [checked]="meeting.display" color="primary" (change)="onChangeDisplay(i)"></mat-checkbox>
           </td>
-          <td *ngIf="isAdmin" style="text-align:center; cursor: pointer;" >
+          <td *ngIf="isAdmin" class="center" >
             <a (click)="onShowParticipants(meeting.id)">anzeigen</a>
           </td>
-          <td *ngIf="!isAdmin" style="text-align:center;" >
-            <a *ngIf="signupValues[meeting.id]" class="btn btn-success btn-xs" (click)="onChangeSignup(meeting.id)">✔</a>
-            <a *ngIf="!signupValues[meeting.id]" class="btn btn-danger btn-xs" (click)="onChangeSignup(meeting.id)">✖</a>
+          <td *ngIf="!isAdmin" class="center">
+            <mat-checkbox [checked]="signupValues[meeting.id]" color="primary" (change)="onChangeSignup(meeting.id)"></mat-checkbox>
           </td>
         </tr>
       </tbody>
     </table>
     <button type="submit" class="btn btn-info col-xs-3" (click)="onSaveChanges()" [disabled]="!isDifferent">
       <span *ngIf="isDifferent">Änderungen übernehmen</span>
-      <span *ngIf="!isDifferent" style="color: rgb(117, 0, 0);">keine Änderungen vorhanden</span>
+      <span *ngIf="!isDifferent" class="disabled">keine Änderungen vorhanden</span>
     </button>
   </div>
 </div>

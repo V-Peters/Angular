@@ -1,12 +1,10 @@
-import { Injectable, EventEmitter } from '@angular/core';
+import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 
 import { Meeting } from './meeting.model';
-import { MeetingUser } from './meetingUser.model';
-import {User} from '../authentification/user.model';
+import { User } from '../authentification/user.model';
 
-const MEETING_URL = 'https://meeting-user-server.herokuapp.com/meetings/';
 
 @Injectable({
   providedIn: 'root'
@@ -17,26 +15,28 @@ export class MeetingService {
   meetingsExists: boolean;
   isLoggedIn: boolean;
 
+  private MEETING_URL = 'https://meeting-user-server.herokuapp.com/meetings/';
+
   constructor(private http: HttpClient) {}
 
   getMeetings(): Observable<Meeting[]> {
     return this.http
     .get<Meeting[]>(
-      MEETING_URL
+      this.MEETING_URL
     );
   }
 
   getMeeting(id: number): Observable<Meeting> {
     return this.http
     .get<Meeting>(
-      MEETING_URL + id
+      this.MEETING_URL + id
     );
   }
 
   saveMeeting(meeting: Meeting): Observable<Meeting> {
     return this.http
     .post<Meeting>(
-      MEETING_URL,
+      this.MEETING_URL,
       meeting
     );
   }
@@ -44,14 +44,14 @@ export class MeetingService {
   deleteMeeting(meetingId: number): Observable<Meeting> {
     return this.http
     .delete<Meeting>(
-      MEETING_URL + meetingId
+      this.MEETING_URL + meetingId
     );
   }
 
   updateDisplay(display: {}): Observable<boolean> {
     return this.http
     .post<boolean>(
-      MEETING_URL + 'updateDisplay',
+      this.MEETING_URL + 'updateDisplay',
       display
     );
   }
@@ -59,7 +59,7 @@ export class MeetingService {
   updateSignup(signup: {}): Observable<boolean[]> {
     return this.http
     .post<boolean[]>(
-      MEETING_URL + 'updateSignup',
+      this.MEETING_URL + 'updateSignup',
       signup
     );
   }
@@ -67,7 +67,7 @@ export class MeetingService {
   getUser(userId: number): Observable<User> {
     return this.http
     .get<User>(
-      MEETING_URL + 'getUser/' + userId
+      this.MEETING_URL + 'getUser/' + userId
     );
   }
 }

@@ -1,7 +1,7 @@
 <nav class="navbar navbar-default">
   <div class="container-fluid">
     <div class="navbar-header">
-      <img routerLink="/home" class="navbar-left navbar-btn" [src]="logo" style="cursor: pointer">
+      <img routerLink="/home" class="navbar-left navbar-btn" [src]="logo">
       <a routerLink="/home" class="navbar-brand">Meeting User Application</a>
     </div>
 
@@ -9,12 +9,12 @@
       <ul class="nav navbar-nav">
         <li *ngIf="isLoggedIn" routerLinkActive="active"><a routerLink="/meeting/list">Veranstaltungsliste</a></li>
       </ul>
-      <ul class="nav navbar-nav navbar-right" style="border-left: 1px solid rgb(180, 180, 180);">
+      <ul class="nav navbar-nav navbar-right stripe-left">
         <li *ngIf="!isLoggedIn" routerLinkActive="active"><a routerLink="/register">Registrieren</a></li>
         <li *ngIf="isLoggedIn" routerLinkActive="active"><a routerLink="/profile">Eingeloggt als {{ currentUser.username }}</a></li>
 
         <li *ngIf="!isLoggedIn" routerLinkActive="active"><a routerLink="/login">Login</a></li>
-        <li *ngIf="isLoggedIn"><a style="cursor: pointer;" (click)="onLogout()">Logout</a></li>
+        <li *ngIf="isLoggedIn"><a (click)="onLogout()">Logout</a></li>
       </ul>
     </div>
   </div>

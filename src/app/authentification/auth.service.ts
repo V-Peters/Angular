@@ -3,10 +3,9 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { User } from './user.model';
 import { TokenStorageService } from './token-storage.service';
-import {Router} from '@angular/router';
-import {AppComponent} from '../app.component';
+import { Router } from '@angular/router';
+import { AppComponent } from '../app.component';
 
-const AUTH_API = 'https://meeting-user-server.herokuapp.com/user/';
 
 const httpOptions = {
   headers: new HttpHeaders({ 'Content-Type': 'application/json' })
@@ -16,21 +15,22 @@ const httpOptions = {
   providedIn: 'root'
 })
 export class AuthService {
+  private AUTH_API = 'https://meeting-user-server.herokuapp.com/user/';
 
   constructor(private http: HttpClient, private router: Router, private tokenStorageService: TokenStorageService, private appComponent: AppComponent) { }
 
   checkIfUsernameExists(username: string): Observable<boolean> {
-    return this.http.post<boolean>(AUTH_API + 'checkIfUsernameExists',
+    return this.http.post<boolean>(this.AUTH_API + 'checkIfUsernameExists',
     username);
   }
 
   checkIfEmailExists(username: string): Observable<boolean> {
-    return this.http.post<boolean>(AUTH_API + 'checkIfEmailExists',
+    return this.http.post<boolean>(this.AUTH_API + 'checkIfEmailExists',
     username);
   }
 
   login(user): Observable<User> {
-    return this.http.post<User>(AUTH_API + 'login', {
+    return this.http.post<User>(this.AUTH_API + 'login', {
       username: user.value.username,
       password: user.value.password,
       firstname: 'empty',
@@ -47,8 +47,8 @@ export class AuthService {
     this.appComponent.showSnackbar('Sie wurden erfolgreich ausgeloggt');
   }
 
-  register(user): Observable<User> {
-    return this.http.post<User>(AUTH_API + 'register', {
+  register(user): Observable<any> {
+    return this.http.post<any>(this.AUTH_API + 'register', {
       username: user.value.username,
       password: user.value.password,
       firstname: user.value.firstname,
@@ -59,7 +59,7 @@ export class AuthService {
   }
 
   changeUser(user, password): Observable<boolean> {
-    return this.http.post<boolean>(AUTH_API + 'changeUser', {
+    return this.http.post<boolean>(this.AUTH_API + 'changeUser', {
       id: this.tokenStorageService.getUser().id,
       currentPassword: password.value.currentPassword,
       newPassword: password.value.password,
@@ -73,6 +73,8 @@ export class AuthService {
   }
 
   deleteUser(password: string): Observable<boolean> {
-    return this.http.delete<boolean>(AUTH_API, {headers: {password}});
+    return this.http.delete<boolean>(this.AUTH_API, {
+      headers: {password}
+    });
   }
 }

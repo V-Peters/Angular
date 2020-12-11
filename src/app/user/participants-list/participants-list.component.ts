@@ -3,7 +3,6 @@ import { ActivatedRoute, Router } from '@angular/router';
 
 import { MeetingService } from '../../meeting/meeting.service';
 import { Meeting } from '../../meeting/meeting.model';
-import { User } from 'src/app/authentification/user.model';
 
 @Component({
   selector: 'app-participants-list',

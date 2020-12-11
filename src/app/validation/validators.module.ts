@@ -1,8 +1,6 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { Validators} from '@angular/forms';
-
-
+import { Validators } from '@angular/forms';
 
 @NgModule({
   declarations: [],

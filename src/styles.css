@@ -1,1 +1,67 @@
-/* You can add global styles to this file, and also import other style files */
+i {
+  color: red;
+}
+
+.disabled {
+  color: black;
+}
+
+img {
+  cursor: pointer;
+}
+
+a {
+  cursor: pointer
+}
+
+.stripe-left {
+  border-left: 1px solid rgb(180, 180, 180);
+}
+
+.right {
+  text-align: right;
+}
+
+.center {
+  text-align: center;
+}
+
+.id {
+  width: 1vw;
+}
+
+.date {
+  width: 1vw;
+}
+
+.time {
+  width: 4.2vw;
+}
+
+.action {
+  width: 8.2vw;
+}
+
+.visible {
+  width: 4.7vw;
+}
+
+.takePart {
+  width: 1vw;
+}
+
+.participants {
+  width: 1vw;
+}
+
+.datetime {
+  width: 8vw;
+}
+
+.profile-width {
+  width: 13vw;
+}
+
+.profile-height {
+  height: 3.1vh;
+}

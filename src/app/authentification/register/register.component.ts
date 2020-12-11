@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormControl } from '@angular/forms';
 import { Router } from '@angular/router';
 
@@ -7,7 +7,8 @@ import { TokenStorageService } from '../token-storage.service';
 import { ErrorService } from 'src/app/error/error-service';
 import { AppComponent } from 'src/app/app.component';
 import { ValidatorsModule } from '../../validation/validators.module';
-import {ValidationErrorMessagesModule} from '../../validation/validation-error-messages.module';
+import { ValidationErrorMessagesModule } from '../../validation/validation-error-messages.module';
+import {User} from '../user.model';
 
 @Component({
   selector: 'app-register',
@@ -96,22 +97,37 @@ export class RegisterComponent implements OnInit {
     this.isLoading = true;
     this.authService.register(this.registerForm)
     .subscribe(registerData => {
-      this.isSignUpFailed = false;
-      this.authService.login(this.registerForm)
-      .subscribe(loginUser => {
-        this.tokenStorageService.saveToken(loginUser.accessToken);
-        this.tokenStorageService.saveUser(loginUser);
-        this.router.navigate(['/profile']);
-        this.appComponent.showSnackbar('Sie wurden erfolgreich registriert');
-      }, err => {
-        this.errorService.print(err);
-        this.isLoading = false;
-      });
+      if (registerData) {
+        this.tryToLogin();
+      } else {
+        this.isSignUpFailed = true;
+      }
     }, err => {
       this.isSignUpFailed = true;
       this.isLoading = false;
       this.errorService.print(err);
     });
+  }
+
+  tryToLogin(): void {
+    this.isSignUpFailed = false;
+    this.authService.login(this.registerForm)
+    .subscribe(loginUser => {
+      if (loginUser) {
+        this.login(loginUser);
+      } else {
+        this.isSignUpFailed = true;
+      }
+    }, err => {
+      this.errorService.print(err);
+      this.isLoading = false;
+    });
+  }
+
+  login(loginUser: User): void {
+    this.tokenStorageService.saveUser(loginUser);
+    this.router.navigate(['/profile']);
+    this.appComponent.showSnackbar('Sie wurden erfolgreich registriert');
   }
 
   onLogin(): void {

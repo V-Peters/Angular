@@ -17,9 +17,10 @@ export class MeetingListComponent implements OnInit {
   meetingsExists: boolean;
   meetings: Meeting[];
   signupValues = {};
-  initialDisplayValues = {};
-  initialSignupValues = {};
   isDifferent = false;
+
+  private initialDisplayValues = {};
+  private initialSignupValues = {};
 
   constructor(private router: Router, private meetingService: MeetingService, private tokenStorageService: TokenStorageService, private errorService: ErrorService, private appComponent: AppComponent) { }
 
@@ -58,17 +59,21 @@ export class MeetingListComponent implements OnInit {
   initUser(): void {
     this.meetingService.getUser(this.tokenStorageService.getUser().id)
     .subscribe(tempUser => {
-      this.meetings.forEach(tempMeeting => {
-        this.signupValues[tempMeeting.id] = false;
-        tempUser.meetings.forEach(tempMeetingForUser => {
-          if (tempMeeting.id === tempMeetingForUser.id) {
-            this.signupValues[tempMeeting.id] = true;
-          }
-        });
-      });
+      this.setSignupValues(tempUser);
       Object.assign(this.initialSignupValues, this.signupValues);
     }, err => {
       this.errorService.print(err);
+    });
+  }
+
+  setSignupValues(tempUser): void {
+    this.meetings.forEach(tempMeeting => {
+      this.signupValues[tempMeeting.id] = false;
+      tempUser.meetings.forEach(tempMeetingForUser => {
+        if (tempMeeting.id === tempMeetingForUser.id) {
+          this.signupValues[tempMeeting.id] = true;
+        }
+      });
     });
   }
 

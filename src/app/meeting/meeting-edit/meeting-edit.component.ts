@@ -5,9 +5,8 @@ import { DatePipe } from '@angular/common';
 
 import { MeetingService } from '../meeting.service';
 import { Meeting } from '../meeting.model';
-import {ErrorService} from '../../error/error-service';
-import {AppComponent} from '../../app.component';
-import {findLast} from '@angular/compiler/src/directive_resolver';
+import { ErrorService } from '../../error/error-service';
+import { AppComponent } from '../../app.component';
 
 @Component({
   selector: 'app-meeting-edit',
@@ -15,26 +14,28 @@ import {findLast} from '@angular/compiler/src/directive_resolver';
 })
 export class MeetingEditComponent implements OnInit {
   meetingForm: FormGroup;
-  meeting: Meeting;
   id: number;
   now: string;
   meetingExists: boolean;
   isLoading: boolean;
 
+  private meeting: Meeting;
+
   constructor(private router: Router, private route: ActivatedRoute, private meetingService: MeetingService, private errorService: ErrorService, private appComponent: AppComponent) { }
 
   ngOnInit(): void {
     this.isLoading = true;
-    this.now = new DatePipe('en-US').transform(Date.now(), 'yyyy-MM-ddTHH:mm');
+    this.now = new DatePipe('de-DE').transform(Date.now(), 'yyyy-MM-ddTHH:mm');
     this.meetingExists = true;
-    this.route.params.subscribe(
-      (params: Params) => {
-        if (params.id != null) {
-          this.id = +params.id;
-        }
-        this.init();
+    this.route.params
+    .subscribe((params: Params) => {
+      if (params.id != null) {
+        this.id = +params.id;
       }
-    );
+      this.init();
+    }, err => {
+      this.errorService.print(err);
+    });
   }
 
   private init(): void {
@@ -69,25 +70,25 @@ export class MeetingEditComponent implements OnInit {
 
   onSubmit(): void {
     this.meetingService.saveMeeting(this.meetingForm.value)
-      .subscribe((savedMeeting: Meeting) => {
-        if (savedMeeting.name === this.meetingForm.value.name && savedMeeting.datetime.substring(0, 16) === this.meetingForm.value.datetime.substring(0, 16) && savedMeeting.display === this.meetingForm.value.display) {
-          if (this.meetingForm.value.id === 0) {
-            this.appComponent.showSnackbar('Die Veranstaltung wurde erfolgreich gespeichert');
-          } else {
-            this.appComponent.showSnackbar('Die Veranstaltung wurde erfolgreich bearbeitet');
-          }
+    .subscribe(savedMeeting => {
+      if (savedMeeting) {
+        if (this.meetingForm.value.id === 0) {
+          this.appComponent.showSnackbar('Die Veranstaltung wurde erfolgreich gespeichert');
         } else {
-          this.appComponent.showSnackbarError();
+          this.appComponent.showSnackbar('Die Veranstaltung wurde erfolgreich bearbeitet');
         }
-        this.router.navigate(['/meeting/list']);
-      }, err => {
-        this.errorService.print(err);
-      });
+      } else {
+        this.appComponent.showSnackbarError();
+      }
+      this.router.navigate(['/meeting/list']);
+    }, err => {
+      this.errorService.print(err);
+    });
   }
 
   onBackToList(): boolean {
     if (this.meetingForm.touched) {
-      if (!(confirm('Änderungen verwerfen?'))) {
+      if (!confirm('Änderungen verwerfen?')) {
         return false;
       }
     }

@@ -1,10 +1,9 @@
 import { NgModule, EventEmitter } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import {FormGroup} from '@angular/forms';
-import {AuthService} from '../authentification/auth.service';
-import {ErrorService} from '../error/error-service';
+import { FormGroup } from '@angular/forms';
 
-
+import { AuthService } from '../authentification/auth.service';
+import { ErrorService } from '../error/error-service';
 
 @NgModule({
   declarations: [],

@@ -14,7 +14,7 @@
     (ngSubmit)="onSubmit()">
       <div class="form-group">
         <label for="name">Veranstaltungsname: </label>
-        <i *ngIf="meetingForm.get('name').invalid && meetingForm.get('name').touched" style="color: red;"> Bitte geben Sie einen Namen für die Veranstaltung ein.</i>
+        <i *ngIf="meetingForm.get('name').invalid && meetingForm.get('name').touched"> Bitte geben Sie einen Namen für die Veranstaltung ein.</i>
         <input
         type="text"
         id="name"
@@ -33,15 +33,11 @@
         min="{{ now }}">
       </div>
       <div class="form-group">
-        <label for="display">Anzeigen: </label>
-        <input
-        type="checkbox"
-        id="display"
-        formControlName="display">
+        <mat-checkbox formControlName="display" labelPosition="before" color="primary">Anzeigen:</mat-checkbox>
       </div>
       <button type="submit" class="btn btn-info btn-block" [disabled]="meetingForm.invalid">
         <span *ngIf="meetingForm.valid">Veranstaltung speichern</span>
-        <span *ngIf="meetingForm.invalid" style="color: rgb(117, 0, 0);">Bitte geben Sie einen Namen für die Veranstaltung ein</span>
+        <span *ngIf="meetingForm.invalid" class="disabled">Bitte geben Sie einen Namen für die Veranstaltung ein</span>
       </button>
     </form>
     <hr>

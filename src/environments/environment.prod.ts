@@ -1,5 +1,5 @@
 export const environment = {
   production: true,
-  CROSS_ORIGIN_AUTH: process.env.CROSS_ORIGIN_AUTH,
-  CROSS_ORIGIN_MEETINGS: process.env.CROSS_ORIGIN_MEETINGS
+  CROSS_ORIGIN_AUTH: 'https://meeting-user-server.herokuapp.com/user/',
+  CROSS_ORIGIN_MEETINGS: 'https://meeting-user-server.herokuapp.com/meetings/'
 };

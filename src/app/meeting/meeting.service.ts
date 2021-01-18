@@ -4,6 +4,7 @@ import { Observable } from 'rxjs';
 
 import { Meeting } from './meeting.model';
 import { User } from '../authentification/user.model';
+import { environment } from '../../environments/environment';
 
 
 @Injectable({
@@ -15,7 +16,7 @@ export class MeetingService {
   meetingsExists: boolean;
   isLoggedIn: boolean;
 
-  private MEETING_URL = 'https://meeting-user-server.herokuapp.com/meetings/';
+  private MEETING_URL = environment.CROSS_ORIGIN_MEETINGS;
 
   constructor(private http: HttpClient) {}
 

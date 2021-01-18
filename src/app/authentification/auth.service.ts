@@ -5,7 +5,7 @@ import { User } from './user.model';
 import { TokenStorageService } from './token-storage.service';
 import { Router } from '@angular/router';
 import { AppComponent } from '../app.component';
-
+import { environment } from '../../environments/environment';
 
 const httpOptions = {
   headers: new HttpHeaders({ 'Content-Type': 'application/json' })
@@ -15,7 +15,7 @@ const httpOptions = {
   providedIn: 'root'
 })
 export class AuthService {
-  private AUTH_API = 'https://meeting-user-server.herokuapp.com/user/';
+  private AUTH_API = environment.CROSS_ORIGIN_AUTH;
 
   constructor(private http: HttpClient, private router: Router, private tokenStorageService: TokenStorageService, private appComponent: AppComponent) { }
 

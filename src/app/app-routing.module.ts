@@ -9,9 +9,11 @@ import { ParticipantsListComponent } from './user/participants-list/participants
 import { ProfileComponent } from './user/profile/profile.component';
 import { RegisterComponent } from './authentification/register/register.component';
 import { LoginComponent } from './authentification/login/login.component';
+import { ForgotPasswordComponent } from './authentification/forgot-password/forgot-password.component';
 import { AccessDeniedComponent } from './error/access-denied/access-denied.component';
 import { PageNotFoundComponent } from './error/page-not-found/page-not-found.component';
 import { ProfileEditComponent } from './user/profile/profile-edit/profile-edit.component';
+import { EmailSentComponent } from './authentification/forgot-password/email-sent/email-sent.component';
 
 const routes: Routes = [
   { path: '', redirectTo: 'home', pathMatch: 'full' },
@@ -24,6 +26,8 @@ const routes: Routes = [
   { path: 'profile/edit', component: ProfileEditComponent, canActivate: [AuthGuard] },
   { path: 'register', component: RegisterComponent },
   { path: 'login', component: LoginComponent },
+  { path: 'forgot-password', component: ForgotPasswordComponent },
+  { path: 'email-sent', component: EmailSentComponent },
   { path: 'access-denied', component: AccessDeniedComponent },
   { path: '**', component: PageNotFoundComponent },
 ];

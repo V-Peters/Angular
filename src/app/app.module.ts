@@ -30,6 +30,8 @@ import { PageNotFoundComponent } from './error/page-not-found/page-not-found.com
 import { AccessDeniedComponent } from './error/access-denied/access-denied.component';
 import { LoaderComponent } from './loader/loader.component';
 import { ProfileEditComponent } from './user/profile/profile-edit/profile-edit.component';
+import { ForgotPasswordComponent } from './authentification/forgot-password/forgot-password.component';
+import { EmailSentComponent } from './authentification/forgot-password/email-sent/email-sent.component';
 
 @NgModule({
   declarations: [
@@ -45,7 +47,9 @@ import { ProfileEditComponent } from './user/profile/profile-edit/profile-edit.c
     PageNotFoundComponent,
     AccessDeniedComponent,
     LoaderComponent,
-    ProfileEditComponent
+    ProfileEditComponent,
+    ForgotPasswordComponent,
+    EmailSentComponent
   ],
   imports: [
     BrowserModule,

@@ -7,11 +7,12 @@ import { TokenStorageService } from '../token-storage.service';
 import { ErrorService } from 'src/app/error/error-service';
 import { AppComponent } from '../../app.component';
 import {User} from '../user.model';
+import { ValidatorsModule } from '../../validation/validators.module';
 
 @Component({
   selector: 'app-login',
   templateUrl: './login.component.html',
-  styleUrls: ['../register-and-login.component.css']
+  styleUrls: ['../auth-form.component.css']
 })
 export class LoginComponent implements OnInit {
 
@@ -28,8 +29,8 @@ export class LoginComponent implements OnInit {
       this.isLoggedIn = true;
     }
     this.loginForm = new FormGroup({
-      username: new FormControl(null, Validators.required),
-      password: new FormControl(null, Validators.required)
+      username: new FormControl(null, ValidatorsModule.usernameValidators),
+      password: new FormControl(null, ValidatorsModule.passwordValidators)
     });
   }
 
@@ -57,5 +58,9 @@ export class LoginComponent implements OnInit {
 
   onRegister(): void {
     this.router.navigate(['/register']);
+  }
+
+  onForgoPassword(): void {
+    this.router.navigate(['/forgot-password']);
   }
 }

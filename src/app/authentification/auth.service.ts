@@ -77,4 +77,15 @@ export class AuthService {
       headers: {password}
     });
   }
+
+  forgotPassword(forgotPasswordForm): Observable<boolean> {
+    return this.http.post<boolean>(this.AUTH_API + 'forgotPassword', {
+      username: forgotPasswordForm.value.username,
+      password: 'empty',
+      firstname: 'empty',
+      lastname: 'empty',
+      email: forgotPasswordForm.value.email,
+      company: 'empty'
+    }, httpOptions);
+  }
 }

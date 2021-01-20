@@ -13,7 +13,7 @@ import {User} from '../user.model';
 @Component({
   selector: 'app-register',
   templateUrl: './register.component.html',
-  styleUrls: ['../register-and-login.component.css']
+  styleUrls: ['../auth-form.component.css']
 })
 export class RegisterComponent implements OnInit {
 

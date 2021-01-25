@@ -122,6 +122,7 @@ export class MeetingListComponent implements OnInit {
   }
 
   onSaveChanges(): void {
+    this.isLoading = true;
     if (this.isAdmin) {
       this.saveDisplay();
     } else {
@@ -145,6 +146,7 @@ export class MeetingListComponent implements OnInit {
       }
       this.ngOnInit();
     }, err => {
+      this.isLoading = false;
       this.errorService.print(err);
     });
   }
@@ -159,6 +161,7 @@ export class MeetingListComponent implements OnInit {
       }
       this.ngOnInit();
     }, err => {
+      this.isLoading = false;
       this.errorService.print(err);
     });
   }

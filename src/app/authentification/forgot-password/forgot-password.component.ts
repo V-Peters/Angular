@@ -5,7 +5,7 @@ import { Router } from '@angular/router';
 import { AuthService } from '../auth.service';
 import { ErrorService } from '../../error/error-service';
 import { AppComponent } from '../../app.component';
-import { ValidatorsModule } from "../../validation/validators.module";
+import { ValidatorsModule } from '../../validation/validators.module';
 
 @Component({
   selector: 'app-forgot-password',
@@ -36,7 +36,6 @@ export class ForgotPasswordComponent implements OnInit {
     this.isLoading = true;
     this.authService.forgotPassword(this.forgotPasswordForm)
     .subscribe(successful => {
-      console.log(successful);
       if (successful) {
         this.router.navigate(['/email-sent']);
       }

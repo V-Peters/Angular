@@ -32,6 +32,7 @@ import { LoaderComponent } from './loader/loader.component';
 import { ProfileEditComponent } from './user/profile/profile-edit/profile-edit.component';
 import { ForgotPasswordComponent } from './authentification/forgot-password/forgot-password.component';
 import { EmailSentComponent } from './authentification/forgot-password/email-sent/email-sent.component';
+import { SetNewPasswordComponent } from './authentification/forgot-password/set-new-password/set-new-password.component';
 
 @NgModule({
   declarations: [
@@ -49,7 +50,8 @@ import { EmailSentComponent } from './authentification/forgot-password/email-sen
     LoaderComponent,
     ProfileEditComponent,
     ForgotPasswordComponent,
-    EmailSentComponent
+    EmailSentComponent,
+    SetNewPasswordComponent
   ],
   imports: [
     BrowserModule,

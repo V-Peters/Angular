@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Params, Router } from '@angular/router';
 
 import { TokenStorageService } from '../../token-storage.service';
 import { ValidatorsModule } from '../../../validation/validators.module';
@@ -22,7 +22,7 @@ export class SetNewPasswordComponent implements OnInit {
   passwordError: string;
   passwordCheckError: string;
 
-  constructor(private router: Router, private tokenStorageService: TokenStorageService, private authService: AuthService, private errorService: ErrorService, private appComponent: AppComponent) { }
+  constructor(private router: Router, private route: ActivatedRoute, private tokenStorageService: TokenStorageService, private authService: AuthService, private errorService: ErrorService, private appComponent: AppComponent) { }
 
   ngOnInit(): void {
     this.isLoading = false;
@@ -50,7 +50,9 @@ export class SetNewPasswordComponent implements OnInit {
 
   onSubmit(): void {
     this.isLoading = true;
-    this.authService.setNewPassword(this.setNewPasswordForm)
+    const rpt = this.route.snapshot.queryParamMap.get('rpt');
+    console.log(rpt);
+    this.authService.setNewPassword(this.setNewPasswordForm, rpt)
       .subscribe(successful => {
         if (successful) {
           this.router.navigate(['/login']);

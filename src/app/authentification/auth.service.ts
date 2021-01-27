@@ -89,16 +89,16 @@ export class AuthService {
     }, httpOptions);
   }
 
-  setNewPassword(setNewPasswordForm, rpt: string): Observable<boolean> {
+  setNewPassword(setNewPasswordForm, rps: string): Observable<boolean> {
     return this.http.post<boolean>(this.AUTH_API + 'setNewPassword', {
-      username: setNewPasswordForm.value.username,
+      username: 'empty',
       password: setNewPasswordForm.value.password,
       firstname: 'empty',
       lastname: 'empty',
       email: 'empty@empty.com',
       company: 'empty'
     }, {
-      headers: {rpt}
+      headers: {rps}
     });
   }
 }

@@ -31,7 +31,6 @@ export class SetNewPasswordComponent implements OnInit {
       this.isLoggedIn = true;
     }
     this.setNewPasswordForm = new FormGroup({
-      username: new FormControl(null, ValidatorsModule.usernameValidators),
       password: new FormControl(null, ValidatorsModule.passwordValidators),
       passwordCheck: new FormControl(null, ValidatorsModule.passwordValidators)
     });
@@ -50,9 +49,8 @@ export class SetNewPasswordComponent implements OnInit {
 
   onSubmit(): void {
     this.isLoading = true;
-    const rpt = this.route.snapshot.queryParamMap.get('rpt');
-    console.log(rpt);
-    this.authService.setNewPassword(this.setNewPasswordForm, rpt)
+    const rps = this.route.snapshot.queryParamMap.get('rps');
+    this.authService.setNewPassword(this.setNewPasswordForm, rps)
       .subscribe(successful => {
         if (successful) {
           this.router.navigate(['/login']);

@@ -17,7 +17,7 @@ import { ValidationErrorMessagesModule } from '../../../validation/validation-er
 export class SetNewPasswordComponent implements OnInit {
   isLoading: boolean;
   isLoggedIn: boolean;
-  isDataValid: boolean;
+  isSecretValid: boolean;
   setNewPasswordForm: FormGroup;
   passwordError: string;
   passwordCheckError: string;
@@ -26,7 +26,7 @@ export class SetNewPasswordComponent implements OnInit {
 
   ngOnInit(): void {
     this.isLoading = false;
-    this.isDataValid = true;
+    this.isSecretValid = true;
     if (this.tokenStorageService.getUser()) {
       this.isLoggedIn = true;
     }
@@ -56,7 +56,7 @@ export class SetNewPasswordComponent implements OnInit {
           this.router.navigate(['/login']);
           this.appComponent.showSnackbar('Ihr neues Passwort wurde gesetzt, loggen Sie sich direkt ein.');
         }
-        this.isDataValid = successful;
+        this.isSecretValid = successful;
         this.isLoading = false;
       }, err => {
         this.isLoading = false;

@@ -11,7 +11,7 @@
     <tr>
       <th class="profile-height">Passwort:</th>
       <td>**********</td>
-      <td class="profile-width"><button class="btn btn-primary btn-block" (click)="onEditPassword()">Passwort bearbeiten</button></td>
+      <td *ngIf="!isAdmin" class="profile-width"><button class="btn btn-primary btn-block" (click)="onEditPassword()">Passwort bearbeiten</button></td>
     </tr>
     <tr>
       <th class="profile-height">Vorname:</th>

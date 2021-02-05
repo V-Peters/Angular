@@ -170,8 +170,15 @@ export class MeetingListComponent implements OnInit {
     this.appComponent.showSnackbar('Änderungen wurden gespeichert');
   }
 
+  onDiscardChanges(): void {
+    this.ngOnInit();
+    this.appComponent.showSnackbar('Änderungen wurden verworfen');
+  }
+
+  showSnackbarDiscard(): void {
+  }
+
   onShowParticipants(id: number): void {
     this.router.navigate(['/participants/list/' + id]);
   }
-
 }

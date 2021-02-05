@@ -54,5 +54,10 @@
       <span *ngIf="isDifferent">Änderungen übernehmen</span>
       <span *ngIf="!isDifferent" class="disabled">keine Änderungen vorhanden</span>
     </button>
+    <span class="col-xs-6"></span>
+    <button type="submit" class="btn btn-danger col-xs-3" (click)="onDiscardChanges()" [disabled]="!isDifferent">
+      <span *ngIf="isDifferent">Änderungen verwerfen</span>
+      <span *ngIf="!isDifferent" class="disabled">keine Änderungen vorhanden</span>
+    </button>
   </div>
 </div>

@@ -6,8 +6,7 @@ import { Injectable } from '@angular/core';
 export class ErrorService {
 
   print(data: any): void {
-    console.log('EIN FEHLER IST AUFGETRETEN!');
-    console.log(data);
+    console.log('EIN FEHLER IST AUFGETRETEN!', data);
   }
 
 }

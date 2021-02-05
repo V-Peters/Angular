@@ -7,7 +7,8 @@ import { MeetingListComponent } from './meeting/meeting-list/meeting-list.compon
 import { MeetingEditComponent } from './meeting/meeting-edit/meeting-edit.component';
 import { ParticipantsListComponent } from './user/participants-list/participants-list.component';
 import { ProfileComponent } from './user/profile/profile.component';
-import { ProfileEditComponent } from './user/profile/profile-edit/profile-edit.component';
+import { ProfileEditUserComponent } from './user/profile/profile-edit/profile-edit-user.component';
+import { ProfileEditPasswordComponent } from './user/profile/profile-edit-password/profile-edit-password.component';
 import { RegisterComponent } from './authentification/register/register.component';
 import { LoginComponent } from './authentification/login/login.component';
 import { ForgotPasswordComponent } from './authentification/forgot-password/forgot-password.component';
@@ -24,7 +25,8 @@ const routes: Routes = [
   { path: 'meeting/edit/:id', component: MeetingEditComponent, canActivate: [AuthGuard] },
   { path: 'participants/list/:id', component: ParticipantsListComponent, canActivate: [AuthGuard] },
   { path: 'profile', component: ProfileComponent, canActivate: [AuthGuard] },
-  { path: 'profile/edit', component: ProfileEditComponent, canActivate: [AuthGuard] },
+  { path: 'profile/editUser', component: ProfileEditUserComponent, canActivate: [AuthGuard] },
+  { path: 'profile/editPassword', component: ProfileEditPasswordComponent, canActivate: [AuthGuard] },
   { path: 'register', component: RegisterComponent },
   { path: 'login', component: LoginComponent },
   { path: 'forgot-password', component: ForgotPasswordComponent },

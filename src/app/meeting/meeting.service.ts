@@ -3,7 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 
 import { Meeting } from './meeting.model';
-import { User } from '../authentification/user.model';
+import { User } from '../user/user.model';
 import { environment } from '../../environments/environment';
 
 

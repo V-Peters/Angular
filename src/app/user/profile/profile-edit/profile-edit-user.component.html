@@ -1,0 +1,59 @@
+<app-loader *ngIf="isLoading"></app-loader>
+<div *ngIf="!isLoading" class="col-xs-6">
+  <h3>Profil bearbeiten</h3>
+  <hr>
+  <form
+    [formGroup]="profileForm"
+    (ngSubmit)="onSubmit()">
+    <div class="form-group">
+      <label for="firstname">Vorname: </label>
+      <i *ngIf="profileForm.get('firstname').invalid && profileForm.get('firstname').touched"> {{ firstnameError }}</i>
+      <input
+        type="text"
+        id="firstname"
+        formControlName="firstname"
+        class="form-control"
+        placeholder="Vorname"
+        (ngModelChange)="changedFirstname()">
+    </div>
+    <div class="form-group">
+      <label for="lastname">Nachname: </label>
+      <i *ngIf="profileForm.get('lastname').invalid && profileForm.get('lastname').touched"> {{ lastnameError }}</i>
+      <input
+        type="text"
+        id="lastname"
+        formControlName="lastname"
+        class="form-control"
+        placeholder="Nachname"
+        (ngModelChange)="changedLastname()">
+    </div>
+    <div class="form-group">
+      <label for="email">E-Mail: </label>
+      <i *ngIf="profileForm.get('email').invalid && profileForm.get('email').touched || emailAlreadyExists"> {{ emailError }}</i>
+      <input
+        type="email"
+        id="email"
+        formControlName="email"
+        class="form-control"
+        placeholder="E-Mail"
+        (ngModelChange)="changedEmail()">
+    </div>
+    <div class="form-group">
+      <label for="company">Firma/Unternehmen: </label>
+      <i *ngIf="profileForm.get('company').invalid && profileForm.get('company').touched"> {{ companyError }}</i>
+      <input
+        type="text"
+        id="company"
+        formControlName="company"
+        class="form-control"
+        placeholder="Firma/Unternehmen"
+        (ngModelChange)="changedCompany()">
+    </div>
+    <button type="submit" class="btn btn-info btn-block" [disabled]="profileForm.invalid || emailAlreadyExists">
+      <span *ngIf="profileForm.invalid || emailAlreadyExists" class="disabled">Bitte füllen Sie alle Eingabefelder aus</span>
+      <span *ngIf="!(profileForm.invalid || emailAlreadyExists)">Profil speichern</span>
+    </button>
+  </form>
+  <hr>
+  <button type="button" class="btn btn-secondary col-xs-12" (click)="onBackToProfile()">Zurück zum Profil</button>
+</div>

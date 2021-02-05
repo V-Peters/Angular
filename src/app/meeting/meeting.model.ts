@@ -1,4 +1,4 @@
-import { User } from '../authentification/user.model';
+import { User } from '../user/user.model';
 
 export class Meeting {
   constructor(

@@ -29,7 +29,8 @@ import { ParticipantsListComponent } from './user/participants-list/participants
 import { PageNotFoundComponent } from './error/page-not-found/page-not-found.component';
 import { AccessDeniedComponent } from './error/access-denied/access-denied.component';
 import { LoaderComponent } from './loader/loader.component';
-import { ProfileEditComponent } from './user/profile/profile-edit/profile-edit.component';
+import { ProfileEditUserComponent } from './user/profile/profile-edit/profile-edit-user.component';
+import { ProfileEditPasswordComponent } from './user/profile/profile-edit-password/profile-edit-password.component';
 import { ForgotPasswordComponent } from './authentification/forgot-password/forgot-password.component';
 import { EmailSentComponent } from './authentification/forgot-password/email-sent/email-sent.component';
 import { SetNewPasswordComponent } from './authentification/forgot-password/set-new-password/set-new-password.component';
@@ -48,7 +49,8 @@ import { SetNewPasswordComponent } from './authentification/forgot-password/set-
     PageNotFoundComponent,
     AccessDeniedComponent,
     LoaderComponent,
-    ProfileEditComponent,
+    ProfileEditUserComponent,
+    ProfileEditPasswordComponent,
     ForgotPasswordComponent,
     EmailSentComponent,
     SetNewPasswordComponent

@@ -4,7 +4,8 @@
 
 export const environment = {
   production: false,
-  CROSS_ORIGIN_AUTH: 'http://localhost:8080/user/',
+  CROSS_ORIGIN_AUTH: 'http://localhost:8080/auth/',
+  CROSS_ORIGIN_USER: 'http://localhost:8080/user/',
   CROSS_ORIGIN_MEETINGS: 'http://localhost:8080/meetings/'
 };
 

@@ -6,8 +6,8 @@ import { AuthService } from '../auth.service';
 import { TokenStorageService } from '../token-storage.service';
 import { ErrorService } from 'src/app/error/error-service';
 import { AppComponent } from '../../app.component';
-import {User} from '../user.model';
 import { ValidatorsModule } from '../../validation/validators.module';
+import { LoginResponse } from '../login-response.model';
 
 @Component({
   selector: 'app-login',
@@ -25,9 +25,7 @@ export class LoginComponent implements OnInit {
 
   ngOnInit(): void {
     this.isLoading = false;
-    if (this.tokenStorageService.getUser()) {
-      this.isLoggedIn = true;
-    }
+    this.isLoggedIn = this.tokenStorageService.isLoggedIn();
     this.loginForm = new FormGroup({
       username: new FormControl(null, ValidatorsModule.usernameValidators),
       password: new FormControl(null, ValidatorsModule.passwordValidators)
@@ -37,9 +35,9 @@ export class LoginComponent implements OnInit {
   onSubmit(): void {
     this.isLoading = true;
     this.authService.login(this.loginForm)
-    .subscribe(loginUser => {
-      if (loginUser){
-        this.login(loginUser);
+    .subscribe(loginResponse => {
+      if (loginResponse){
+        this.login(loginResponse);
       } else {
         this.isLoginFailed = true;
       }
@@ -50,8 +48,8 @@ export class LoginComponent implements OnInit {
     });
   }
 
-  login(loginUser: User): void {
-    this.tokenStorageService.saveUser(loginUser);
+  login(loginResponse: LoginResponse): void {
+    this.tokenStorageService.saveLogin(loginResponse);
     this.router.navigate(['/meeting/list']);
     this.appComponent.showSnackbar('Herzlich willkommen '.concat(this.tokenStorageService.isAdmin() ? 'Administrator' : (this.tokenStorageService.getUser().firstname + ' ' + this.tokenStorageService.getUser().lastname)));
   }

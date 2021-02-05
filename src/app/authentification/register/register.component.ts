@@ -8,7 +8,8 @@ import { ErrorService } from 'src/app/error/error-service';
 import { AppComponent } from 'src/app/app.component';
 import { ValidatorsModule } from '../../validation/validators.module';
 import { ValidationErrorMessagesModule } from '../../validation/validation-error-messages.module';
-import {User} from '../user.model';
+import { UserService } from '../../user/user.service';
+import { LoginResponse } from '../login-response.model';
 
 @Component({
   selector: 'app-register',
@@ -31,9 +32,10 @@ export class RegisterComponent implements OnInit {
   emailError: string;
   companyError: string;
 
-  constructor(private router: Router, private authService: AuthService, private tokenStorageService: TokenStorageService, private errorService: ErrorService, private appComponent: AppComponent) {}
+  constructor(private router: Router, private authService: AuthService, private userService: UserService, private tokenStorageService: TokenStorageService, private errorService: ErrorService, private appComponent: AppComponent) {}
 
   ngOnInit(): void {
+    this.tokenStorageService.signOut();
     ValidationErrorMessagesModule.usernameError.subscribe(errorMessage => {
       this.usernameError = errorMessage;
       this.usernameAlreadyExists = this.usernameError === 'Dieser Benutzername ist bereits vergeben.';
@@ -43,6 +45,7 @@ export class RegisterComponent implements OnInit {
       this.emailAlreadyExists = this.emailError === 'Diese E-Mail ist bereits vergeben.';
     });
     this.isLoading = false;
+    this.isLoggedIn = this.tokenStorageService.isLoggedIn();
     this.registerForm = new FormGroup({
       username: new FormControl(null, ValidatorsModule.usernameValidators),
       password: new FormControl(null, ValidatorsModule.passwordValidators),
@@ -52,9 +55,6 @@ export class RegisterComponent implements OnInit {
       email: new FormControl(null, ValidatorsModule.emailValidators),
       company: new FormControl(null, ValidatorsModule.companyValidators)
     });
-    if (this.tokenStorageService.getUser()) {
-      this.isLoggedIn = true;
-    }
     this.changedUsername();
     this.changedPassword();
     this.changedPasswordCheck();
@@ -65,7 +65,7 @@ export class RegisterComponent implements OnInit {
   }
 
   changedUsername(): void {
-    ValidationErrorMessagesModule.changedUsername(this.registerForm, this.authService, this.errorService);
+    ValidationErrorMessagesModule.changedUsername(this.registerForm, this.userService, this.errorService);
   }
 
   changedPassword(): void {
@@ -86,7 +86,7 @@ export class RegisterComponent implements OnInit {
   }
 
   changedEmail(): void {
-    ValidationErrorMessagesModule.changedEmail(this.registerForm, this.authService, this.errorService, '');
+    ValidationErrorMessagesModule.changedEmail(this.registerForm, this.userService, this.errorService, '');
   }
 
   changedCompany(): void {
@@ -112,9 +112,9 @@ export class RegisterComponent implements OnInit {
   tryToLogin(): void {
     this.isSignUpFailed = false;
     this.authService.login(this.registerForm)
-    .subscribe(loginUser => {
-      if (loginUser) {
-        this.login(loginUser);
+    .subscribe(loginResponse => {
+      if (loginResponse) {
+        this.login(loginResponse);
       } else {
         this.isSignUpFailed = true;
       }
@@ -124,8 +124,8 @@ export class RegisterComponent implements OnInit {
     });
   }
 
-  login(loginUser: User): void {
-    this.tokenStorageService.saveUser(loginUser);
+  login(loginResponse: LoginResponse): void {
+    this.tokenStorageService.saveLogin(loginResponse);
     this.router.navigate(['/profile']);
     this.appComponent.showSnackbar('Sie wurden erfolgreich registriert');
   }

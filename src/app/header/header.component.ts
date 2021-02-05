@@ -2,7 +2,7 @@ import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Router } from '@angular/router';
 
 import { TokenStorageService } from '../authentification/token-storage.service';
-import { User } from '../authentification/user.model';
+import { User } from '../user/user.model';
 import {AuthService} from '../authentification/auth.service';
 
 @Component({

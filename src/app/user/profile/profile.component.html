@@ -1,39 +1,44 @@
 <app-loader *ngIf="isLoading"></app-loader>
-<div *ngIf="!isLoading" class="col-xs-6">
+<div *ngIf="!isLoading" class="col-xs-12">
   <h3>Profil</h3>
   <hr>
   <table>
     <tbody>
-      <tr>
-        <th class="profile-height profile-width">Benutzername:</th>
-        <td>{{ user.username }}</td>
-      </tr>
-      <tr>
-        <th class="profile-height">Vorname:</th>
-        <td>{{ user.firstname }}</td>
-      </tr>
-      <tr>
-        <th class="profile-height"> Nachname:</th>
-        <td>{{ user.lastname }}</td>
-      </tr>
-      <tr>
-        <th class="profile-height">Email:</th>
-        <td>{{ user.email }}</td>
-      </tr>
-      <tr>
-        <th class="profile-height">Firma/Unternehmen:</th>
-        <td>{{ user.company }}</td>
-      </tr>
-      <tr>
-        <th class="profile-height">Rolle:</th>
-        <td>{{ role }}</td>
-      </tr>
+    <tr>
+      <th class="profile-height profile-width">Benutzername:</th>
+      <td class="profile-width">{{ user.username }}</td>
+    </tr>
+    <tr>
+      <th class="profile-height">Passwort:</th>
+      <td>**********</td>
+      <td class="profile-width"><button class="btn btn-primary btn-block" (click)="onEditPassword()">Passwort bearbeiten</button></td>
+    </tr>
+    <tr>
+      <th class="profile-height">Vorname:</th>
+      <td>{{ user.firstname }}</td>
+    </tr>
+    <tr>
+      <th class="profile-height"> Nachname:</th>
+      <td>{{ user.lastname }}</td>
+    </tr>
+    <tr>
+      <th class="profile-height">Email:</th>
+      <td>{{ user.email }}</td>
+    </tr>
+    <tr>
+      <th class="profile-height">Firma/Unternehmen:</th>
+      <td>{{ user.company }}</td>
+    </tr>
+    <tr>
+      <th class="profile-height">Rolle:</th>
+      <td>{{ role }}</td>
+    </tr>
     </tbody>
   </table>
   <span *ngIf="!isAdmin">
     <hr>
-    <button class="btn btn-primary col-md-4" (click)="onEdit()">Profil bearbeiten</button>
-    <div class="col-md-4"></div>
-    <button class="btn btn-danger col-md-4" (click)="onDelete()">Profil löschen</button>
+    <button class="btn btn-primary col-md-2" (click)="onEditUser()">Profil bearbeiten</button>
+    <div class="col-md-8"></div>
+    <button class="btn btn-danger col-md-2" (click)="onDelete()">Profil löschen</button>
   </span>
 </div>

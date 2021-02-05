@@ -27,9 +27,7 @@ export class SetNewPasswordComponent implements OnInit {
   ngOnInit(): void {
     this.isLoading = false;
     this.isSecretValid = true;
-    if (this.tokenStorageService.getUser()) {
-      this.isLoggedIn = true;
-    }
+    this.isLoggedIn = this.tokenStorageService.isLoggedIn();
     this.setNewPasswordForm = new FormGroup({
       password: new FormControl(null, ValidatorsModule.passwordValidators),
       passwordCheck: new FormControl(null, ValidatorsModule.passwordValidators)

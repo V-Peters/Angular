@@ -2,8 +2,8 @@ import { NgModule, EventEmitter } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormGroup } from '@angular/forms';
 
-import { AuthService } from '../authentification/auth.service';
 import { ErrorService } from '../error/error-service';
+import { UserService } from '../user/user.service';
 
 @NgModule({
   declarations: [],
@@ -16,11 +16,11 @@ export class ValidationErrorMessagesModule {
   static usernameError = new EventEmitter<string>();
   static emailError = new EventEmitter<string>();
 
-  static changedUsername(form: FormGroup, authService: AuthService, errorService: ErrorService): void {
+  static changedUsername(form: FormGroup, userService: UserService, errorService: ErrorService): void {
     const errors = form.controls.username.errors;
     this.usernameError.emit(this.changed(errors).replace('{}', 'en Benutzernamen'));
     if (form.controls.username.valid) {
-      authService.checkIfUsernameExists(form.value.username)
+      userService.checkIfUsernameExists(form.value.username)
         .subscribe(data => {
           if (data === true) {
             this.usernameError.emit('Dieser Benutzername ist bereits vergeben.');
@@ -59,11 +59,11 @@ export class ValidationErrorMessagesModule {
     return ValidationErrorMessagesModule.changed(errors).replace('{}', 'en Nachnamen');
   }
 
-  static changedEmail(form: FormGroup, authService: AuthService, errorService: ErrorService, currentEmail: string): any {
+  static changedEmail(form: FormGroup, userService: UserService, errorService: ErrorService, currentEmail: string): any {
     const errors = form.controls.email.errors;
     this.emailError.emit(this.changed(errors).replace('{}', 'e gültige E-Mail '));
     if (form.value.email !== currentEmail && form.controls.email.valid) {
-      authService.checkIfEmailExists(form.value.email)
+      userService.checkIfEmailExists(form.value.email)
       .subscribe(emailAlreadyExists => {
         if (emailAlreadyExists) {
           this.emailError.emit('Diese E-Mail ist bereits vergeben.');

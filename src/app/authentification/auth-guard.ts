@@ -13,8 +13,8 @@ export class AuthGuard implements CanActivate {
   constructor(private router: Router, private tokenStorageService: TokenStorageService, private appComponent: AppComponent) {}
 
   canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): boolean | UrlTree | Observable<boolean | UrlTree> | Promise<boolean | UrlTree> {
-    if (this.tokenStorageService.getUser()) {
-      if (this.tokenStorageService.isAdmin() || state.url === '/meeting/list' || state.url === '/profile' || state.url === '/profile/edit') {
+    if (this.tokenStorageService.getAuth()) {
+      if (this.tokenStorageService.isAdmin() || state.url === '/meeting/list' || state.url === '/profile' || state.url === '/profile/editUser' || state.url === '/profile/editPassword') {
         return true;
       } else {
         this.appComponent.showSnackbar('Unberechtigter Zugriff.');

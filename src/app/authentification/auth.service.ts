@@ -21,10 +21,10 @@ export class AuthService {
 
   constructor(private http: HttpClient, private router: Router, private tokenStorageService: TokenStorageService, private appComponent: AppComponent) { }
 
-  login(user): Observable<LoginResponse> {
+  login(loginForm): Observable<LoginResponse> {
     return this.http.post<LoginResponse>(this.AUTH_API + 'login', {
-      username: user.value.username,
-      password: user.value.password,
+      usernameOrEmail: loginForm.value.usernameOrEmail,
+      password: loginForm.value.password,
     }, httpOptions)
       .pipe(map(body => {
       return new LoginResponse(body.type, body.token, body.role, body.id, body.username, body.firstname, body.lastname, body.email, body.company);
@@ -38,15 +38,15 @@ export class AuthService {
     this.appComponent.showSnackbar('Sie wurden erfolgreich ausgeloggt');
   }
 
-  register(user): Observable<boolean> {
+  register(registerForm): Observable<boolean> {
     return this.http.post<boolean>(this.AUTH_API + 'register', {
-      username: user.value.username,
-      password: user.value.password,
-      passwordCheck: user.value.passwordCheck,
-      firstname: user.value.firstname,
-      lastname: user.value.lastname,
-      email: user.value.email,
-      company: user.value.company
+      username: registerForm.value.username,
+      password: registerForm.value.password,
+      passwordCheck: registerForm.value.passwordCheck,
+      firstname: registerForm.value.firstname,
+      lastname: registerForm.value.lastname,
+      email: registerForm.value.email,
+      company: registerForm.value.company
     }, httpOptions);
   }
 

@@ -7,36 +7,50 @@
     <h3>Login</h3>
     <hr>
     <form
-    [formGroup]="loginForm"
-    (ngSubmit)="onSubmit()">
+      [formGroup]="loginForm"
+      (ngSubmit)="onSubmit()">
       <div class="form-group">
-        <span for="username">Benutzername:</span>
-        <i *ngIf="loginForm.get('username').invalid && loginForm.get('username').touched"> Bitte geben Sie Ihren Beutzernamen ein.</i>
+        <span for="username">
+          <b *ngIf="isUsernameLogin"><a>Benutzername</a></b>
+          <a *ngIf="!isUsernameLogin" (click)="changeIsUsernameLogin()">Benutzername</a>
+          oder
+          <b *ngIf="!isUsernameLogin"><a>E-Mail</a></b>
+          <a *ngIf="isUsernameLogin" (click)="changeIsUsernameLogin()">E-Mail</a>:
+        </span>
+        <i *ngIf="loginForm.get('usernameOrEmail').invalid && loginForm.get('usernameOrEmail').touched">
+          <span *ngIf="isUsernameLogin">Bitte Ihren Beutzernamen eingeben.</span>
+          <span *ngIf="!isUsernameLogin">Bitte Ihre E-Mail eingeben.</span>
+        </i>
         <input
-        type="text"
-        id="username"
-        formControlName="username"
-        class="form-control">
+          type="text"
+          id="usernameOrEmail"
+          formControlName="usernameOrEmail"
+          class="form-control">
       </div>
       <div class="form-group">
         <span for="password">Passwort:</span>
-        <i *ngIf="loginForm.get('password').invalid && loginForm.get('password').touched"> Bitte geben Sie Ihr Passwort ein.</i>
+        <i *ngIf="loginForm.get('password').invalid && loginForm.get('password').touched"> Bitte Ihr Passwort eingeben.</i>
         <input
-        type="password"
-        id="password"
-        formControlName="password"
-        class="form-control">
+          type="password"
+          id="password"
+          formControlName="password"
+          class="form-control">
       </div>
       <i *ngIf="isLoginFailed">Fehlerhafte Logindaten</i>
       <br>
       <br>
       <button type="submit" class="btn btn-info btn-block" [disabled]="loginForm.invalid">
         <span *ngIf="loginForm.valid">Anmelden</span>
-        <span *ngIf="loginForm.invalid" class="disabled"> Das Anmeldeformular ist noch nicht vollständig ausgefüllt.</span>
+        <span *ngIf="loginForm.invalid"
+              class="disabled"> Das Anmeldeformular ist noch nicht vollständig ausgefüllt.</span>
       </button>
       <hr>
-      <button type="button" class="btn btn-primary btn-block" (click)="onRegister()">Noch kein Mitglied? Hier registrieren</button>
-      <button type="button" class="btn btn-primary btn-block" (click)="onForgoPassword()">Haben Sie ihr Passwort vergessen?</button>
+      <button type="button" class="btn btn-primary btn-block" (click)="onRegister()">Noch kein Mitglied? Hier
+        registrieren
+      </button>
+      <button type="button" class="btn btn-primary btn-block" (click)="onForgoPassword()">Haben Sie ihr Passwort
+        vergessen?
+      </button>
     </form>
   </div>
 </div>

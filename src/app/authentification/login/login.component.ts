@@ -20,6 +20,7 @@ export class LoginComponent implements OnInit {
   isLoggedIn = false;
   isLoginFailed = false;
   isLoading: boolean;
+  isUsernameLogin: boolean;
 
   constructor(private router: Router, private authService: AuthService, private tokenStorageService: TokenStorageService, private errorService: ErrorService, private appComponent: AppComponent) { }
 
@@ -27,9 +28,10 @@ export class LoginComponent implements OnInit {
     this.isLoading = false;
     this.isLoggedIn = this.tokenStorageService.isLoggedIn();
     this.loginForm = new FormGroup({
-      username: new FormControl(null, ValidatorsModule.usernameValidators),
+      usernameOrEmail: new FormControl(null, ValidatorsModule.usernameValidators),
       password: new FormControl(null, ValidatorsModule.passwordValidators)
     });
+    this.isUsernameLogin = true;
   }
 
   onSubmit(): void {
@@ -39,7 +41,7 @@ export class LoginComponent implements OnInit {
       if (loginResponse){
         this.login(loginResponse);
       } else {
-        this.isLoginFailed = true;
+        this.isLoginFailed = false;
       }
     }, err => {
       this.isLoginFailed = true;
@@ -60,5 +62,15 @@ export class LoginComponent implements OnInit {
 
   onForgoPassword(): void {
     this.router.navigate(['/forgot-password']);
+  }
+
+  changeIsUsernameLogin(): void {
+    this.isUsernameLogin = !this.isUsernameLogin;
+    this.loginForm.reset();
+    if (this.isUsernameLogin) {
+      this.loginForm.controls.usernameOrEmail.setValidators(ValidatorsModule.usernameValidators);
+    } else {
+      this.loginForm.controls.usernameOrEmail.setValidators(ValidatorsModule.emailValidators);
+    }
   }
 }

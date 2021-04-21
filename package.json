@@ -14,7 +14,6 @@
   "dependencies": {
     "@angular/animations": "~10.0.0",
     "@angular/cdk": "^10.2.7",
-    "@angular/cli": "~10.0.0",
     "@angular/common": "~10.0.0",
     "@angular/compiler": "~10.0.0",
     "@angular/compiler-cli": "~10.0.0",
@@ -25,8 +24,8 @@
     "@angular/platform-browser": "~10.0.0",
     "@angular/platform-browser-dynamic": "~10.0.0",
     "@angular/router": "~10.0.0",
-    "@ng-bootstrap/ng-bootstrap": "^8.0.0",
-    "bootstrap": "^3.4.1",
+    "@ng-bootstrap/ng-bootstrap": "^9.1.0",
+    "bootstrap": "^4.6.0",
     "express": "^4.17.1",
     "path": "^0.12.7",
     "rxjs": "~6.5.5",
@@ -36,7 +35,7 @@
   },
   "devDependencies": {
     "@angular-devkit/build-angular": "^0.1100.2",
-    "@angular/cli": "~10.0.0",
+    "@angular/cli": "^11.2.9",
     "@angular/compiler-cli": "~10.0.0",
     "@types/jasmine": "~3.5.0",
     "@types/jasminewd2": "~2.0.3",

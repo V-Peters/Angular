@@ -15,6 +15,7 @@ import { AppComponent } from '../../app.component';
 export class MeetingEditComponent implements OnInit {
   meetingForm: FormGroup;
   id: number;
+  today: string;
   now: string;
   meetingExists: boolean;
   isLoading: boolean;
@@ -25,7 +26,9 @@ export class MeetingEditComponent implements OnInit {
 
   ngOnInit(): void {
     this.isLoading = true;
-    this.now = new DatePipe('de-DE').transform(Date.now(), 'yyyy-MM-ddTHH:mm');
+    this.today = new DatePipe('de-DE').transform(Date.now(), 'yyyy-MM-dd');
+    this.now = new DatePipe('de-DE').transform(Date.now(), 'HH:mm');
+    this.meeting = new Meeting(0, '', '', true, null);
     this.meetingExists = true;
     this.route.params
     .subscribe((params: Params) => {
@@ -39,16 +42,18 @@ export class MeetingEditComponent implements OnInit {
   }
 
   private init(): void {
-    this.initForm(0, '', this.now, true);
+    this.initForm(0, '', this.today, this.now, true);
     if (this.id) {
       this.meetingService.getMeeting(this.id)
       .subscribe(tempMeeting => {
+        console.log(tempMeeting);
         if (tempMeeting) {
           this.meetingExists = true;
           this.meeting = tempMeeting;
-          this.initForm(this.meeting.id, this.meeting.name, this.meeting.datetime, this.meeting.display);
+          this.initForm(this.meeting.id, this.meeting.name, this.meeting.datetime.substr(0, 10), this.meeting.datetime.substr(11, 5), this.meeting.display);
           this.isLoading = false;
         } else {
+          this.isLoading = false;
           this.meetingExists = false;
         }
       }, err => {
@@ -59,17 +64,30 @@ export class MeetingEditComponent implements OnInit {
     }
   }
 
-  private initForm(id: number, name: string, datetime: string, display: boolean): void {
+  private initForm(id: number, name: string, date: string, time: string, display: boolean): void {
     this.meetingForm = new FormGroup({
       id: new FormControl(id),
       name: new FormControl(name, [Validators.required, Validators.maxLength(100)]),
-      datetime: new FormControl(datetime, Validators.required),
+      date: new FormControl(date, Validators.required),
+      time: new FormControl(time, Validators.required),
       display: new FormControl(display)
     });
   }
 
+  private castMeetingFormToMeeting(): void {
+    this.meeting.id = this.meetingForm.value.id;
+    this.meeting.name = this.meetingForm.value.name;
+    this.meeting.datetime = this.concatDateAndTime(this.meetingForm.value.date, this.meetingForm.value.time);
+    this.meeting.display = this.meetingForm.value.display;
+  }
+
+  private concatDateAndTime(date: string, time: string): string {
+    return date + 'T' + time;
+  }
+
   onSubmit(): void {
-    this.meetingService.saveMeeting(this.meetingForm.value)
+    this.castMeetingFormToMeeting();
+    this.meetingService.saveMeeting(this.meeting)
     .subscribe(savedMeeting => {
       if (savedMeeting) {
         if (this.meetingForm.value.id === 0) {

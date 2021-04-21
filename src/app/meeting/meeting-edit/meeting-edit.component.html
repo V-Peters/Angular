@@ -23,14 +23,22 @@
         placeholder="Veranstaltungsname"
         autofocus>
       </div>
-      <div class="form-group">
-        <label for="datetime">Datum & Uhrzeit: </label>
+      <div class="form-group w-50">
+        <label for="date">Datum: </label>
         <input
-        type="datetime-local"
-        id="datetime"
-        formControlName="datetime"
-        class="form-control"
-        min="{{ now }}">
+          type="date"
+          id="date"
+          formControlName="date"
+          class="form-control"
+          min="{{ today }}">
+      </div>
+      <div class="form-group w-50">
+        <label for="time">Uhrzeit: </label>
+        <input
+          type="time"
+          id="time"
+          formControlName="time"
+          class="form-control">
       </div>
       <div class="form-group">
         <mat-checkbox formControlName="display" labelPosition="before" color="primary">Anzeigen:</mat-checkbox>

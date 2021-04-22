@@ -6,6 +6,7 @@ export class Meeting {
     public name: string,
     public datetime: string,
     public display: boolean,
+    public authorId: number,
     public users: User[]
   ) {}
 }

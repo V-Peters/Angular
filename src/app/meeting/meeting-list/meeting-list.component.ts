@@ -18,6 +18,8 @@ export class MeetingListComponent implements OnInit {
   meetings: Meeting[];
   signupValues = {};
   isDifferent = false;
+  showDetails = false;
+  idForDetails: number;
 
   private initialDisplayValues = {};
   private initialSignupValues = {};
@@ -180,5 +182,14 @@ export class MeetingListComponent implements OnInit {
 
   onShowParticipants(id: number): void {
     this.router.navigate(['/participants/list/' + id]);
+  }
+
+  activateDetails(id: number): void {
+    this.showDetails = true;
+    this.idForDetails = id;
+  }
+
+  deactivateDetails(): void {
+    this.showDetails = false;
   }
 }

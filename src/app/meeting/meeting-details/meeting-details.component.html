@@ -1,0 +1,21 @@
+<div class="backdrop" (click)="onClose()"></div>
+<app-loader *ngIf="isLoading"></app-loader>
+<div *ngIf="!isLoading" class="details-box">
+  <p class="mat-card-title"><b>{{ meeting.name }}</b></p>
+  <p class="mat-card-subtitle"><b>{{ meeting.datetime | date:'dd.MM.yyyy' }} um {{ meeting.datetime | date:'HH:mm' }} Uhr</b></p>
+  <br>
+  <p>Detailbeschreibung:</p>
+  <div>*Details des Meetings* *Details des Meetings* *Details des Meetings* *Details des Meetings* *Details des Meetings*
+    *Details des Meetings* *Details des Meetings* *Details des Meetings* *Details des Meetings* *Details des Meetings*
+    *Details des Meetings* *Details des Meetings* *Details des Meetings* *Details des Meetings* *Details des Meetings*
+    *Details des Meetings* *Details des Meetings* *Details des Meetings* *Details des Meetings* *Details des Meetings*
+    *Details des Meetings* *Details des Meetings* *Details des Meetings* *Details des Meetings* *Details des Meetings*
+    *Details des Meetings* *Details des Meetings* *Details des Meetings* *Details des Meetings* *Details des Meetings* </div>
+  <br>
+  <p>Autor: <i>{{ author.firstname }} {{ author.lastname }}</i></p>
+  <div class="details-box-actions">
+    <button class="btn btn-info col-xs-4" (click)="onEditMeeting(meeting.id)">Bearbeiten</button>
+    <span class="col-xs-4"></span>
+    <button class="btn btn-primary col-xs-4" (click)="onClose()">Schließen</button>
+  </div>
+</div>

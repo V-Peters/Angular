@@ -1,9 +1,8 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { TokenStorageService } from '../authentification/token-storage.service';
-import { Router } from '@angular/router';
 import { environment } from '../../environments/environment';
+import { Author } from './author.model';
 
 @Injectable({
   providedIn: 'root'
@@ -44,5 +43,9 @@ export class UserService {
     return this.http.delete<boolean>(this.USER_API, {
       headers: {password}
     });
+  }
+
+  getAuthor(id: number): Observable<Author> {
+    return this.http.get<Author>(this.USER_API + 'author/' + id);
   }
 }

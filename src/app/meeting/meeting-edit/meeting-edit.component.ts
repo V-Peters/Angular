@@ -28,7 +28,7 @@ export class MeetingEditComponent implements OnInit {
     this.isLoading = true;
     this.today = new DatePipe('de-DE').transform(Date.now(), 'yyyy-MM-dd');
     this.now = new DatePipe('de-DE').transform(Date.now(), 'HH:mm');
-    this.meeting = new Meeting(0, '', '', true, null);
+    this.meeting = new Meeting(0, '', '', true, 0, null);
     this.meetingExists = true;
     this.route.params
     .subscribe((params: Params) => {
@@ -46,7 +46,6 @@ export class MeetingEditComponent implements OnInit {
     if (this.id) {
       this.meetingService.getMeeting(this.id)
       .subscribe(tempMeeting => {
-        console.log(tempMeeting);
         if (tempMeeting) {
           this.meetingExists = true;
           this.meeting = tempMeeting;

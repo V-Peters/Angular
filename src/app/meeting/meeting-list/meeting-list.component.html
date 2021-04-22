@@ -1,4 +1,9 @@
 <app-loader *ngIf="isLoading"></app-loader>
+<app-meeting-details
+  *ngIf="showDetails"
+  [id]="idForDetails"
+  (deactivateDetails)="deactivateDetails()">
+</app-meeting-details>
 <div *ngIf="!isLoading" class="col-xs-12">
   <h3>Veranstaltungsliste</h3>
   <hr>
@@ -30,7 +35,7 @@
       <tbody>
         <tr *ngFor="let meeting of meetings; let i = index">
           <td class="right">{{ i + 1 }}</td>
-          <td>{{ meeting.name }}</td>
+          <td (click)="activateDetails(meeting.id)" class="clickable">{{ meeting.name }}</td>
           <td class="center" >{{ meeting.datetime | date:'dd.MM.yyyy' }}</td>
           <td class="center" >{{ meeting.datetime | date:'HH:mm' }} Uhr</td>
           <td *ngIf="isAdmin" class="center">

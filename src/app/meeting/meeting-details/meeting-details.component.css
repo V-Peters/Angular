@@ -14,7 +14,7 @@ i {
 
 .details-box {
   position: fixed;
-  top: 30vh;
+  top: 15vh;
   left: 20vw;
   width: 60vw;
   padding: 16px;
@@ -27,4 +27,11 @@ i {
 .details-box-actions {
   margin-top: 50px;
   text-align: right;
+}
+
+textarea {
+  width: 58vw;
+  border: white;
+  background: white;
+  resize: none;
 }

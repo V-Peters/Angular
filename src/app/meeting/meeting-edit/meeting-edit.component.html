@@ -1,7 +1,7 @@
 <app-loader *ngIf="isLoading"></app-loader>
 <div *ngIf="!isLoading" class="col-xs-6">
-  <h3 *ngIf="id !== 0">Veranstaltung bearbeiten</h3>
-  <h3 *ngIf="id === 0">Veranstaltung hinzufügen</h3>
+  <h3 *ngIf="id">Veranstaltung bearbeiten</h3>
+  <h3 *ngIf="!id">Veranstaltung hinzufügen</h3>
   <hr>
   <div *ngIf="!meetingExists">
     Die Veranstaltung mit der Id: {{ id }} existiert leider nicht.
@@ -14,14 +14,15 @@
     (ngSubmit)="onSubmit()">
       <div class="form-group">
         <label for="name">Veranstaltungsname: </label>
-        <i *ngIf="meetingForm.get('name').invalid && meetingForm.get('name').touched"> Bitte geben Sie einen Namen für die Veranstaltung ein.</i>
+        <i *ngIf="meetingForm.get('name').invalid && meetingForm.get('name').touched"> {{nameError}}</i>
         <input
         type="text"
         id="name"
         formControlName="name"
         class="form-control"
         placeholder="Veranstaltungsname"
-        autofocus>
+        autofocus
+        (ngModelChange)="changedName()">
       </div>
       <div class="form-group col-xs-6">
         <label for="date">Datum: </label>
@@ -39,6 +40,17 @@
           id="time"
           formControlName="time"
           class="form-control">
+      </div>
+      <div class="form-group">
+        <label for="description">Weitere Informationen: </label>
+        <i *ngIf="meetingForm.get('description').invalid"> {{descriptionError}}</i>
+        <textarea
+          id="description"
+          formControlName="description"
+          class="form-control"
+          placeholder="Hier können Sie Details zu Ihrer Veranstaltung eintragen"
+          rows="{{textareaLines}}"
+          (ngModelChange)="changedDescription()">{{ meeting.description }}</textarea>
       </div>
       <div class="form-group">
         <mat-checkbox formControlName="display" labelPosition="before" color="primary">Anzeigen:</mat-checkbox>

@@ -3,15 +3,10 @@
 <div *ngIf="!isLoading" class="details-box">
   <p class="mat-card-title"><b>{{ meeting.name }}</b></p>
   <p class="mat-card-subtitle"><b>{{ meeting.datetime | date:'dd.MM.yyyy' }} um {{ meeting.datetime | date:'HH:mm' }} Uhr</b></p>
-  <br>
-  <p>Detailbeschreibung:</p>
-  <div>*Details des Meetings* *Details des Meetings* *Details des Meetings* *Details des Meetings* *Details des Meetings*
-    *Details des Meetings* *Details des Meetings* *Details des Meetings* *Details des Meetings* *Details des Meetings*
-    *Details des Meetings* *Details des Meetings* *Details des Meetings* *Details des Meetings* *Details des Meetings*
-    *Details des Meetings* *Details des Meetings* *Details des Meetings* *Details des Meetings* *Details des Meetings*
-    *Details des Meetings* *Details des Meetings* *Details des Meetings* *Details des Meetings* *Details des Meetings*
-    *Details des Meetings* *Details des Meetings* *Details des Meetings* *Details des Meetings* *Details des Meetings* </div>
-  <br>
+  <hr>
+  <p><b>Detailbeschreibung:</b></p>
+  <div *ngIf="meeting.description"><textarea rows="{{textareaLines}}" disabled>{{ meeting.description }}</textarea></div>
+  <hr>
   <p>Autor: <i>{{ author.firstname }} {{ author.lastname }}</i></p>
   <div class="details-box-actions">
     <button class="btn btn-info col-xs-4" (click)="onEditMeeting(meeting.id)">Bearbeiten</button>

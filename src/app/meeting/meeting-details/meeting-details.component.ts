@@ -4,6 +4,7 @@ import { Meeting } from '../meeting.model';
 import { Router } from '@angular/router';
 import { UserService } from '../../user/user.service';
 import { Author } from '../../user/author.model';
+import { max } from "rxjs/operators";
 
 @Component({
   selector: 'app-meeting-details',
@@ -16,6 +17,7 @@ export class MeetingDetailsComponent implements OnInit {
   isLoading = true;
   meeting: Meeting;
   author: Author;
+  textareaLines: number;
 
   constructor(private router: Router, private meetingService: MeetingService, private userService: UserService) { }
 
@@ -24,6 +26,7 @@ export class MeetingDetailsComponent implements OnInit {
     this.meetingService.getMeeting(this.id)
     .subscribe((tempMeeting: Meeting) => {
       this.meeting = tempMeeting;
+      this.calcTextareaSize();
       this.userService.getAuthor(this.meeting.authorId)
       .subscribe((tempAuthor: Author) => {
         this.author = tempAuthor;
@@ -38,5 +41,15 @@ export class MeetingDetailsComponent implements OnInit {
 
   onClose(): void {
     this.deactivateDetails.emit();
+  }
+
+  private calcTextareaSize(): void {
+    if (!this.meeting.description){
+      this.meeting.description = 'Diese Veranstaltung hat noch keine Beschreibung.';
+    }
+    this.textareaLines = this.meeting.description.split(/\r\n|\r|\n/).length;
+    if (this.textareaLines > 19) {
+      this.textareaLines = 19;
+    }
   }
 }

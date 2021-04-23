@@ -7,10 +7,13 @@ import { MeetingService } from '../meeting.service';
 import { Meeting } from '../meeting.model';
 import { ErrorService } from '../../error/error-service';
 import { AppComponent } from '../../app.component';
+import { ValidatorsModule } from '../../validation/validators.module';
+import { ValidationErrorMessagesModule } from '../../validation/validation-error-messages.module';
 
 @Component({
   selector: 'app-meeting-edit',
-  templateUrl: './meeting-edit.component.html'
+  templateUrl: './meeting-edit.component.html',
+  styleUrls: ['./meeting-edit.component.css']
 })
 export class MeetingEditComponent implements OnInit {
   meetingForm: FormGroup;
@@ -19,6 +22,9 @@ export class MeetingEditComponent implements OnInit {
   now: string;
   meetingExists: boolean;
   isLoading: boolean;
+  nameError: string;
+  descriptionError: string;
+  textareaLines: number;
 
   private meeting: Meeting;
 
@@ -28,8 +34,9 @@ export class MeetingEditComponent implements OnInit {
     this.isLoading = true;
     this.today = new DatePipe('de-DE').transform(Date.now(), 'yyyy-MM-dd');
     this.now = new DatePipe('de-DE').transform(Date.now(), 'HH:mm');
-    this.meeting = new Meeting(0, '', '', true, 0, null);
+    this.meeting = new Meeting(0, '', '', true, 0, '', null);
     this.meetingExists = true;
+    this.textareaLines = 5;
     this.route.params
     .subscribe((params: Params) => {
       if (params.id != null) {
@@ -42,14 +49,15 @@ export class MeetingEditComponent implements OnInit {
   }
 
   private init(): void {
-    this.initForm(0, '', this.today, this.now, true);
+    this.initForm(0, '', this.today, this.now, '', true);
     if (this.id) {
       this.meetingService.getMeeting(this.id)
       .subscribe(tempMeeting => {
         if (tempMeeting) {
           this.meetingExists = true;
           this.meeting = tempMeeting;
-          this.initForm(this.meeting.id, this.meeting.name, this.meeting.datetime.substr(0, 10), this.meeting.datetime.substr(11, 5), this.meeting.display);
+          this.calcTextareaSize();
+          this.initForm(this.meeting.id, this.meeting.name, this.meeting.datetime.substr(0, 10), this.meeting.datetime.substr(11, 5), this.meeting.description, this.meeting.display);
           this.isLoading = false;
         } else {
           this.isLoading = false;
@@ -63,12 +71,13 @@ export class MeetingEditComponent implements OnInit {
     }
   }
 
-  private initForm(id: number, name: string, date: string, time: string, display: boolean): void {
+  private initForm(id: number, name: string, date: string, time: string, description, display: boolean): void {
     this.meetingForm = new FormGroup({
       id: new FormControl(id),
-      name: new FormControl(name, [Validators.required, Validators.maxLength(100)]),
-      date: new FormControl(date, Validators.required),
-      time: new FormControl(time, Validators.required),
+      name: new FormControl(name, ValidatorsModule.meetingNameValidators),
+      date: new FormControl(date, ValidatorsModule.meetingDateTimeValidators),
+      time: new FormControl(time, ValidatorsModule.meetingDateTimeValidators),
+      description: new FormControl(description, ValidatorsModule.meetingDescriptionValidators),
       display: new FormControl(display)
     });
   }
@@ -77,6 +86,7 @@ export class MeetingEditComponent implements OnInit {
     this.meeting.id = this.meetingForm.value.id;
     this.meeting.name = this.meetingForm.value.name;
     this.meeting.datetime = this.concatDateAndTime(this.meetingForm.value.date, this.meetingForm.value.time);
+    this.meeting.description = this.meetingForm.value.description;
     this.meeting.display = this.meetingForm.value.display;
   }
 
@@ -112,4 +122,21 @@ export class MeetingEditComponent implements OnInit {
     this.router.navigate(['/meeting/list']);
   }
 
-}
+  changedName(): void {
+    this.nameError = ValidationErrorMessagesModule.changedMeetingName(this.meetingForm);
+  }
+
+  changedDescription(): void {
+    this.descriptionError = ValidationErrorMessagesModule.changedMeetingDescription(this.meetingForm);
+  }
+
+  private calcTextareaSize(): void {
+    this.textareaLines = this.meeting.description.split(/\r\n|\r|\n/).length;
+    if (this.textareaLines < 5) {
+      this.textareaLines = 5;
+    }
+    if (this.textareaLines > 20) {
+      this.textareaLines = 20;
+    }
+  }
+  }

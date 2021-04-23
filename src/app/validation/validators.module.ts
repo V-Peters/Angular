@@ -15,4 +15,7 @@ export class ValidatorsModule {
   static lastnameValidators = [Validators.required, Validators.maxLength(50)];
   static emailValidators = [Validators.required, Validators.maxLength(100), Validators.email];
   static companyValidators = [Validators.required, Validators.maxLength(100)];
+  static meetingNameValidators = [Validators.required, Validators.maxLength(100)];
+  static meetingDateTimeValidators = [Validators.required];
+  static meetingDescriptionValidators = [Validators.maxLength(1000)];
 }

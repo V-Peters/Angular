@@ -64,13 +64,13 @@ export class ValidationErrorMessagesModule {
     this.emailError.emit(this.changed(errors).replace('{}', 'e gültige E-Mail '));
     if (form.value.email !== currentEmail && form.controls.email.valid) {
       userService.checkIfEmailExists(form.value.email)
-      .subscribe(emailAlreadyExists => {
-        if (emailAlreadyExists) {
-          this.emailError.emit('Diese E-Mail ist bereits vergeben.');
-        }
-      }, err => {
-        errorService.print(err);
-      });
+        .subscribe(emailAlreadyExists => {
+          if (emailAlreadyExists) {
+            this.emailError.emit('Diese E-Mail ist bereits vergeben.');
+          }
+        }, err => {
+          errorService.print(err);
+        });
     }
   }
 
@@ -84,11 +84,25 @@ export class ValidationErrorMessagesModule {
       if (errors.required || errors.email) {
         return 'Bitte geben Sie Ihr{} ein.';
       } else if (errors.minlength) {
-        return 'muss mindestens ' + errors.minlength.requiredLength + ' Zeichen lang sein. (' + errors.minlength.actualLength + '/' + errors.minlength.requiredLength + ')';
+        return 'muss mindestens ' + this.calcInputSize(errors.minlength.actualLength, errors.minlength.requiredLength);
       } else if (errors.maxlength) {
-        return 'darf maximal ' + errors.maxlength.requiredLength + ' Zeichen lang sein. (' + errors.maxlength.actualLength + '/' + errors.maxlength.requiredLength + ')';
+        return 'darf maximal ' + this.calcInputSize(errors.maxlength.actualLength, errors.maxlength.requiredLength);
       }
     }
     return '';
+  }
+
+  private static calcInputSize(actual: number, border: number): string {
+    return border + ' Zeichen lang sein. (' + actual + '/' + border + ')';
+  }
+
+  static changedMeetingName(form: FormGroup): string {
+    const errors = form.controls.name.errors;
+    return ValidationErrorMessagesModule.changed(errors).replace('Ihr{}', 'einen Namen für die Veranstaltung');
+  }
+
+  static changedMeetingDescription(form: FormGroup): string {
+    const errors = form.controls.description.errors;
+    return ValidationErrorMessagesModule.changed(errors).replace('Ihr{}', 'einen Namen für die Veranstaltung');
   }
 }

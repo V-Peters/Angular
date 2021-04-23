@@ -4,6 +4,7 @@ import { FormGroup } from '@angular/forms';
 
 import { ErrorService } from '../error/error-service';
 import { UserService } from '../user/user.service';
+import { MeetingService } from '../meeting/meeting.service';
 
 @NgModule({
   declarations: [],
@@ -15,6 +16,7 @@ export class ValidationErrorMessagesModule {
 
   static usernameError = new EventEmitter<string>();
   static emailError = new EventEmitter<string>();
+  static meetingNameError = new EventEmitter<string>();
 
   static changedUsername(form: FormGroup, userService: UserService, errorService: ErrorService): void {
     const errors = form.controls.username.errors;
@@ -79,6 +81,26 @@ export class ValidationErrorMessagesModule {
     return ValidationErrorMessagesModule.changed(errors).replace('{}', 'e Firma');
   }
 
+  static changedMeetingName(form: FormGroup, meetingService: MeetingService, errorService: ErrorService, currentName: string): void {
+    const errors = form.controls.name.errors;
+    this.meetingNameError.emit(this.changed(errors).replace('Ihr{}', 'einen Namen für die Veranstaltung'));
+    if (form.value.name !== currentName && form.controls.name.valid) {
+      meetingService.checkIfNameExists(form.value.name)
+        .subscribe(nameAlreadyExists => {
+          if (nameAlreadyExists) {
+            this.meetingNameError.emit('Es existiert bereits eine Veranstaltung mit diesem Namen.');
+          }
+        }, err => {
+          errorService.print(err);
+        });
+    }
+  }
+
+  static changedMeetingDescription(form: FormGroup): string {
+    const errors = form.controls.description.errors;
+    return ValidationErrorMessagesModule.changed(errors).replace('Ihr{}', 'einen Namen für die Veranstaltung');
+  }
+
   static changed(errors: any): any {
     if (errors) {
       if (errors.required || errors.email) {
@@ -94,15 +116,5 @@ export class ValidationErrorMessagesModule {
 
   private static calcInputSize(actual: number, border: number): string {
     return border + ' Zeichen lang sein. (' + actual + '/' + border + ')';
-  }
-
-  static changedMeetingName(form: FormGroup): string {
-    const errors = form.controls.name.errors;
-    return ValidationErrorMessagesModule.changed(errors).replace('Ihr{}', 'einen Namen für die Veranstaltung');
-  }
-
-  static changedMeetingDescription(form: FormGroup): string {
-    const errors = form.controls.description.errors;
-    return ValidationErrorMessagesModule.changed(errors).replace('Ihr{}', 'einen Namen für die Veranstaltung');
   }
 }

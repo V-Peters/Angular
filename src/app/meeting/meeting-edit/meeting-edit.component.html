@@ -14,7 +14,7 @@
     (ngSubmit)="onSubmit()">
       <div class="form-group">
         <label for="name">Veranstaltungsname: </label>
-        <i *ngIf="meetingForm.get('name').invalid && meetingForm.get('name').touched"> {{nameError}}</i>
+        <i *ngIf="meetingForm.get('name').invalid && meetingForm.get('name').touched || nameAlreadyExists"> {{nameError}}</i>
         <input
         type="text"
         id="name"
@@ -55,9 +55,9 @@
       <div class="form-group">
         <mat-checkbox formControlName="display" labelPosition="before" color="primary">Anzeigen:</mat-checkbox>
       </div>
-      <button type="submit" class="btn btn-info btn-block" [disabled]="meetingForm.invalid">
-        <span *ngIf="meetingForm.valid">Veranstaltung speichern</span>
-        <span *ngIf="meetingForm.invalid" class="disabled">Bitte geben Sie einen Namen für die Veranstaltung ein</span>
+      <button type="submit" class="btn btn-info btn-block" [disabled]="meetingForm.invalid || nameAlreadyExists">
+        <span *ngIf="meetingForm.valid && !nameAlreadyExists">Veranstaltung speichern</span>
+        <span *ngIf="meetingForm.invalid || nameAlreadyExists" class="disabled">Das Formular ist noch nicht vollständig ausgefüllt</span>
       </button>
     </form>
     <hr>

@@ -20,6 +20,11 @@ export class MeetingService {
 
   constructor(private http: HttpClient) {}
 
+  checkIfNameExists(name: string): Observable<boolean> {
+    return this.http.post<boolean>(this.MEETING_URL + 'checkIfNameExists',
+      name);
+  }
+
   getMeetings(): Observable<Meeting[]> {
     return this.http
     .get<Meeting[]>(

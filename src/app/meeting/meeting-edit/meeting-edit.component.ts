@@ -23,6 +23,7 @@ export class MeetingEditComponent implements OnInit {
   meetingExists: boolean;
   isLoading: boolean;
   nameError: string;
+  nameAlreadyExists: boolean;
   descriptionError: string;
   textareaLines: number;
 
@@ -32,6 +33,10 @@ export class MeetingEditComponent implements OnInit {
 
   ngOnInit(): void {
     this.isLoading = true;
+    ValidationErrorMessagesModule.meetingNameError.subscribe(errorMessage => {
+      this.nameError = errorMessage;
+      this.nameAlreadyExists = this.nameError === 'Es existiert bereits eine Veranstaltung mit diesem Namen.';
+    });
     this.today = new DatePipe('de-DE').transform(Date.now(), 'yyyy-MM-dd');
     this.now = new DatePipe('de-DE').transform(Date.now(), 'HH:mm');
     this.meeting = new Meeting(0, '', '', true, 0, '', null);
@@ -123,7 +128,7 @@ export class MeetingEditComponent implements OnInit {
   }
 
   changedName(): void {
-    this.nameError = ValidationErrorMessagesModule.changedMeetingName(this.meetingForm);
+    ValidationErrorMessagesModule.changedMeetingName(this.meetingForm, this.meetingService, this.errorService, this.meeting.name);
   }
 
   changedDescription(): void {

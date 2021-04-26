@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { FormGroup, FormControl, Validators } from '@angular/forms';
+import { FormGroup, FormControl } from '@angular/forms';
 import { ActivatedRoute, Params, Router } from '@angular/router';
 import { DatePipe } from '@angular/common';
 
@@ -61,7 +61,6 @@ export class MeetingEditComponent implements OnInit {
         if (tempMeeting) {
           this.meetingExists = true;
           this.meeting = tempMeeting;
-          this.calcTextareaSize();
           this.initForm(this.meeting.id, this.meeting.name, this.meeting.datetime.substr(0, 10), this.meeting.datetime.substr(11, 5), this.meeting.description, this.meeting.display);
           this.isLoading = false;
         } else {
@@ -134,14 +133,4 @@ export class MeetingEditComponent implements OnInit {
   changedDescription(): void {
     this.descriptionError = ValidationErrorMessagesModule.changedMeetingDescription(this.meetingForm);
   }
-
-  private calcTextareaSize(): void {
-    this.textareaLines = this.meeting.description.split(/\r\n|\r|\n/).length;
-    if (this.textareaLines < 5) {
-      this.textareaLines = 5;
-    }
-    if (this.textareaLines > 20) {
-      this.textareaLines = 20;
-    }
-  }
-  }
+}

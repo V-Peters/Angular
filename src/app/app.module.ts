@@ -35,6 +35,7 @@ import { ForgotPasswordComponent } from './authentification/forgot-password/forg
 import { EmailSentComponent } from './authentification/forgot-password/email-sent/email-sent.component';
 import { SetNewPasswordComponent } from './authentification/forgot-password/set-new-password/set-new-password.component';
 import { MeetingDetailsComponent } from './meeting/meeting-details/meeting-details.component';
+import { TextFieldModule } from '@angular/cdk/text-field';
 
 @NgModule({
   declarations: [
@@ -65,7 +66,8 @@ import { MeetingDetailsComponent } from './meeting/meeting-details/meeting-detai
     MatSnackBarModule,
     MatTooltipModule,
     MatCheckboxModule,
-    BrowserAnimationsModule
+    BrowserAnimationsModule,
+    TextFieldModule
   ],
   providers: [
     authInterceptorProviders,

@@ -29,9 +29,8 @@ i {
   text-align: right;
 }
 
-textarea {
-  width: 58vw;
-  border: white;
-  background: white;
-  resize: none;
+.description {
+  white-space: pre-wrap;
+  overflow-y: auto;
+  max-height: 40vh;
 }

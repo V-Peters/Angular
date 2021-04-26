@@ -5,7 +5,7 @@
   <p class="mat-card-subtitle"><b>{{ meeting.datetime | date:'dd.MM.yyyy' }} um {{ meeting.datetime | date:'HH:mm' }} Uhr</b></p>
   <hr>
   <p><b>Detailbeschreibung:</b></p>
-  <div *ngIf="meeting.description"><textarea rows="{{textareaLines}}" disabled>{{ meeting.description }}</textarea></div>
+  <p class="description">{{ meeting.description }}</p>
   <hr>
   <p>Autor: <i>{{ author.firstname }} {{ author.lastname }}</i></p>
   <div class="details-box-actions">

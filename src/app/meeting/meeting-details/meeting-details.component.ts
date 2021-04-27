@@ -25,6 +25,9 @@ export class MeetingDetailsComponent implements OnInit {
     this.meetingService.getMeeting(this.id)
     .subscribe((tempMeeting: Meeting) => {
       this.meeting = tempMeeting;
+      if (!this.meeting.description) {
+        this.meeting.description = 'Diese Veranstaltung hat noch keine Detailbeschreibung.';
+      }
       this.userService.getAuthor(this.meeting.authorId)
       .subscribe((tempAuthor: Author) => {
         this.author = tempAuthor;

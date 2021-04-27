@@ -4,6 +4,7 @@ import { Meeting } from '../meeting.model';
 import { Router } from '@angular/router';
 import { UserService } from '../../user/user.service';
 import { Author } from '../../user/author.model';
+import { TokenStorageService } from "../../authentification/token-storage.service";
 
 @Component({
   selector: 'app-meeting-details',
@@ -14,14 +15,16 @@ export class MeetingDetailsComponent implements OnInit {
   @Input() id: number;
   @Output() deactivateDetails = new EventEmitter<void>();
   isLoading = true;
+  isAdmin: boolean;
   meeting: Meeting;
   author: Author;
   textareaLines: number;
 
-  constructor(private router: Router, private meetingService: MeetingService, private userService: UserService) { }
+  constructor(private router: Router, private meetingService: MeetingService, private userService: UserService, private tokenStorageService: TokenStorageService) { }
 
   ngOnInit(): void {
     this.isLoading = true;
+    this.isAdmin = this.tokenStorageService.isAdmin();
     this.meetingService.getMeeting(this.id)
     .subscribe((tempMeeting: Meeting) => {
       this.meeting = tempMeeting;

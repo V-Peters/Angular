@@ -9,7 +9,8 @@
   <hr>
   <p>Autor: <i>{{ author.firstname }} {{ author.lastname }}</i></p>
   <div class="details-box-actions">
-    <button class="btn btn-info col-xs-4" (click)="onEditMeeting(meeting.id)">Bearbeiten</button>
+    <button *ngIf="isAdmin" class="btn btn-info col-xs-4" (click)="onEditMeeting(meeting.id)">Bearbeiten</button>
+    <span *ngIf="!isAdmin" class="col-xs-4"></span>
     <span class="col-xs-4"></span>
     <button class="btn btn-primary col-xs-4" (click)="onClose()">Schließen</button>
   </div>

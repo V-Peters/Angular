@@ -9,7 +9,8 @@ import { AppComponent } from 'src/app/app.component';
 
 @Component({
   selector: 'app-meeting-list',
-  templateUrl: './meeting-list.component.html'
+  templateUrl: './meeting-list.component.html',
+  styleUrls: ['./meeting-list.component.css']
 })
 export class MeetingListComponent implements OnInit {
   isLoading = true;
@@ -20,6 +21,7 @@ export class MeetingListComponent implements OnInit {
   isDifferent = false;
   showDetails = false;
   idForDetails: number;
+  hover: number;
 
   private initialDisplayValues = {};
   private initialSignupValues = {};

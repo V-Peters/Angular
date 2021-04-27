@@ -33,9 +33,9 @@
         </tr>
       </thead>
       <tbody>
-        <tr *ngFor="let meeting of meetings; let i = index">
+        <tr *ngFor="let meeting of meetings; let i = index" [ngStyle]="{background: i===hover ? 'rgba(221, 221, 221, 0.5)' : '' }">
           <td class="right">{{ i + 1 }}</td>
-          <td (click)="activateDetails(meeting.id)" class="clickable">{{ meeting.name }}</td>
+          <td (mouseover)="hover=i" (mouseleave)="hover=null" (click)="activateDetails(meeting.id)" class="clickable">{{ meeting.name }}</td>
           <td class="center" >{{ meeting.datetime | date:'dd.MM.yyyy' }}</td>
           <td class="center" >{{ meeting.datetime | date:'HH:mm' }} Uhr</td>
           <td *ngIf="isAdmin" class="center">
